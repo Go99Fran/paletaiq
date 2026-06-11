@@ -158,7 +158,7 @@ CREATE TABLE recommendations (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   player_profile_id INT UNSIGNED NOT NULL,
   paddle_id INT UNSIGNED NOT NULL,
-  rank TINYINT UNSIGNED NOT NULL,
+  `rank` TINYINT UNSIGNED NOT NULL,
   reason TEXT NOT NULL,                         -- explicación de la IA
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_recommendations_profile FOREIGN KEY (player_profile_id) REFERENCES player_profiles(id) ON DELETE CASCADE,
