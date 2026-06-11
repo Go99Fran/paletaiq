@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Zap } from "lucide-react";
 import { APP_NAME } from "@/config";
 import { Link } from "@/i18n/navigation";
+import { AuthButtons } from "./auth-buttons";
 
 export async function SiteHeader() {
   const t = await getTranslations("nav");
@@ -20,6 +21,7 @@ export async function SiteHeader() {
           <Link href="/" className="transition-colors hover:text-text">
             {t("finder")}
           </Link>
+          <AuthButtons />
         </nav>
       </div>
     </header>
