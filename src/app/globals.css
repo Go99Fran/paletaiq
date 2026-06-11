@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
+/*
+ * Theming semántico de PaletaIQ.
+ * Para re-skinear la app entera, cambiar SOLO estas variables.
+ * En componentes usar siempre las clases semánticas (bg-primary, text-muted, ...);
+ * nunca colores de Tailwind crudos (bg-blue-600) ni hex sueltos.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #047857; /* verde pádel */
+  --primary-hover: #065f46;
+  --primary-foreground: #ffffff;
+  --secondary: #0f172a;
+  --secondary-foreground: #ffffff;
+  --tertiary: #84cc16; /* lima de acento */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --success: #16a34a;
+  --danger: #dc2626;
 }
 
 @theme inline {
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-tertiary: var(--tertiary);
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
 }

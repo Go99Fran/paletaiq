@@ -1,0 +1,30 @@
+{
+  "common": {
+    "tagline": "Encontrá tu paleta ideal",
+    "loading": "Cargando…",
+    "currencyArs": "ARS"
+  },
+  "nav": {
+    "paddles": "Paletas",
+    "compare": "Comparador",
+    "finder": "Buscador inteligente",
+    "signIn": "Ingresar con Google",
+    "signOut": "Salir"
+  },
+  "home": {
+    "heroTitle": "Encontrá tu paleta ideal",
+    "heroSubtitle": "Compará paletas de pádel con precios reales en pesos, specs completas y un buscador con IA que te recomienda según tu juego.",
+    "ctaFinder": "Probar el buscador inteligente",
+    "ctaCompare": "Explorar paletas",
+    "featureCompareTitle": "Comparador",
+    "featureCompareText": "Specs normalizadas, precios en tiendas argentinas e historial de precios, lado a lado.",
+    "featureFinderTitle": "Buscador con IA",
+    "featureFinderText": "Contanos tu nivel, tu estilo y tu presupuesto: te recomendamos paletas reales y te explicamos por qué.",
+    "featurePricesTitle": "Precios argentinos",
+    "featurePricesText": "Precios en pesos, stock local y links directos a las tiendas. Nada de catálogos españoles."
+  },
+  "meta": {
+    "title": "PaletaIQ — Encontrá tu paleta ideal",
+    "description": "Comparador y buscador inteligente de paletas de pádel con precios en pesos argentinos."
+  }
+}

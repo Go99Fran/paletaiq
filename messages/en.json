@@ -1,0 +1,30 @@
+{
+  "common": {
+    "tagline": "Find your perfect padel racket",
+    "loading": "Loading…",
+    "currencyArs": "ARS"
+  },
+  "nav": {
+    "paddles": "Rackets",
+    "compare": "Compare",
+    "finder": "Smart finder",
+    "signIn": "Sign in with Google",
+    "signOut": "Sign out"
+  },
+  "home": {
+    "heroTitle": "Find your perfect padel racket",
+    "heroSubtitle": "Compare padel rackets with real prices in Argentine pesos, full specs and an AI-powered finder that recommends based on your game.",
+    "ctaFinder": "Try the smart finder",
+    "ctaCompare": "Browse rackets",
+    "featureCompareTitle": "Comparator",
+    "featureCompareText": "Normalized specs, prices across Argentine stores and price history, side by side.",
+    "featureFinderTitle": "AI finder",
+    "featureFinderText": "Tell us your level, style and budget: we recommend real rackets and explain why.",
+    "featurePricesTitle": "Argentine prices",
+    "featurePricesText": "Prices in pesos, local stock and direct store links. No Spanish catalogs."
+  },
+  "meta": {
+    "title": "PaletaIQ — Find your perfect padel racket",
+    "description": "Padel racket comparator and AI-powered finder with prices in Argentine pesos."
+  }
+}
