@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:migrate": "node --env-file=.env scripts/migrate.mjs",
-    "db:import-supabase": "node --env-file=.env scripts/import-supabase.mjs"
+    "db:import-supabase": "node --env-file=.env scripts/import-supabase.mjs",
+    "scrape": "tsx --env-file=.env scripts/scrape.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",
@@ -28,6 +29,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   }
 }
