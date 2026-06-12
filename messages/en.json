@@ -2,14 +2,17 @@
   "common": {
     "tagline": "Find your perfect padel racket",
     "loading": "Loading…",
-    "currencyArs": "ARS"
+    "noResults": "No rackets match those filters.",
+    "clear": "Clear",
+    "back": "Back"
   },
   "nav": {
     "paddles": "Rackets",
     "compare": "Compare",
     "finder": "Smart finder",
     "signIn": "Sign in with Google",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "admin": "Admin"
   },
   "home": {
     "heroTitle": "Find your perfect padel racket",
@@ -22,6 +25,98 @@
     "featureFinderText": "Tell us your level, style and budget: we recommend real rackets and explain why.",
     "featurePricesTitle": "Argentine prices",
     "featurePricesText": "Prices in pesos, local stock and direct store links. No Spanish catalogs."
+  },
+  "enums": {
+    "shape": {
+      "round": "Round",
+      "teardrop": "Teardrop",
+      "diamond": "Diamond",
+      "hybrid": "Hybrid"
+    },
+    "balance": {
+      "low": "Low balance",
+      "medium": "Medium balance",
+      "high": "High balance"
+    },
+    "hardness": {
+      "soft": "Soft",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "surface": {
+      "rough": "Rough",
+      "smooth": "Smooth"
+    },
+    "level": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "pro": "Competitive"
+    },
+    "playStyle": {
+      "control": "Control",
+      "balance": "All-round",
+      "power": "Power"
+    }
+  },
+  "paddles": {
+    "title": "Padel rackets",
+    "subtitle": "{count} rackets with normalized specs and prices in pesos",
+    "filterBrand": "Brand",
+    "filterShape": "Shape",
+    "filterLevel": "Level",
+    "filterStyle": "Style",
+    "filterPriceMin": "Min price (ARS)",
+    "filterPriceMax": "Max price (ARS)",
+    "searchPlaceholder": "Search by name or brand…",
+    "applyFilters": "Filter",
+    "allOption": "All",
+    "noPrice": "No published price",
+    "fromPrice": "From",
+    "storeCount": "{count, plural, one {# store} other {# stores}}",
+    "page": "Page {page} of {total}",
+    "prev": "Previous",
+    "next": "Next",
+    "addCompare": "Compare",
+    "removeCompare": "Remove"
+  },
+  "detail": {
+    "specs": "Specifications",
+    "brand": "Brand",
+    "year": "Year",
+    "shape": "Shape",
+    "balance": "Balance",
+    "weight": "Weight",
+    "core": "Core",
+    "face": "Face",
+    "frame": "Frame",
+    "surface": "Surface",
+    "hardness": "Hardness",
+    "level": "Level",
+    "playStyle": "Play style",
+    "prices": "Store prices",
+    "store": "Store",
+    "price": "Price",
+    "stock": "Stock",
+    "inStock": "In stock",
+    "outOfStock": "Out of stock",
+    "viewStore": "View in store",
+    "updated": "Updated",
+    "history": "Price history",
+    "noPrices": "We don't have store prices for this racket yet.",
+    "description": "Description",
+    "notFound": "We couldn't find that racket."
+  },
+  "compare": {
+    "title": "Racket comparator",
+    "subtitle": "Up to 4 rackets side by side",
+    "empty": "Pick rackets from the list using the \"Compare\" button.",
+    "goToList": "Go to the list",
+    "barText": "{count, plural, one {# racket selected} other {# rackets selected}}",
+    "barCompare": "Compare",
+    "barClear": "Clear",
+    "bestPrice": "Best price",
+    "remove": "Remove"
   },
   "meta": {
     "title": "PaletaIQ — Find your perfect padel racket",

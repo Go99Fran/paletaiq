@@ -15,10 +15,10 @@ export async function SiteHeader() {
           {APP_NAME}
         </Link>
         <nav className="flex items-center gap-4 text-sm text-muted">
-          <Link href="/" className="transition-colors hover:text-text">
+          <Link href="/paletas" className="transition-colors hover:text-text">
             {t("paddles")}
           </Link>
-          <Link href="/" className="transition-colors hover:text-text">
+          <Link href="/buscador" className="transition-colors hover:text-text">
             {t("finder")}
           </Link>
           <AuthButtons />

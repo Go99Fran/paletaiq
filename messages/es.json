@@ -2,14 +2,17 @@
   "common": {
     "tagline": "Encontrá tu paleta ideal",
     "loading": "Cargando…",
-    "currencyArs": "ARS"
+    "noResults": "No encontramos paletas con esos filtros.",
+    "clear": "Limpiar",
+    "back": "Volver"
   },
   "nav": {
     "paddles": "Paletas",
     "compare": "Comparador",
     "finder": "Buscador inteligente",
     "signIn": "Ingresar con Google",
-    "signOut": "Salir"
+    "signOut": "Salir",
+    "admin": "Admin"
   },
   "home": {
     "heroTitle": "Encontrá tu paleta ideal",
@@ -22,6 +25,98 @@
     "featureFinderText": "Contanos tu nivel, tu estilo y tu presupuesto: te recomendamos paletas reales y te explicamos por qué.",
     "featurePricesTitle": "Precios argentinos",
     "featurePricesText": "Precios en pesos, stock local y links directos a las tiendas. Nada de catálogos españoles."
+  },
+  "enums": {
+    "shape": {
+      "round": "Redonda",
+      "teardrop": "Lágrima",
+      "diamond": "Diamante",
+      "hybrid": "Híbrida"
+    },
+    "balance": {
+      "low": "Balance bajo",
+      "medium": "Balance medio",
+      "high": "Balance alto"
+    },
+    "hardness": {
+      "soft": "Blanda",
+      "medium": "Media",
+      "hard": "Dura"
+    },
+    "surface": {
+      "rough": "Rugosa",
+      "smooth": "Lisa"
+    },
+    "level": {
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado",
+      "pro": "Competitivo"
+    },
+    "playStyle": {
+      "control": "Control",
+      "balance": "Equilibrada",
+      "power": "Potencia"
+    }
+  },
+  "paddles": {
+    "title": "Paletas de pádel",
+    "subtitle": "{count} paletas con specs normalizadas y precios en pesos",
+    "filterBrand": "Marca",
+    "filterShape": "Forma",
+    "filterLevel": "Nivel",
+    "filterStyle": "Estilo",
+    "filterPriceMin": "Precio mín. (ARS)",
+    "filterPriceMax": "Precio máx. (ARS)",
+    "searchPlaceholder": "Buscar por nombre o marca…",
+    "applyFilters": "Filtrar",
+    "allOption": "Todas",
+    "noPrice": "Sin precio publicado",
+    "fromPrice": "Desde",
+    "storeCount": "{count, plural, one {# tienda} other {# tiendas}}",
+    "page": "Página {page} de {total}",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "addCompare": "Comparar",
+    "removeCompare": "Quitar"
+  },
+  "detail": {
+    "specs": "Ficha técnica",
+    "brand": "Marca",
+    "year": "Año",
+    "shape": "Forma",
+    "balance": "Balance",
+    "weight": "Peso",
+    "core": "Núcleo",
+    "face": "Cara",
+    "frame": "Marco",
+    "surface": "Superficie",
+    "hardness": "Dureza",
+    "level": "Nivel",
+    "playStyle": "Estilo de juego",
+    "prices": "Precios en tiendas",
+    "store": "Tienda",
+    "price": "Precio",
+    "stock": "Stock",
+    "inStock": "En stock",
+    "outOfStock": "Sin stock",
+    "viewStore": "Ver en tienda",
+    "updated": "Actualizado",
+    "history": "Historial de precios",
+    "noPrices": "Todavía no tenemos precios de tiendas para esta paleta.",
+    "description": "Descripción",
+    "notFound": "No encontramos esa paleta."
+  },
+  "compare": {
+    "title": "Comparador de paletas",
+    "subtitle": "Hasta 4 paletas lado a lado",
+    "empty": "Elegí paletas desde el listado con el botón \"Comparar\".",
+    "goToList": "Ir al listado",
+    "barText": "{count, plural, one {# paleta seleccionada} other {# paletas seleccionadas}}",
+    "barCompare": "Comparar",
+    "barClear": "Limpiar",
+    "bestPrice": "Mejor precio",
+    "remove": "Quitar"
   },
   "meta": {
     "title": "PaletaIQ — Encontrá tu paleta ideal",

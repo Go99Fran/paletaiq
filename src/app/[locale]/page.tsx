@@ -36,13 +36,13 @@ export default async function HomePage({
         <Heading level={1}>{t("heroTitle")}</Heading>
         <p className="mt-4 text-lg text-muted">{t("heroSubtitle")}</p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link href="/">
+          <Link href="/buscador">
             <Button size="lg">
               <Sparkles size={18} aria-hidden />
               {t("ctaFinder")}
             </Button>
           </Link>
-          <Link href="/">
+          <Link href="/paletas">
             <Button size="lg" variant="ghost">
               {t("ctaCompare")}
             </Button>
