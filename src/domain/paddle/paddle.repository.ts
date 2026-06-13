@@ -16,6 +16,10 @@ export interface PaddleFilters {
   priceMin?: number;
   priceMax?: number;
   search?: string;
+  /** Solo para el admin: filtrar por estado de validación humana. */
+  validated?: boolean;
+  /** Solo para el admin: incluir paletas inactivas. */
+  includeInactive?: boolean;
   page: number;
   pageSize: number;
 }

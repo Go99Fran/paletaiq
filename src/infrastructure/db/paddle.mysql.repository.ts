@@ -104,9 +104,12 @@ function mapRow(row: PaddleRow): PaddleListItem {
 
 export class PaddleMysqlRepository implements PaddleRepository {
   async list(filters: PaddleFilters): Promise<PaddleListResult> {
-    const where: string[] = ["p.is_active = TRUE"];
+    const where: string[] = filters.includeInactive ? ["1=1"] : ["p.is_active = TRUE"];
     const params: Record<string, string | number> = {};
 
+    if (filters.validated !== undefined) {
+      where.push(`p.validated = ${filters.validated ? "TRUE" : "FALSE"}`);
+    }
     if (filters.brandSlug) {
       where.push("b.slug = :brandSlug");
       params.brandSlug = filters.brandSlug;
