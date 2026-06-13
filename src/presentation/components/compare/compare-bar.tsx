@@ -14,7 +14,7 @@ export function CompareBar() {
   if (slugs.length === 0) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-4 z-20 mx-auto flex w-fit items-center gap-3 rounded-full border border-border bg-surface px-5 py-2 shadow-lg">
+    <div className="glass animate-rise fixed inset-x-0 bottom-4 z-30 mx-auto flex w-fit items-center gap-3 rounded-full px-5 py-2">
       <span className="text-sm text-muted">{t("barText", { count: slugs.length })}</span>
       <Link href={`/comparar?p=${slugs.join(",")}`}>
         <Button size="sm">

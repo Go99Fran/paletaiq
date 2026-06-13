@@ -5,6 +5,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { SiteHeader } from "@/presentation/components/layout/site-header";
+import { AuroraBackground } from "@/presentation/components/fx/aurora-background";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -54,6 +55,7 @@ export default async function LocaleLayout({
     >
       <body className="flex min-h-screen flex-col font-sans">
         <NextIntlClientProvider>
+          <AuroraBackground />
           <SiteHeader />
           <main className="flex-1">{children}</main>
         </NextIntlClientProvider>

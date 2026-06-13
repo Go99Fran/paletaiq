@@ -79,10 +79,12 @@ export default async function PaddlesPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <Heading level={1}>{t("title")}</Heading>
+      <Heading level={1} className="text-gradient">
+        {t("title")}
+      </Heading>
       <p className="mt-1 text-muted">{t("subtitle", { count: total })}</p>
 
-      <form method="get" className="mt-6 grid grid-cols-2 gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-3 lg:grid-cols-7">
+      <form method="get" className="glass mt-6 grid grid-cols-2 gap-3 rounded-2xl p-4 sm:grid-cols-3 lg:grid-cols-7">
         <Input name="q" defaultValue={filters.search ?? ""} placeholder={t("searchPlaceholder")} className="col-span-2 sm:col-span-3 lg:col-span-2" />
         <Select
           name="marca"

@@ -64,7 +64,9 @@ export default async function ComparePage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <Heading level={1}>{t("title")}</Heading>
+      <Heading level={1} className="text-gradient">
+        {t("title")}
+      </Heading>
       <p className="mt-1 text-muted">{t("subtitle")}</p>
 
       <div className="mt-6 overflow-x-auto">

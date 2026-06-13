@@ -1,25 +1,37 @@
 @import "tailwindcss";
 
 /*
- * Theming semántico de PaletaIQ.
+ * Theming semántico de PaletaIQ — Glassmorphism claro.
  * Para re-skinear la app entera, cambiar SOLO estas variables.
- * En componentes usar siempre las clases semánticas (bg-primary, text-muted, ...);
- * nunca colores de Tailwind crudos (bg-blue-600) ni hex sueltos.
+ * En componentes usar siempre las clases semánticas (bg-primary, text-muted, ...)
+ * o las utilidades glass de abajo; nunca colores crudos de Tailwind ni hex sueltos.
  */
 :root {
-  --primary: #047857; /* verde pádel */
-  --primary-hover: #065f46;
+  --primary: #0ea5a3; /* teal pádel */
+  --primary-hover: #0c8a88;
   --primary-foreground: #ffffff;
-  --secondary: #0f172a;
+  --secondary: #1e293b;
   --secondary-foreground: #ffffff;
   --tertiary: #84cc16; /* lima de acento */
-  --background: #f8fafc;
+
+  --background: #eef2f7;
   --surface: #ffffff;
   --text: #0f172a;
   --muted: #64748b;
   --border: #e2e8f0;
   --success: #16a34a;
   --danger: #dc2626;
+
+  /* Glass: superficie translúcida sobre el fondo animado */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+
+  /* Acentos de las auroras/blobs del fondo */
+  --aurora-1: #5eead4;
+  --aurora-2: #a3e635;
+  --aurora-3: #67e8f9;
+  --aurora-4: #c4b5fd;
 }
 
 @theme inline {
@@ -36,11 +48,126 @@
   --color-border: var(--border);
   --color-success: var(--success);
   --color-danger: var(--danger);
+  --color-glass-border: var(--glass-border);
+  --color-tertiary-soft: color-mix(in srgb, var(--tertiary) 18%, transparent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --animate-blob: blob 22s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.5s linear infinite;
+  --animate-rise: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(6%, -8%) scale(1.12);
+  }
+  66% {
+    transform: translate(-7%, 5%) scale(0.92);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 body {
   background: var(--background);
   color: var(--text);
+}
+
+/* ---- Utilidades de glassmorphism ---- */
+@utility glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+@utility glass-hover {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+@utility text-gradient {
+  color: var(--primary); /* fallback si background-clip:text no está soportado */
+  background: linear-gradient(120deg, var(--primary), var(--tertiary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
+  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
+}
+
+/* Borde con glow para CTAs / cards destacadas */
+@utility glow-ring {
+  position: relative;
+}
+.glow-ring::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(120deg, var(--primary), var(--tertiary), var(--aurora-3));
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.glow-ring:hover::after {
+  opacity: 1;
+}
+
+/* Respeta la preferencia de reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

@@ -15,10 +15,10 @@ export async function PaddleCard({ paddle }: { paddle: PaddleListItem }) {
   ]);
 
   return (
-    <Card className="flex flex-col overflow-hidden transition-shadow hover:shadow-md">
+    <Card interactive className="flex flex-col overflow-hidden">
       <Link
         href={`/paletas/${paddle.slug}`}
-        className="relative flex h-44 items-center justify-center bg-surface"
+        className="relative flex h-44 items-center justify-center bg-gradient-to-br from-white/40 to-transparent"
       >
         {paddle.imageUrl ? (
           <Image

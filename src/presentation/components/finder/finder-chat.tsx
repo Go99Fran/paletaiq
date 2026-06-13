@@ -333,19 +333,19 @@ export function FinderChat() {
 function ChatBubble({ role, children }: { role: "bot" | "user"; children: React.ReactNode }) {
   if (role === "bot") {
     return (
-      <div className="flex items-start gap-2.5">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+      <div className="animate-rise flex items-start gap-2.5">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-tertiary text-primary-foreground shadow-sm">
           <Bot size={16} aria-hidden />
         </span>
-        <p className="rounded-2xl rounded-tl-sm border border-border bg-surface px-4 py-2.5 text-sm text-text">
+        <p className="glass rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-text">
           {children}
         </p>
       </div>
     );
   }
   return (
-    <div className="flex justify-end">
-      <p className="rounded-2xl rounded-tr-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground">
+    <div className="animate-rise flex justify-end">
+      <p className="rounded-2xl rounded-tr-sm bg-gradient-to-br from-primary to-primary-hover px-4 py-2.5 text-sm text-primary-foreground shadow-sm">
         {children}
       </p>
     </div>
