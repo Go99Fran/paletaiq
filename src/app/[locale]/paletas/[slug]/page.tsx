@@ -58,15 +58,15 @@ export default async function PaddleDetailPage({
       </Link>
 
       <div className="mt-4 grid gap-8 lg:grid-cols-[2fr_3fr]">
-        <Card className="flex h-fit items-center justify-center p-6">
+        <Card className="flex h-fit items-center justify-center overflow-hidden bg-gradient-to-br from-white/50 to-transparent p-6">
           {paddle.imageUrl ? (
-            <div className="relative h-80 w-full">
+            <div className="relative h-80 w-full animate-float">
               <Image
                 src={paddle.imageUrl}
                 alt={paddle.name}
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
-                className="object-contain"
+                className="object-contain drop-shadow-xl"
                 priority
               />
             </div>
@@ -132,7 +132,10 @@ export default async function PaddleDetailPage({
                 </thead>
                 <tbody>
                   {prices.map((p) => (
-                    <tr key={p.storeId} className="border-b border-border last:border-0">
+                    <tr
+                      key={p.storeId}
+                      className="border-b border-border transition-colors last:border-0 hover:bg-glass-border/40"
+                    >
                       <td className="py-2 pr-4 text-text">{p.storeName}</td>
                       <td className="py-2 pr-4 font-semibold text-text">
                         {formatPrice(p.price, p.currency, currentLocale)}

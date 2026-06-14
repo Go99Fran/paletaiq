@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Zap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { AuthButtons } from "./auth-buttons";
+import { LocaleSwitcher } from "./locale-switcher";
 
 export async function SiteHeader() {
   const t = await getTranslations("nav");
@@ -17,13 +18,14 @@ export async function SiteHeader() {
             Paleta<span className="text-gradient">IQ</span>
           </span>
         </Link>
-        <nav className="flex items-center gap-4 text-sm text-muted">
-          <Link href="/paletas" className="transition-colors hover:text-text">
+        <nav className="flex items-center gap-2 text-sm text-muted sm:gap-4">
+          <Link href="/paletas" className="hidden transition-colors hover:text-text sm:inline">
             {t("paddles")}
           </Link>
-          <Link href="/buscador" className="transition-colors hover:text-text">
+          <Link href="/buscador" className="hidden transition-colors hover:text-text sm:inline">
             {t("finder")}
           </Link>
+          <LocaleSwitcher />
           <AuthButtons />
         </nav>
       </div>

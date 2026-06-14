@@ -9,9 +9,9 @@ export function Input({
   return (
     <input
       className={cn(
-        "h-10 w-full rounded-lg border border-border bg-surface px-3 text-sm text-text",
-        "placeholder:text-muted",
-        "focus:border-primary focus:outline-2 focus:outline-primary/30",
+        "h-10 w-full rounded-xl border border-border bg-surface/70 px-3 text-sm text-text backdrop-blur-sm",
+        "placeholder:text-muted transition-colors",
+        "focus:border-primary focus:bg-surface focus:outline-2 focus:outline-primary/25",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
@@ -35,8 +35,8 @@ export function Select({ className, options, placeholder, ...props }: SelectProp
     <div className="relative">
       <select
         className={cn(
-          "h-10 w-full appearance-none rounded-lg border border-border bg-surface px-3 pr-9 text-sm text-text",
-          "focus:border-primary focus:outline-2 focus:outline-primary/30",
+          "h-10 w-full appearance-none rounded-xl border border-border bg-surface/70 px-3 pr-9 text-sm text-text backdrop-blur-sm",
+          "transition-colors focus:border-primary focus:bg-surface focus:outline-2 focus:outline-primary/25",
           "disabled:cursor-not-allowed disabled:opacity-50",
           className,
         )}

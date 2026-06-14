@@ -210,6 +210,16 @@
     "statusError": "Error",
     "noRuns": "Todavía no hay corridas registradas."
   },
+  "footer": {
+    "tagline": "El comparador y buscador inteligente de paletas de pádel pensado para Argentina.",
+    "explore": "Explorar",
+    "paddles": "Paletas",
+    "finder": "Buscador inteligente",
+    "compare": "Comparador",
+    "dataTitle": "Datos",
+    "dataAttribution": "Specs y precios recopilados de sitios oficiales de marcas y tiendas argentinas. Los precios pueden variar; verificá en la tienda antes de comprar.",
+    "rights": "Hecho con onda para la comunidad del pádel."
+  },
   "meta": {
     "title": "PaletaIQ — Encontrá tu paleta ideal",
     "description": "Comparador y buscador inteligente de paletas de pádel con precios en pesos argentinos."

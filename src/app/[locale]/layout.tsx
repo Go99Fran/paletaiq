@@ -5,6 +5,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { SiteHeader } from "@/presentation/components/layout/site-header";
+import { SiteFooter } from "@/presentation/components/layout/site-footer";
 import { AuroraBackground } from "@/presentation/components/fx/aurora-background";
 import "../globals.css";
 
@@ -58,6 +59,7 @@ export default async function LocaleLayout({
           <AuroraBackground />
           <SiteHeader />
           <main className="flex-1">{children}</main>
+          <SiteFooter />
         </NextIntlClientProvider>
       </body>
     </html>

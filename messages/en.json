@@ -210,6 +210,16 @@
     "statusError": "Error",
     "noRuns": "No runs recorded yet."
   },
+  "footer": {
+    "tagline": "The padel racket comparator and AI finder built for Argentina.",
+    "explore": "Explore",
+    "paddles": "Rackets",
+    "finder": "Smart finder",
+    "compare": "Comparator",
+    "dataTitle": "Data",
+    "dataAttribution": "Specs and prices gathered from official brand sites and Argentine stores. Prices may vary; check the store before buying.",
+    "rights": "Made with love for the padel community."
+  },
   "meta": {
     "title": "PaletaIQ — Find your perfect padel racket",
     "description": "Padel racket comparator and AI-powered finder with prices in Argentine pesos."

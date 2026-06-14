@@ -39,5 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
 # vercel
 .commitmsg.tmp
+.vercel
+
+# scraper cache local (dev) y config local de Claude
+.cache/
+.claude/
