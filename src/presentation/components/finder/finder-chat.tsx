@@ -18,9 +18,12 @@ type StepId =
   | "level"
   | "style"
   | "frequency"
+  | "matchPace"
   | "injuries"
+  | "injuryZone"
   | "strength"
   | "goal"
+  | "sweetSpot"
   | "previous"
   | "budget";
 
@@ -28,9 +31,12 @@ const STEP_ORDER: StepId[] = [
   "level",
   "style",
   "frequency",
+  "matchPace",
   "injuries",
+  "injuryZone",
   "strength",
   "goal",
+  "sweetSpot",
   "previous",
   "budget",
 ];
@@ -44,10 +50,13 @@ const emptyInput: FinderInput = {
   level: "",
   playStyle: "",
   frequency: null,
+  matchPace: null,
   hasInjuries: false,
+  injuryArea: null,
   injuryNotes: null,
   strengthPref: null,
   improveGoal: null,
+  sweetSpotTolerance: null,
   previousPaddle: null,
   budgetMin: null,
   budgetMax: null,
@@ -64,6 +73,7 @@ export function FinderChat() {
   const [previousText, setPreviousText] = useState("");
   const [budgetMin, setBudgetMin] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
+  const [budgetError, setBudgetError] = useState<string | null>(null);
   const [result, setResult] = useState<FinderResult | null>(null);
   const [error, setError] = useState(false);
   const [pending, startTransition] = useTransition();
@@ -79,16 +89,24 @@ export function FinderChat() {
     level: t("qLevel"),
     style: t("qStyle"),
     frequency: t("qFrequency"),
+    matchPace: t("qMatchPace"),
     injuries: t("qInjuries"),
+    injuryZone: t("qInjuryZone"),
     strength: t("qStrength"),
     goal: t("qGoal"),
+    sweetSpot: t("qSweetSpot"),
     previous: t("qPrevious"),
     budget: t("qBudget"),
   };
 
   function answer(label: string, patch: Partial<FinderInput>) {
+    const currentStep = step;
     setHistory((h) => [...h, { question: questionText[step], answer: label }]);
     setInput((i) => ({ ...i, ...patch }));
+    if (currentStep === "injuries" && patch.hasInjuries === false) {
+      setStepIndex((s) => s + 2);
+      return;
+    }
     setStepIndex((s) => s + 1);
   }
 
@@ -112,6 +130,7 @@ export function FinderChat() {
     setPreviousText("");
     setBudgetMin("");
     setBudgetMax("");
+    setBudgetError(null);
     setResult(null);
     setError(false);
   }
@@ -131,9 +150,20 @@ export function FinderChat() {
       { label: t("freq2"), patch: { frequency: 3 } },
       { label: t("freq4"), patch: { frequency: 5 } },
     ],
+    matchPace: [
+      { label: t("paceCalm"), patch: { matchPace: "calm" } },
+      { label: t("paceMedium"), patch: { matchPace: "medium" } },
+      { label: t("paceFast"), patch: { matchPace: "fast" } },
+    ],
     injuries: [
       { label: t("injuryNo"), patch: { hasInjuries: false } },
-      { label: t("injuryYes"), patch: { hasInjuries: true, injuryNotes: null } },
+      { label: t("injuryYes"), patch: { hasInjuries: true } },
+    ],
+    injuryZone: [
+      { label: t("injuryElbow"), patch: { injuryArea: "elbow" } },
+      { label: t("injuryShoulder"), patch: { injuryArea: "shoulder" } },
+      { label: t("injuryWrist"), patch: { injuryArea: "wrist" } },
+      { label: t("injuryNoneNow"), patch: { injuryArea: null } },
     ],
     strength: [
       { label: t("strengthNeeds"), patch: { strengthPref: "needs_power" } },
@@ -145,6 +175,20 @@ export function FinderChat() {
       { label: t("goalBallExit"), patch: { improveGoal: "ball_exit" } },
       { label: t("goalComfort"), patch: { improveGoal: "comfort" } },
     ],
+    sweetSpot: [
+      {
+        label: t("sweetSpotWide"),
+        patch: { sweetSpotTolerance: "wide" },
+      },
+      {
+        label: t("sweetSpotBalanced"),
+        patch: { sweetSpotTolerance: "balanced" },
+      },
+      {
+        label: t("sweetSpotSmall"),
+        patch: { sweetSpotTolerance: "small" },
+      },
+    ],
     previous: [],
     budget: [],
   };
@@ -152,6 +196,37 @@ export function FinderChat() {
   return (
     <div className="mx-auto max-w-2xl">
       <div className="space-y-4">
+        {result === null && (
+          <div className="glass animate-rise-soft rounded-xl px-3 py-2">
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted">{t("progressLabel")}</p>
+              <p className="text-xs text-muted">
+                {Math.min(stepIndex + 1, STEP_ORDER.length)}/{STEP_ORDER.length}
+              </p>
+            </div>
+            <div
+              className="grid gap-1.5"
+              style={{ gridTemplateColumns: `repeat(${STEP_ORDER.length}, minmax(0, 1fr))` }}
+              aria-hidden
+            >
+              {STEP_ORDER.map((_, i) => {
+                const done = i < stepIndex;
+                const current = i === stepIndex;
+                return (
+                  <span
+                    key={i}
+                    className={[
+                      "h-1.5 rounded-full transition-all duration-300",
+                      done ? "bg-primary" : "bg-border",
+                      current ? "bg-tertiary" : "",
+                    ].join(" ")}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {history.map((entry, i) => (
           <div key={i} className="space-y-2">
             <ChatBubble role="bot">{entry.question}</ChatBubble>
@@ -172,6 +247,7 @@ export function FinderChat() {
                     key={opt.label}
                     variant="glass"
                     size="sm"
+                    className="animate-rise-soft"
                     onClick={() => answer(opt.label, opt.patch)}
                   >
                     {opt.label}
@@ -208,6 +284,11 @@ export function FinderChat() {
                   e.preventDefault();
                   const min = budgetMin ? Number(budgetMin) : null;
                   const max = budgetMax ? Number(budgetMax) : null;
+                  if (min !== null && max !== null && max < min) {
+                    setBudgetError(t("budgetRangeError"));
+                    return;
+                  }
+                  setBudgetError(null);
                   const label = [
                     min !== null ? formatPrice(min, "ARS", locale) : "—",
                     max !== null ? formatPrice(max, "ARS", locale) : "—",
@@ -220,17 +301,24 @@ export function FinderChat() {
                     type="number"
                     min={0}
                     value={budgetMin}
-                    onChange={(e) => setBudgetMin(e.target.value)}
+                    onChange={(e) => {
+                      if (budgetError) setBudgetError(null);
+                      setBudgetMin(e.target.value);
+                    }}
                     placeholder={t("budgetMin")}
                   />
                   <Input
                     type="number"
                     min={0}
                     value={budgetMax}
-                    onChange={(e) => setBudgetMax(e.target.value)}
+                    onChange={(e) => {
+                      if (budgetError) setBudgetError(null);
+                      setBudgetMax(e.target.value);
+                    }}
                     placeholder={t("budgetMax")}
                   />
                 </div>
+                {budgetError && <p className="text-xs text-danger">{budgetError}</p>}
                 <p className="text-xs text-muted">{t("budgetOptional")}</p>
                 <Button type="submit">
                   <Sparkles size={16} aria-hidden />
@@ -269,7 +357,9 @@ export function FinderChat() {
               {result.recommendations.length > 0 ? t("resultsTitle") : t("noResults")}
             </ChatBubble>
             {result.heuristic && result.recommendations.length > 0 && (
-              <p className="pl-10 text-xs text-muted">{t("heuristicNote")}</p>
+              <div className="glass mx-0 rounded-xl border border-primary/30 px-3 py-2 text-xs text-text sm:mx-10">
+                <p>{t("heuristicNote")}</p>
+              </div>
             )}
 
             <div className="space-y-3 sm:pl-10">

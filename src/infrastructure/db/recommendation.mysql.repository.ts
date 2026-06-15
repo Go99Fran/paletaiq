@@ -11,19 +11,22 @@ export class RecommendationMysqlRepository implements RecommendationRepository {
   async saveProfile(profile: PlayerProfile, userId: number | null): Promise<SavedPlayerProfile> {
     const [result] = await getPool().execute<ResultSetHeader>(
       `INSERT INTO player_profiles
-         (user_id, level, play_style, frequency, has_injuries, injury_notes,
-          strength_pref, improve_goal, previous_paddle, budget_min, budget_max, currency)
-       VALUES (:userId, :level, :playStyle, :frequency, :hasInjuries, :injuryNotes,
-               :strengthPref, :improveGoal, :previousPaddle, :budgetMin, :budgetMax, :currency)`,
+        (user_id, level, play_style, frequency, match_pace, has_injuries, injury_area, injury_notes,
+         strength_pref, improve_goal, sweet_spot_tolerance, previous_paddle, budget_min, budget_max, currency)
+       VALUES (:userId, :level, :playStyle, :frequency, :matchPace, :hasInjuries, :injuryArea, :injuryNotes,
+            :strengthPref, :improveGoal, :sweetSpotTolerance, :previousPaddle, :budgetMin, :budgetMax, :currency)`,
       {
         userId,
         level: profile.level,
         playStyle: profile.playStyle,
         frequency: profile.frequency,
+        matchPace: profile.matchPace,
         hasInjuries: profile.hasInjuries,
+        injuryArea: profile.injuryArea,
         injuryNotes: profile.injuryNotes,
         strengthPref: profile.strengthPref,
         improveGoal: profile.improveGoal,
+        sweetSpotTolerance: profile.sweetSpotTolerance,
         previousPaddle: profile.previousPaddle,
         budgetMin: profile.budgetMin,
         budgetMax: profile.budgetMax,

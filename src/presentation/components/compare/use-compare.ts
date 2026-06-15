@@ -6,6 +6,8 @@ import { MAX_COMPARE } from "@/config";
 const STORAGE_KEY = "paletaiq.compare";
 const CHANGE_EVENT = "paletaiq:compare-change";
 
+export type CompareToggleResult = "added" | "removed" | "limit-reached";
+
 function readSelection(): string[] {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
@@ -36,12 +38,21 @@ export function useCompare() {
     };
   }, []);
 
-  const toggle = useCallback((slug: string) => {
+  const toggle = useCallback((slug: string): CompareToggleResult => {
     const current = readSelection();
-    const next = current.includes(slug)
-      ? current.filter((s) => s !== slug)
-      : [...current, slug].slice(0, MAX_COMPARE);
+    if (current.includes(slug)) {
+      const next = current.filter((s) => s !== slug);
+      writeSelection(next);
+      return "removed";
+    }
+
+    if (current.length >= MAX_COMPARE) {
+      return "limit-reached";
+    }
+
+    const next = [...current, slug];
     writeSelection(next);
+    return "added";
   }, []);
 
   const clear = useCallback(() => writeSelection([]), []);

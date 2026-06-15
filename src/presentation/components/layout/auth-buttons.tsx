@@ -13,9 +13,9 @@ export async function AuthButtons() {
         {session.user.role === "admin" && (
           <Link
             href="/admin"
-            className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-text"
+            className="inline-flex items-center gap-1 text-xs text-muted transition-colors hover:text-text"
           >
-            <ShieldCheck size={15} aria-hidden />
+            <ShieldCheck size={14} aria-hidden />
             {t("admin")}
           </Link>
         )}
@@ -28,8 +28,8 @@ export async function AuthButtons() {
             await signOut();
           }}
         >
-          <Button type="submit" variant="ghost" size="sm">
-            <LogOut size={16} aria-hidden />
+          <Button type="submit" variant="ghost" size="sm" className="h-7 px-2.5 text-xs gap-1">
+            <LogOut size={14} aria-hidden />
             {t("signOut")}
           </Button>
         </form>
@@ -44,8 +44,8 @@ export async function AuthButtons() {
         await signIn("google");
       }}
     >
-      <Button type="submit" variant="secondary" size="sm">
-        <LogIn size={16} aria-hidden />
+      <Button type="submit" variant="secondary" size="sm" className="h-7 px-2.5 text-xs gap-1">
+        <LogIn size={14} aria-hidden />
         {t("signIn")}
       </Button>
     </form>

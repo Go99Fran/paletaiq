@@ -42,6 +42,8 @@ Tu tarea:
 - Para cada una explicá en español claro y cercano (voseo argentino) POR QUÉ le conviene a ese
   jugador: relacioná forma/balance/dureza/peso con su nivel, estilo, físico/lesiones, objetivo
   y presupuesto. 2 a 3 oraciones por paleta, sin tecnicismos innecesarios.
+- Si hay señales avanzadas como ritmo_partido, zona_molestia o tolerancia_punto_dulce,
+  usalas explícitamente para justificar la elección.
 - Si el jugador tiene molestias de codo/hombro/muñeca, priorizá gomas blandas, balance bajo/medio
   y peso contenido, y mencionalo en la explicación.
 - Respondé únicamente con el JSON pedido.`;
@@ -52,6 +54,9 @@ function buildUserMessage(profile: PlayerProfile, candidates: PaddleListItem[]):
     estilo: profile.playStyle,
     frecuencia_semanal: profile.frequency,
     lesiones: profile.hasInjuries ? (profile.injuryNotes ?? "sí") : "no",
+    zona_molestia: profile.injuryArea,
+    ritmo_partido: profile.matchPace,
+    tolerancia_punto_dulce: profile.sweetSpotTolerance,
     preferencia_fuerza: profile.strengthPref,
     objetivo_mejora: profile.improveGoal,
     paleta_anterior: profile.previousPaddle,

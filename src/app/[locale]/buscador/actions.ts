@@ -9,8 +9,11 @@ import {
   type PlayStyle,
 } from "@/domain/paddle/paddle.entity";
 import type {
+  InjuryArea,
+  MatchPace,
   ImproveGoal,
   PlayerProfile,
+  SweetSpotTolerance,
   StrengthPref,
 } from "@/domain/player-profile/player-profile.entity";
 import { findUserIdByEmail } from "@/infrastructure/db/user.mysql.repository";
@@ -19,10 +22,13 @@ export interface FinderInput {
   level: string;
   playStyle: string;
   frequency: number | null;
+  matchPace: string | null;
   hasInjuries: boolean;
+  injuryArea: string | null;
   injuryNotes: string | null;
   strengthPref: string | null;
   improveGoal: string | null;
+  sweetSpotTolerance: string | null;
   previousPaddle: string | null;
   budgetMin: number | null;
   budgetMax: number | null;
@@ -49,6 +55,9 @@ export interface FinderResult {
 
 const STRENGTH_PREFS: StrengthPref[] = ["needs_power", "has_power"];
 const IMPROVE_GOALS: ImproveGoal[] = ["power", "control", "ball_exit", "comfort"];
+const MATCH_PACES: MatchPace[] = ["calm", "medium", "fast"];
+const INJURY_AREAS: InjuryArea[] = ["elbow", "shoulder", "wrist"];
+const SWEET_SPOT_TOLERANCES: SweetSpotTolerance[] = ["wide", "balanced", "small"];
 
 function sanitize(input: FinderInput): PlayerProfile {
   if (!PADDLE_LEVELS.includes(input.level as PaddleLevel)) {
@@ -60,6 +69,16 @@ function sanitize(input: FinderInput): PlayerProfile {
   const budgetMin = input.budgetMin !== null && input.budgetMin >= 0 ? input.budgetMin : null;
   const budgetMax = input.budgetMax !== null && input.budgetMax > 0 ? input.budgetMax : null;
 
+  const matchPace = MATCH_PACES.includes(input.matchPace as MatchPace)
+    ? (input.matchPace as MatchPace)
+    : null;
+  const injuryArea = input.hasInjuries && INJURY_AREAS.includes(input.injuryArea as InjuryArea)
+    ? (input.injuryArea as InjuryArea)
+    : null;
+  const sweetSpotTolerance = SWEET_SPOT_TOLERANCES.includes(input.sweetSpotTolerance as SweetSpotTolerance)
+    ? (input.sweetSpotTolerance as SweetSpotTolerance)
+    : null;
+
   return {
     level: input.level as PaddleLevel,
     playStyle: input.playStyle as PlayStyle,
@@ -67,7 +86,9 @@ function sanitize(input: FinderInput): PlayerProfile {
       input.frequency !== null && input.frequency > 0 && input.frequency <= 14
         ? Math.round(input.frequency)
         : null,
+    matchPace,
     hasInjuries: input.hasInjuries,
+    injuryArea,
     injuryNotes: input.injuryNotes ? input.injuryNotes.slice(0, 500) : null,
     strengthPref: STRENGTH_PREFS.includes(input.strengthPref as StrengthPref)
       ? (input.strengthPref as StrengthPref)
@@ -75,6 +96,7 @@ function sanitize(input: FinderInput): PlayerProfile {
     improveGoal: IMPROVE_GOALS.includes(input.improveGoal as ImproveGoal)
       ? (input.improveGoal as ImproveGoal)
       : null,
+    sweetSpotTolerance,
     previousPaddle: input.previousPaddle ? input.previousPaddle.slice(0, 300) : null,
     budgetMin,
     budgetMax: budgetMax !== null && budgetMin !== null && budgetMax < budgetMin ? null : budgetMax,

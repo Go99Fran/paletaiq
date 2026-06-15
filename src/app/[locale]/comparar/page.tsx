@@ -71,12 +71,17 @@ export default async function ComparePage({
 
       <div className="-mx-4 mt-6 overflow-x-auto px-4">
         <table className="w-full border-collapse text-sm">
+          <caption className="sr-only">{t("tableCaption")}</caption>
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 w-28 min-w-[7rem] bg-background/80 backdrop-blur sm:w-36" />
+              <th
+                scope="col"
+                className="sticky left-0 z-10 w-20 min-w-[5.25rem] bg-background sm:w-28"
+              />
               {paddles.map((paddle) => (
                 <th
                   key={paddle.id}
+                  scope="col"
                   className="min-w-[8.5rem] border-b border-border px-2 pb-4 text-center align-bottom sm:px-3"
                 >
                   <Link href={`/paletas/${paddle.slug}`} className="group inline-block">
@@ -107,7 +112,10 @@ export default async function ComparePage({
           <tbody>
             {rows.map((row) => (
               <tr key={row.label} className="border-b border-border last:border-0">
-                <th className="sticky left-0 z-10 bg-background/80 py-2.5 pr-3 text-left text-xs font-medium text-muted backdrop-blur sm:pr-4 sm:text-sm">
+                <th
+                  scope="row"
+                  className="sticky left-0 z-10 bg-background py-2.5 pr-2 text-left text-xs font-medium text-muted sm:pr-3 sm:text-sm"
+                >
                   {row.label}
                 </th>
                 {paddles.map((paddle) => (

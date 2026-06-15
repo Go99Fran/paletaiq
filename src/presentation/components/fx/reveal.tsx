@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/presentation/components/ui";
 
+type RevealPreset = "standard" | "soft" | "snap";
+
 /**
  * Anima la entrada de su contenido al aparecer en viewport (una sola vez).
  *
@@ -17,11 +19,13 @@ export function Reveal({
   children,
   delay = 0,
   instant = false,
+  preset = "standard",
   className,
 }: {
   children: ReactNode;
   delay?: number;
   instant?: boolean;
+  preset?: RevealPreset;
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -46,12 +50,17 @@ export function Reveal({
   }, [instant]);
 
   const animate = instant || scrolledIn;
+  const presetClass: Record<RevealPreset, string> = {
+    standard: "animate-rise",
+    soft: "animate-rise-soft",
+    snap: "animate-rise-snap",
+  };
 
   return (
     <div
       ref={ref}
       style={animate ? { animationDelay: `${delay}ms` } : undefined}
-      className={cn(animate && "animate-rise", className)}
+      className={cn(animate && presetClass[preset], className)}
     >
       {children}
     </div>

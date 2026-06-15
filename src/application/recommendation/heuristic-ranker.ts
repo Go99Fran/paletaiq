@@ -47,6 +47,18 @@ export function heuristicRank(
         score += 1;
         reasons.push("el balance bajo reduce la carga en el brazo");
       }
+      if (profile.injuryArea === "elbow" && paddle.hardness !== "hard") {
+        score += 1;
+        reasons.push("es más amigable para molestias de codo");
+      }
+      if (profile.injuryArea === "shoulder" && paddle.balance !== "high") {
+        score += 1;
+        reasons.push("evita exigir de más el hombro");
+      }
+      if (profile.injuryArea === "wrist" && paddle.weightMax !== null && paddle.weightMax <= 370) {
+        score += 1;
+        reasons.push("su peso contenido ayuda a cuidar la muñeca");
+      }
     }
     if (profile.strengthPref === "needs_power" && paddle.playStyle === "power") {
       score += 1;
@@ -63,6 +75,25 @@ export function heuristicRank(
     if ((profile.improveGoal === "comfort" || profile.improveGoal === "ball_exit") && paddle.hardness === "soft") {
       score += 1;
       reasons.push("la goma blanda da mejor salida de bola y comodidad");
+    }
+
+    if (profile.matchPace === "fast") {
+      if (paddle.balance !== "high") score += 1;
+      if (paddle.hardness !== "hard") score += 1;
+      reasons.push("responde bien para un ritmo de juego alto");
+    }
+    if (profile.matchPace === "calm" && paddle.shape === "round") {
+      score += 1;
+      reasons.push("favorece construir puntos largos con control");
+    }
+
+    if (profile.sweetSpotTolerance === "wide" && paddle.shape === "round") {
+      score += 1;
+      reasons.push("tiene punto dulce más permisivo");
+    }
+    if (profile.sweetSpotTolerance === "small" && (paddle.shape === "diamond" || paddle.shape === "hybrid")) {
+      score += 1;
+      reasons.push("premia una pegada más precisa y agresiva");
     }
     if (paddle.bestPrice !== null) {
       score += 1;
