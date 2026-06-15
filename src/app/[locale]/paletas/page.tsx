@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ChevronLeft, ChevronRight, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import {
   PADDLE_LEVELS,
   PADDLE_SHAPES,
@@ -9,9 +9,9 @@ import {
   type PlayStyle,
 } from "@/domain/paddle/paddle.entity";
 import { brandRepository, listPaddles } from "@/application/factory";
-import { Link } from "@/i18n/navigation";
-import { Button, Heading, Input, Select } from "@/presentation/components/ui";
+import { Button, Heading, Input, Select, Pagination } from "@/presentation/components/ui";
 import { PaddleCard } from "@/presentation/components/paddle/paddle-card";
+import { ActiveFilters, type ActiveFilterChip } from "@/presentation/components/paddle/active-filters";
 import { CompareBar } from "@/presentation/components/compare/compare-bar";
 
 const PAGE_SIZE = 24;
@@ -77,6 +77,30 @@ export default async function PaddlesPage({
     return `/paletas${qs ? `?${qs}` : ""}`;
   };
 
+  // URL sin uno o varios filtros (para los chips y el "limpiar").
+  const hrefWithout = (removeKeys: string[]) => {
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(sp)) {
+      if (key === "page" || removeKeys.includes(key)) continue;
+      if (typeof value === "string" && value.length > 0) query.set(key, value);
+    }
+    const qs = query.toString();
+    return `/paletas${qs ? `?${qs}` : ""}`;
+  };
+
+  // Chips de filtros activos.
+  const chips: ActiveFilterChip[] = [];
+  if (filters.search) chips.push({ key: "q", label: `"${filters.search}"` });
+  if (filters.brandSlug) {
+    const brand = brands.find((b) => b.slug === filters.brandSlug);
+    chips.push({ key: "marca", label: `${t("filterBrand")}: ${brand?.name ?? filters.brandSlug}` });
+  }
+  if (filters.shape) chips.push({ key: "forma", label: tEnums(`shape.${filters.shape}`) });
+  if (filters.level) chips.push({ key: "nivel", label: tEnums(`level.${filters.level}`) });
+  if (filters.playStyle) chips.push({ key: "estilo", label: tEnums(`playStyle.${filters.playStyle}`) });
+  if (filters.priceMin !== undefined) chips.push({ key: "precio_min", label: `≥ ${filters.priceMin}` });
+  if (filters.priceMax !== undefined) chips.push({ key: "precio_max", label: `≤ ${filters.priceMax}` });
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <Heading level={1} className="text-gradient">
@@ -132,32 +156,24 @@ export default async function PaddlesPage({
         </Button>
       </form>
 
+      <ActiveFilters chips={chips} buildHref={hrefWithout} clearLabel={tCommon("clear")} />
+
       {items.length === 0 ? (
         <p className="mt-12 text-center text-muted">{tCommon("noResults")}</p>
       ) : (
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((paddle) => (
-            <PaddleCard key={paddle.id} paddle={paddle} />
-          ))}
-        </div>
-      )}
-
-      {totalPages > 1 && (
-        <nav className="mt-8 flex items-center justify-center gap-4">
-          {page > 1 && (
-            <Link href={pageHref(page - 1)} className="inline-flex items-center gap-1 text-sm text-primary hover:underline">
-              <ChevronLeft size={16} aria-hidden />
-              {t("prev")}
-            </Link>
-          )}
-          <span className="text-sm text-muted">{t("page", { page, total: totalPages })}</span>
-          {page < totalPages && (
-            <Link href={pageHref(page + 1)} className="inline-flex items-center gap-1 text-sm text-primary hover:underline">
-              {t("next")}
-              <ChevronRight size={16} aria-hidden />
-            </Link>
-          )}
-        </nav>
+        <>
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {items.map((paddle) => (
+              <PaddleCard key={paddle.id} paddle={paddle} />
+            ))}
+          </div>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            hrefFor={pageHref}
+            labels={{ prev: t("prev"), next: t("next") }}
+          />
+        </>
       )}
 
       <CompareBar />

@@ -51,6 +51,7 @@ export interface PaddleUpdateInput {
   hardness?: PaddleHardness | null;
   level?: PaddleLevel | null;
   playStyle?: PlayStyle | null;
+  popularity?: number;
   thickness?: number | null;
   description?: string | null;
   isActive?: boolean;

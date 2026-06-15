@@ -71,13 +71,25 @@ export function heuristicRank(
     if (paddle.validated) {
       score += 1;
     }
+    // Popularidad como peso editorial: las paletas que la gente usa suman.
+    score += paddle.popularity * 0.5;
 
     return { paddle, score, reasons };
   });
 
   scored.sort((a, b) => b.score - a.score);
 
-  return scored.slice(0, count).map((s, i) => ({
+  // Variedad de marca: a lo sumo una paleta por marca, igual que pedimos a la IA.
+  const picks: typeof scored = [];
+  const usedBrands = new Set<number>();
+  for (const s of scored) {
+    if (usedBrands.has(s.paddle.brandId)) continue;
+    usedBrands.add(s.paddle.brandId);
+    picks.push(s);
+    if (picks.length >= count) break;
+  }
+
+  return picks.map((s, i) => ({
     paddleId: s.paddle.id,
     rank: i + 1,
     reason:

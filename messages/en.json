@@ -189,6 +189,7 @@
     "fieldLevel": "Level",
     "fieldStyle": "Play style",
     "fieldThickness": "Thickness (mm)",
+    "fieldPopularity": "Popularity (1-5)",
     "fieldDescription": "Description",
     "fieldActive": "Active (visible on the site)",
     "fieldValidated": "Validated (human reviewed)",

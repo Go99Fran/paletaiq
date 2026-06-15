@@ -7,3 +7,4 @@ export { RangeSlider, type RangeSliderProps } from "./range-slider";
 export { Badge, Tag, type BadgeProps } from "./badge";
 export { Skeleton, Spinner, type SpinnerProps } from "./skeleton";
 export { Modal, type ModalProps } from "./modal";
+export { Pagination, type PaginationProps } from "./pagination";

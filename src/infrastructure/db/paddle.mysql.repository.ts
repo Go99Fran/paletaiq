@@ -36,6 +36,7 @@ interface PaddleRow extends RowDataPacket {
   hardness: PaddleHardness | null;
   level: PaddleLevel | null;
   play_style: PlayStyle | null;
+  popularity: number;
   thickness: string | null;
   image_url: string | null;
   description: string | null;
@@ -55,7 +56,7 @@ const BASE_SELECT = `
     p.id, p.brand_id, b.name AS brand_name, b.slug AS brand_slug,
     p.name, p.slug, p.year, p.shape, p.balance, p.weight_min, p.weight_max,
     p.core_material, p.face_material, p.frame_material, p.surface, p.hardness,
-    p.level, p.play_style, p.thickness, p.image_url, p.description,
+    p.level, p.play_style, p.popularity, p.thickness, p.image_url, p.description,
     p.is_active, p.validated,
     bp.best_price, bp.best_price_currency, COALESCE(bp.store_count, 0) AS store_count
   FROM paddles p
@@ -91,6 +92,7 @@ function mapRow(row: PaddleRow): PaddleListItem {
     hardness: row.hardness,
     level: row.level,
     playStyle: row.play_style,
+    popularity: row.popularity,
     thickness: row.thickness !== null ? Number(row.thickness) : null,
     imageUrl: row.image_url,
     description: row.description,
@@ -146,7 +148,7 @@ export class PaddleMysqlRepository implements PaddleRepository {
     const [rows] = await pool.execute<PaddleRow[]>(
       // LIMIT/OFFSET no aceptan placeholders en prepared statements de MySQL;
       // son números validados, no input de usuario directo.
-      `${BASE_SELECT} ${whereSql} ORDER BY bp.best_price IS NULL, p.validated DESC, p.name
+      `${BASE_SELECT} ${whereSql} ORDER BY bp.best_price IS NULL, p.popularity DESC, p.validated DESC, p.name
        LIMIT ${Number(filters.pageSize)} OFFSET ${Number(offset)}`,
       params,
     );
@@ -215,9 +217,21 @@ export class PaddleMysqlRepository implements PaddleRepository {
       params.push(criteria.budgetMax);
     }
 
+    // Diversificación por marca: traemos como mucho `perBrand` candidatas de cada
+    // marca antes de cortar, para que la IA reciba un abanico de marcas y no 30
+    // paletas de la misma. Usamos ROW_NUMBER particionado por marca.
+    const perBrand = 3;
     const [rows] = await getPool().query<PaddleRow[]>(
-      `${BASE_SELECT} WHERE ${where.join(" AND ")}
-       ORDER BY p.validated DESC, bp.store_count DESC, p.name
+      `SELECT * FROM (
+         SELECT inner_q.*,
+                ROW_NUMBER() OVER (
+                  PARTITION BY inner_q.brand_id
+                  ORDER BY inner_q.popularity DESC, inner_q.validated DESC, inner_q.store_count DESC, inner_q.name
+                ) AS brand_rank
+         FROM (${BASE_SELECT} WHERE ${where.join(" AND ")}) AS inner_q
+       ) ranked
+       WHERE ranked.brand_rank <= ${perBrand}
+       ORDER BY ranked.popularity DESC, ranked.validated DESC, ranked.brand_rank, ranked.store_count DESC, ranked.name
        LIMIT ${Number(criteria.limit)}`,
       params,
     );
@@ -238,6 +252,7 @@ export class PaddleMysqlRepository implements PaddleRepository {
       hardness: "hardness",
       level: "level",
       playStyle: "play_style",
+      popularity: "popularity",
       thickness: "thickness",
       description: "description",
       isActive: "is_active",

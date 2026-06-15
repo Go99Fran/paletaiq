@@ -10,8 +10,9 @@ import {
   type FinderInput,
   type FinderResult,
 } from "@/app/[locale]/buscador/actions";
-import { Badge, Button, Card, CardBody, Input, Spinner, Tag } from "@/presentation/components/ui";
+import { Badge, Button, Card, CardBody, Input, Tag } from "@/presentation/components/ui";
 import { formatPrice } from "@/presentation/lib/format";
+import { useTypewriter } from "./use-typewriter";
 
 type StepId =
   | "level"
@@ -159,17 +160,18 @@ export function FinderChat() {
         ))}
 
         {result === null && !pending && !error && (
-          <div className="space-y-3">
-            <ChatBubble role="bot">{questionText[step]}</ChatBubble>
-
+          <ActiveQuestion
+            key={step}
+            question={questionText[step]}
+            hasControls={options[step].length > 0 || step === "previous" || step === "budget"}
+          >
             {options[step].length > 0 && (
               <div className="flex flex-wrap gap-2 pl-10">
                 {options[step].map((opt) => (
                   <Button
                     key={opt.label}
-                    variant="ghost"
+                    variant="glass"
                     size="sm"
-                    className="border border-border"
                     onClick={() => answer(opt.label, opt.patch)}
                   >
                     {opt.label}
@@ -236,13 +238,18 @@ export function FinderChat() {
                 </Button>
               </form>
             )}
-          </div>
+          </ActiveQuestion>
         )}
 
         {pending && (
-          <div className="flex items-center gap-3 pl-10 text-sm text-muted">
-            <Spinner size={18} />
-            {t("thinking")}
+          <div className="flex items-start gap-2.5">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-tertiary text-primary-foreground shadow-sm">
+              <Sparkles size={15} aria-hidden className="animate-pulse" />
+            </span>
+            <div className="glass flex items-center gap-2 rounded-2xl rounded-tl-sm px-4 py-3">
+              <TypingDots />
+              <span className="text-sm text-muted">{t("thinking")}</span>
+            </div>
           </div>
         )}
 
@@ -266,8 +273,13 @@ export function FinderChat() {
             )}
 
             <div className="space-y-3 sm:pl-10">
-              {result.recommendations.map((rec) => (
-                <Card key={rec.slug}>
+              {result.recommendations.map((rec, i) => (
+                <Card
+                  key={rec.slug}
+                  interactive
+                  className="animate-rise"
+                  style={{ animationDelay: `${i * 140}ms` }}
+                >
                   <CardBody className="flex gap-4">
                     <div className="relative hidden h-28 w-24 shrink-0 sm:block">
                       {rec.imageUrl ? (
@@ -330,10 +342,63 @@ export function FinderChat() {
   );
 }
 
+/**
+ * Pregunta activa del bot con efecto máquina de escribir. Mientras "escribe"
+ * muestra los puntitos; cuando termina, revela los controles (opciones/inputs)
+ * con una animación de entrada — así se siente como un chat real con IA.
+ */
+function ActiveQuestion({
+  question,
+  hasControls,
+  children,
+}: {
+  question: string;
+  hasControls: boolean;
+  children: React.ReactNode;
+}) {
+  const { shown, done, started } = useTypewriter(question);
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-start gap-2.5">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-tertiary text-primary-foreground shadow-sm">
+          <Bot size={16} aria-hidden />
+        </span>
+        <p className="glass min-h-[2.6rem] rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-text">
+          {!started ? (
+            <TypingDots />
+          ) : (
+            <>
+              {shown}
+              {!done && <span className="ml-0.5 inline-block w-1.5 animate-pulse">▌</span>}
+            </>
+          )}
+        </p>
+      </div>
+      {done && hasControls && <div className="animate-rise">{children}</div>}
+    </div>
+  );
+}
+
+/** Tres puntitos animados estilo "escribiendo…". */
+function TypingDots() {
+  return (
+    <span className="inline-flex items-center gap-1" aria-label="…">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted"
+          style={{ animationDelay: `${i * 0.15}s`, animationDuration: "0.9s" }}
+        />
+      ))}
+    </span>
+  );
+}
+
 function ChatBubble({ role, children }: { role: "bot" | "user"; children: React.ReactNode }) {
   if (role === "bot") {
     return (
-      <div className="animate-rise flex items-start gap-2.5">
+      <div className="flex items-start gap-2.5">
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-tertiary text-primary-foreground shadow-sm">
           <Bot size={16} aria-hidden />
         </span>

@@ -127,6 +127,14 @@ export default async function AdminPaddleEditPage({
               t("fieldThickness"),
               <Input name="thickness" type="number" step="0.5" defaultValue={paddle.thickness ?? ""} />,
             )}
+            {field(
+              t("fieldPopularity"),
+              <Select
+                name="popularity"
+                defaultValue={String(paddle.popularity)}
+                options={[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: `${n}` }))}
+              />,
+            )}
 
             <label className="block text-sm sm:col-span-2">
               <span className="mb-1 block text-muted">{t("fieldDescription")}</span>

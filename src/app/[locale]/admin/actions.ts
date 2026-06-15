@@ -39,6 +39,13 @@ function textOrNull(value: FormDataEntryValue | null, max: number): string | nul
   return trimmed ? trimmed.slice(0, max) : null;
 }
 
+/** Popularidad acotada a 1-5; default 3 si viene inválida. */
+function clampPopularity(value: FormDataEntryValue | null): number {
+  const n = numberOrNull(value);
+  if (n === null) return 3;
+  return Math.min(5, Math.max(1, Math.round(n)));
+}
+
 export async function updatePaddle(id: number, formData: FormData): Promise<void> {
   const email = await requireAdmin();
 
@@ -56,6 +63,7 @@ export async function updatePaddle(id: number, formData: FormData): Promise<void
     hardness: enumOrNull(formData.get("hardness"), PADDLE_HARDNESSES),
     level: enumOrNull(formData.get("level"), PADDLE_LEVELS),
     playStyle: enumOrNull(formData.get("playStyle"), PLAY_STYLES),
+    popularity: clampPopularity(formData.get("popularity")),
     thickness: numberOrNull(formData.get("thickness")),
     description: textOrNull(formData.get("description"), 10_000),
     isActive: formData.get("isActive") === "on",

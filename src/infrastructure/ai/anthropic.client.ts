@@ -29,11 +29,16 @@ const PICKS_SCHEMA = {
 };
 
 const SYSTEM_PROMPT = `Sos el experto en paletas de pádel de PaletaIQ (Argentina).
-Recibís el perfil de un jugador y una lista de paletas candidatas REALES con sus specs y precio en ARS.
+Recibís el perfil de un jugador y una lista de paletas candidatas REALES con sus specs, precio en
+ARS y un "popularidad" (1=nicho, 5=muy usada/icónica).
 
 Tu tarea:
-- Elegí las 3 a 5 mejores paletas PARA ESE PERFIL, ordenadas de mejor a peor fit.
+- Elegí las 4 o 5 mejores paletas PARA ESE PERFIL, ordenadas de mejor a peor fit.
 - SOLO podés elegir paletas de la lista provista, identificadas por su "id". Nunca inventes ids.
+- VARIEDAD OBLIGATORIA: las recomendaciones deben ser de marcas DISTINTAS. Como máximo UNA
+  paleta por marca. Nunca recomiendes varias paletas de la misma marca, aunque sea Adidas.
+- A igualdad de fit, preferí las de mayor "popularidad": son las que la gente realmente usa.
+  No recomiendes una paleta de nicho (popularidad 1-2) salvo que encaje claramente mejor que el resto.
 - Para cada una explicá en español claro y cercano (voseo argentino) POR QUÉ le conviene a ese
   jugador: relacioná forma/balance/dureza/peso con su nivel, estilo, físico/lesiones, objetivo
   y presupuesto. 2 a 3 oraciones por paleta, sin tecnicismos innecesarios.
@@ -54,7 +59,8 @@ function buildUserMessage(profile: PlayerProfile, candidates: PaddleListItem[]):
   };
   const candidatesPayload = candidates.map((c) => ({
     id: c.id,
-    nombre: `${c.brandName} ${c.name}`,
+    marca: c.brandName,
+    nombre: c.name,
     anio: c.year,
     forma: c.shape,
     balance: c.balance,
@@ -64,6 +70,7 @@ function buildUserMessage(profile: PlayerProfile, candidates: PaddleListItem[]):
     dureza: c.hardness,
     nivel: c.level,
     estilo: c.playStyle,
+    popularidad: c.popularity,
     precio_ars: c.bestPrice,
   }));
   return JSON.stringify({ perfil: profilePayload, candidatas: candidatesPayload });

@@ -189,6 +189,7 @@
     "fieldLevel": "Nivel",
     "fieldStyle": "Estilo de juego",
     "fieldThickness": "Espesor (mm)",
+    "fieldPopularity": "Popularidad (1-5)",
     "fieldDescription": "Descripción",
     "fieldActive": "Activa (visible en el sitio)",
     "fieldValidated": "Validada (revisada por un humano)",

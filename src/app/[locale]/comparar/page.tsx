@@ -69,15 +69,18 @@ export default async function ComparePage({
       </Heading>
       <p className="mt-1 text-muted">{t("subtitle")}</p>
 
-      <div className="mt-6 overflow-x-auto">
-        <table className="w-full min-w-[640px] border-collapse text-sm">
+      <div className="-mx-4 mt-6 overflow-x-auto px-4">
+        <table className="w-full border-collapse text-sm">
           <thead>
             <tr>
-              <th className="w-36 border-b border-border" />
+              <th className="sticky left-0 z-10 w-28 min-w-[7rem] bg-background/80 backdrop-blur sm:w-36" />
               {paddles.map((paddle) => (
-                <th key={paddle.id} className="border-b border-border px-3 pb-4 text-center align-bottom">
+                <th
+                  key={paddle.id}
+                  className="min-w-[8.5rem] border-b border-border px-2 pb-4 text-center align-bottom sm:px-3"
+                >
                   <Link href={`/paletas/${paddle.slug}`} className="group inline-block">
-                    <div className="relative mx-auto h-32 w-32">
+                    <div className="relative mx-auto h-24 w-24 sm:h-32 sm:w-32">
                       {paddle.imageUrl ? (
                         <Image
                           src={paddle.imageUrl}
@@ -104,9 +107,11 @@ export default async function ComparePage({
           <tbody>
             {rows.map((row) => (
               <tr key={row.label} className="border-b border-border last:border-0">
-                <th className="py-2.5 pr-4 text-left font-medium text-muted">{row.label}</th>
+                <th className="sticky left-0 z-10 bg-background/80 py-2.5 pr-3 text-left text-xs font-medium text-muted backdrop-blur sm:pr-4 sm:text-sm">
+                  {row.label}
+                </th>
                 {paddles.map((paddle) => (
-                  <td key={paddle.id} className="px-3 py-2.5 text-center text-text">
+                  <td key={paddle.id} className="min-w-[8.5rem] px-2 py-2.5 text-center text-text sm:px-3">
                     {row.render(paddle) ?? "—"}
                   </td>
                 ))}

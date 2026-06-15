@@ -30,6 +30,7 @@ export interface Paddle {
   hardness: PaddleHardness | null;
   level: PaddleLevel | null;
   playStyle: PlayStyle | null;
+  popularity: number;
   thickness: number | null;
   imageUrl: string | null;
   description: string | null;
