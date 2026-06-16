@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/presentation/components/ui";
 
-type RevealPreset = "standard" | "soft" | "snap";
+type RevealPreset = "standard" | "soft" | "snap" | "slide";
 
 /**
  * Anima la entrada de su contenido al aparecer en viewport (una sola vez).
@@ -20,12 +20,15 @@ export function Reveal({
   delay = 0,
   instant = false,
   preset = "standard",
+  once = true,
   className,
 }: {
   children: ReactNode;
   delay?: number;
   instant?: boolean;
   preset?: RevealPreset;
+  /** Si false, re-anima cada vez que vuelve a entrar en viewport (default true). */
+  once?: boolean;
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -40,20 +43,23 @@ export function Reveal({
       ([entry]) => {
         if (entry.isIntersecting) {
           setScrolledIn(true);
-          observer.disconnect();
+          if (once) observer.disconnect();
+        } else if (!once) {
+          setScrolledIn(false);
         }
       },
       { threshold: 0.12 },
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [instant]);
+  }, [instant, once]);
 
   const animate = instant || scrolledIn;
   const presetClass: Record<RevealPreset, string> = {
     standard: "animate-rise",
     soft: "animate-rise-soft",
     snap: "animate-rise-snap",
+    slide: "animate-rise-slide",
   };
 
   return (

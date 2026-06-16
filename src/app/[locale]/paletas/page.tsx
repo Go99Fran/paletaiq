@@ -14,7 +14,7 @@ import { PaddleCard } from "@/presentation/components/paddle/paddle-card";
 import { ActiveFilters, type ActiveFilterChip } from "@/presentation/components/paddle/active-filters";
 import { CompareBar } from "@/presentation/components/compare/compare-bar";
 
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 50;
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 

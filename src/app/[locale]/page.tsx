@@ -43,8 +43,8 @@ export default async function HomePage({
     <div className="mx-auto max-w-6xl px-4 py-20">
       <section className="mx-auto max-w-3xl text-center">
         <Reveal instant preset="soft">
-          <span className="glass mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium text-primary">
-            <Sparkles size={15} aria-hidden />
+          <span className="glass glow-pulse mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium text-primary">
+            <Sparkles size={15} aria-hidden className="text-tertiary" />
             {t("heroEyebrow")}
           </span>
         </Reveal>
@@ -94,7 +94,7 @@ export default async function HomePage({
       <section className="mt-24 grid gap-5 sm:grid-cols-3">
         {features.map((feature, i) => (
           <Reveal key={feature.title} delay={i * 120} preset="soft">
-            <Card interactive className="h-full">
+            <Card interactive className="h-full transition-transform duration-300 sm:hover:rotate-1">
               <CardBody>
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-tertiary/15 text-primary">
                   <feature.icon size={24} aria-hidden />
@@ -111,13 +111,13 @@ export default async function HomePage({
 
       <section className="mt-20 grid gap-4 sm:grid-cols-3">
         {steps.map((step, i) => (
-          <Reveal key={step.title} delay={i * 100} preset="snap">
+          <Reveal key={step.title} delay={i * 100} preset="slide">
             <Card className="h-full">
               <CardBody>
-                <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  {t("stepLabel", { index: i + 1 })}
-                </p>
-                <Heading level={4} className="mt-2">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-primary to-tertiary text-lg font-bold text-primary-foreground shadow-sm shadow-primary/30">
+                  {i + 1}
+                </span>
+                <Heading level={4} className="mt-3">
                   {step.title}
                 </Heading>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
@@ -128,7 +128,7 @@ export default async function HomePage({
       </section>
 
       <Reveal delay={140} preset="soft">
-        <section className="glass mt-16 rounded-2xl px-6 py-8 text-center sm:px-10">
+        <section className="glass glow-ring mt-16 rounded-2xl px-6 py-8 text-center sm:px-10">
           <Heading level={2}>{t("finalCtaTitle")}</Heading>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted sm:text-base">{t("finalCtaText")}</p>
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">

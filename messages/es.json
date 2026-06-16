@@ -9,7 +9,7 @@
   "nav": {
     "paddles": "Paletas",
     "compare": "Comparador",
-    "finder": "Buscador inteligente",
+    "finder": "Elegir mi paleta",
     "signIn": "Ingresar con Google",
     "signOut": "Salir",
     "admin": "Admin"
@@ -18,7 +18,7 @@
     "heroTitle": "Encontrá tu paleta ideal",
     "heroEyebrow": "IA + datos reales de Argentina",
     "heroSubtitle": "Elegí mejor con una base real de paletas: precios en ARS, stock local, specs técnicas claras y recomendaciones personalizadas según cómo jugás.",
-    "ctaFinder": "Probar el buscador inteligente",
+    "ctaFinder": "Elegir mi paleta ideal",
     "ctaCompare": "Explorar paletas",
     "ctaCompareNow": "Ir al comparador",
     "featureCompareTitle": "Comparador",
@@ -38,7 +38,7 @@
     "step3Title": "Te explicamos cada recomendación",
     "step3Text": "Recibís 3 a 5 paletas con motivos claros para que entiendas por qué encajan con vos.",
     "finalCtaTitle": "Tu próxima paleta no se elige a ciegas",
-    "finalCtaText": "Probá el buscador inteligente o armá una comparación manual. En ambos casos vas a decidir con datos y criterio técnico."
+    "finalCtaText": "Dejá que te ayudemos a elegir, o armá una comparación manual. En ambos casos vas a decidir con datos y criterio técnico."
   },
   "enums": {
     "shape": {
@@ -86,6 +86,7 @@
     "applyFilters": "Filtrar",
     "allOption": "Todas",
     "noPrice": "Sin precio publicado",
+    "inStock": "En stock",
     "fromPrice": "Desde",
     "storeCount": "{count, plural, one {# tienda} other {# tiendas}}",
     "page": "Página {page} de {total}",
@@ -125,17 +126,23 @@
     "title": "Comparador de paletas",
     "subtitle": "Hasta 4 paletas lado a lado",
     "empty": "Elegí paletas desde el listado con el botón \"Comparar\".",
+    "emptyRich": "Poné hasta 4 paletas lado a lado y mirá las diferencias reales de forma, balance, materiales y precio. Empezá agregando paletas desde el listado.",
+    "howStep1": "Tocá \"Comparar\" en cualquier paleta del listado",
+    "howStep2": "Sumá hasta 4 paletas para enfrentarlas",
+    "howStep3": "Resaltamos en qué se diferencian para decidir mejor",
+    "emptyPopularTitle": "Paletas populares para empezar",
     "goToList": "Ir al listado",
     "barText": "{count, plural, one {# paleta seleccionada} other {# paletas seleccionadas}}",
     "barCompare": "Comparar",
     "barClear": "Limpiar",
     "limitReached": "Podés comparar hasta {max} paletas.",
     "tableCaption": "Tabla comparativa de especificaciones y precio entre paletas seleccionadas",
+    "diffLegend": "Resaltamos las filas donde las paletas se diferencian.",
     "bestPrice": "Mejor precio",
     "remove": "Quitar"
   },
   "finder": {
-    "title": "Buscador inteligente",
+    "title": "Elegir mi paleta",
     "subtitle": "Contestá unas preguntas y te recomendamos paletas reales para tu juego.",
     "progressLabel": "Progreso",
     "qLevel": "¿Cuál es tu nivel de juego?",
@@ -182,6 +189,11 @@
     "budgetOptional": "Podés dejar campos vacíos si no tenés límite.",
     "getResults": "Ver mis paletas",
     "thinking": "Analizando tu perfil y buscando entre paletas reales…",
+    "thinking1": "Analizando tu nivel y estilo de juego…",
+    "thinking2": "Filtrando entre cientos de paletas reales…",
+    "thinking3": "Cruzando specs, precios y tu presupuesto…",
+    "thinking4": "Armando tus recomendaciones…",
+    "bestMatch": "Mejor match",
     "resultsTitle": "Tus paletas recomendadas",
     "heuristicNote": "Recomendación por specs (la IA no estaba disponible).",
     "viewDetail": "Ver ficha",
@@ -243,10 +255,10 @@
     "noRuns": "Todavía no hay corridas registradas."
   },
   "footer": {
-    "tagline": "El comparador y buscador inteligente de paletas de pádel pensado para Argentina.",
+    "tagline": "El comparador y asistente para elegir paletas de pádel pensado para Argentina.",
     "explore": "Explorar",
     "paddles": "Paletas",
-    "finder": "Buscador inteligente",
+    "finder": "Elegir mi paleta",
     "compare": "Comparador",
     "dataTitle": "Datos",
     "dataAttribution": "Specs y precios recopilados de sitios oficiales de marcas y tiendas argentinas. Los precios pueden variar; verificá en la tienda antes de comprar.",

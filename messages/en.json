@@ -9,7 +9,7 @@
   "nav": {
     "paddles": "Rackets",
     "compare": "Compare",
-    "finder": "Smart finder",
+    "finder": "Find my racket",
     "signIn": "Sign in with Google",
     "signOut": "Sign out",
     "admin": "Admin"
@@ -18,7 +18,7 @@
     "heroTitle": "Find your perfect padel racket",
     "heroEyebrow": "AI + real Argentina data",
     "heroSubtitle": "Choose with confidence using a real racket dataset: ARS prices, local stock, clear specs and recommendations tailored to your game.",
-    "ctaFinder": "Try the smart finder",
+    "ctaFinder": "Find my ideal racket",
     "ctaCompare": "Browse rackets",
     "ctaCompareNow": "Open comparator",
     "featureCompareTitle": "Comparator",
@@ -38,7 +38,7 @@
     "step3Title": "You get clear explanations",
     "step3Text": "Receive 3 to 5 rackets with reasons you can understand, not a black-box answer.",
     "finalCtaTitle": "Your next racket should not be a guess",
-    "finalCtaText": "Use the smart finder or compare manually. Either way, you'll decide with data and technical clarity."
+    "finalCtaText": "Let us help you choose, or compare manually. Either way, you'll decide with data and technical clarity."
   },
   "enums": {
     "shape": {
@@ -86,6 +86,7 @@
     "applyFilters": "Filter",
     "allOption": "All",
     "noPrice": "No published price",
+    "inStock": "In stock",
     "fromPrice": "From",
     "storeCount": "{count, plural, one {# store} other {# stores}}",
     "page": "Page {page} of {total}",
@@ -125,17 +126,23 @@
     "title": "Racket comparator",
     "subtitle": "Up to 4 rackets side by side",
     "empty": "Pick rackets from the list using the \"Compare\" button.",
+    "emptyRich": "Put up to 4 rackets side by side and see the real differences in shape, balance, materials and price. Start by adding rackets from the list.",
+    "howStep1": "Tap \"Compare\" on any racket in the list",
+    "howStep2": "Add up to 4 rackets to face them off",
+    "howStep3": "We highlight where they differ so you decide better",
+    "emptyPopularTitle": "Popular rackets to start",
     "goToList": "Go to the list",
     "barText": "{count, plural, one {# racket selected} other {# rackets selected}}",
     "barCompare": "Compare",
     "barClear": "Clear",
     "limitReached": "You can compare up to {max} rackets.",
     "tableCaption": "Comparison table of selected racket specs and best price",
+    "diffLegend": "We highlight the rows where the rackets differ.",
     "bestPrice": "Best price",
     "remove": "Remove"
   },
   "finder": {
-    "title": "Smart finder",
+    "title": "Find my racket",
     "subtitle": "Answer a few questions and we'll recommend real rackets for your game.",
     "progressLabel": "Progress",
     "qLevel": "What's your playing level?",
@@ -182,6 +189,11 @@
     "budgetOptional": "Leave fields empty if you have no limit.",
     "getResults": "Show my rackets",
     "thinking": "Analyzing your profile and searching real rackets…",
+    "thinking1": "Analyzing your level and play style…",
+    "thinking2": "Filtering through hundreds of real rackets…",
+    "thinking3": "Matching specs, prices and your budget…",
+    "thinking4": "Building your recommendations…",
+    "bestMatch": "Best match",
     "resultsTitle": "Your recommended rackets",
     "heuristicNote": "Spec-based recommendation (AI was unavailable).",
     "viewDetail": "View details",
@@ -243,10 +255,10 @@
     "noRuns": "No runs recorded yet."
   },
   "footer": {
-    "tagline": "The padel racket comparator and AI finder built for Argentina.",
+    "tagline": "The padel racket comparator and choosing assistant built for Argentina.",
     "explore": "Explore",
     "paddles": "Rackets",
-    "finder": "Smart finder",
+    "finder": "Find my racket",
     "compare": "Comparator",
     "dataTitle": "Data",
     "dataAttribution": "Specs and prices gathered from official brand sites and Argentine stores. Prices may vary; check the store before buying.",

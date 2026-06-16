@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
-import { ImageOff } from "lucide-react";
+import { Check, ImageOff } from "lucide-react";
 import type { PaddleListItem } from "@/domain/paddle/paddle.entity";
 import { Link } from "@/i18n/navigation";
 import { Card, CardBody, Tag } from "@/presentation/components/ui";
@@ -15,18 +15,24 @@ export async function PaddleCard({ paddle }: { paddle: PaddleListItem }) {
   ]);
 
   return (
-    <Card interactive className="flex flex-col overflow-hidden">
+    <Card interactive className="group flex flex-col overflow-hidden">
       <Link
         href={`/paletas/${paddle.slug}`}
         className="relative flex h-44 items-center justify-center bg-gradient-to-br from-white/40 to-transparent"
       >
+        {paddle.storeCount > 0 && (
+          <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-success/12 px-2 py-0.5 text-[11px] font-semibold text-success">
+            <Check size={11} aria-hidden strokeWidth={3} />
+            {t("inStock")}
+          </span>
+        )}
         {paddle.imageUrl ? (
           <Image
             src={paddle.imageUrl}
             alt={paddle.name}
             fill
             sizes="(max-width: 640px) 100vw, 25vw"
-            className="object-contain p-3"
+            className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <ImageOff size={32} aria-hidden className="text-muted" />
@@ -53,7 +59,7 @@ export async function PaddleCard({ paddle }: { paddle: PaddleListItem }) {
           <div>
             {paddle.bestPrice !== null ? (
               <>
-                <p className="text-lg font-bold text-text">
+                <p className="text-xl font-extrabold tracking-tight text-primary">
                   {formatPrice(paddle.bestPrice, paddle.bestPriceCurrency ?? "ARS", locale)}
                 </p>
                 <p className="text-xs text-muted">{t("storeCount", { count: paddle.storeCount })}</p>

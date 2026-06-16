@@ -10,7 +10,7 @@ import {
   type FinderInput,
   type FinderResult,
 } from "@/app/[locale]/buscador/actions";
-import { Badge, Button, Card, CardBody, Input, Tag } from "@/presentation/components/ui";
+import { Button, Card, CardBody, Input, Tag } from "@/presentation/components/ui";
 import { formatPrice } from "@/presentation/lib/format";
 import { useTypewriter } from "./use-typewriter";
 
@@ -204,11 +204,7 @@ export function FinderChat() {
                 {Math.min(stepIndex + 1, STEP_ORDER.length)}/{STEP_ORDER.length}
               </p>
             </div>
-            <div
-              className="grid gap-1.5"
-              style={{ gridTemplateColumns: `repeat(${STEP_ORDER.length}, minmax(0, 1fr))` }}
-              aria-hidden
-            >
+            <div className="flex gap-1.5" aria-hidden>
               {STEP_ORDER.map((_, i) => {
                 const done = i < stepIndex;
                 const current = i === stepIndex;
@@ -216,9 +212,8 @@ export function FinderChat() {
                   <span
                     key={i}
                     className={[
-                      "h-1.5 rounded-full transition-all duration-300",
-                      done ? "bg-primary" : "bg-border",
-                      current ? "bg-tertiary" : "",
+                      "h-1.5 flex-1 rounded-full transition-all duration-300",
+                      current ? "bg-tertiary" : done ? "bg-primary" : "bg-border",
                     ].join(" ")}
                   />
                 );
@@ -242,16 +237,16 @@ export function FinderChat() {
           >
             {options[step].length > 0 && (
               <div className="flex flex-wrap gap-2 pl-10">
-                {options[step].map((opt) => (
-                  <Button
+                {options[step].map((opt, i) => (
+                  <button
                     key={opt.label}
-                    variant="glass"
-                    size="sm"
-                    className="animate-rise-soft"
+                    type="button"
+                    className="glass animate-rise-slide inline-flex h-9 items-center justify-center rounded-xl px-4 text-sm font-medium text-text transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    style={{ animationDelay: `${i * 60}ms` }}
                     onClick={() => answer(opt.label, opt.patch)}
                   >
                     {opt.label}
-                  </Button>
+                  </button>
                 ))}
               </div>
             )}
@@ -329,17 +324,7 @@ export function FinderChat() {
           </ActiveQuestion>
         )}
 
-        {pending && (
-          <div className="flex items-start gap-2.5">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-tertiary text-primary-foreground shadow-sm">
-              <Sparkles size={15} aria-hidden className="animate-pulse" />
-            </span>
-            <div className="glass flex items-center gap-2 rounded-2xl rounded-tl-sm px-4 py-3">
-              <TypingDots />
-              <span className="text-sm text-muted">{t("thinking")}</span>
-            </div>
-          </div>
-        )}
+        {pending && <ThinkingBubble />}
 
         {error && (
           <div className="space-y-3 pl-10">
@@ -388,7 +373,24 @@ export function FinderChat() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <Badge variant="primary">#{rec.rank}</Badge>
+                        <span
+                          className={[
+                            "inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-xs font-bold",
+                            rec.rank === 1
+                              ? "bg-gradient-to-br from-primary to-primary-hover text-primary-foreground shadow-sm shadow-primary/30"
+                              : rec.rank === 2
+                                ? "bg-secondary text-secondary-foreground"
+                                : "glass text-text",
+                          ].join(" ")}
+                        >
+                          #{rec.rank}
+                        </span>
+                        {rec.rank === 1 && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-tertiary/20 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                            <Sparkles size={11} aria-hidden />
+                            {t("bestMatch")}
+                          </span>
+                        )}
                         <p className="text-xs uppercase tracking-wide text-muted">{rec.brandName}</p>
                       </div>
                       <p className="mt-0.5 font-semibold text-text">{rec.name}</p>
@@ -450,7 +452,7 @@ function ActiveQuestion({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-start gap-2.5">
+      <div className="animate-slide-in-left flex items-start gap-2.5">
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-tertiary text-primary-foreground shadow-sm">
           <Bot size={16} aria-hidden />
         </span>
@@ -470,15 +472,48 @@ function ActiveQuestion({
   );
 }
 
-/** Tres puntitos animados estilo "escribiendo…". */
+/**
+ * Burbuja "pensando" con microcopy que rota cada ~1.8s, para que la espera de la
+ * IA se sienta intencional (analizando → filtrando → cruzando → armando).
+ */
+function ThinkingBubble() {
+  const t = useTranslations("finder");
+  const messages = [t("thinking1"), t("thinking2"), t("thinking3"), t("thinking4")];
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+    const id = setInterval(() => setIdx((i) => (i + 1) % messages.length), 1800);
+    return () => clearInterval(id);
+  }, [messages.length]);
+
+  return (
+    <div className="animate-slide-in-left flex items-start gap-2.5">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-tertiary text-primary-foreground shadow-sm">
+        <Sparkles size={15} aria-hidden className="animate-pulse" />
+      </span>
+      <div className="glass flex items-center gap-2.5 rounded-2xl rounded-tl-sm px-4 py-3">
+        <TypingDots />
+        <span key={idx} className="animate-rise-soft text-sm text-muted">
+          {messages[idx]}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/** Tres puntitos que rebotan variando de tamaño (estilo "escribiendo…"). */
 function TypingDots() {
   return (
     <span className="inline-flex items-center gap-1" aria-label="…">
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted"
-          style={{ animationDelay: `${i * 0.15}s`, animationDuration: "0.9s" }}
+          className="animate-dot-bounce h-1.5 w-1.5 rounded-full bg-primary"
+          style={{ animationDelay: `${i * 0.18}s` }}
         />
       ))}
     </span>
@@ -488,7 +523,7 @@ function TypingDots() {
 function ChatBubble({ role, children }: { role: "bot" | "user"; children: React.ReactNode }) {
   if (role === "bot") {
     return (
-      <div className="flex items-start gap-2.5">
+      <div className="animate-slide-in-left flex items-start gap-2.5">
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-tertiary text-primary-foreground shadow-sm">
           <Bot size={16} aria-hidden />
         </span>
@@ -499,7 +534,7 @@ function ChatBubble({ role, children }: { role: "bot" | "user"; children: React.
     );
   }
   return (
-    <div className="animate-rise flex justify-end">
+    <div className="animate-slide-in-right flex justify-end">
       <p className="rounded-2xl rounded-tr-sm bg-gradient-to-br from-primary to-primary-hover px-4 py-2.5 text-sm text-primary-foreground shadow-sm">
         {children}
       </p>

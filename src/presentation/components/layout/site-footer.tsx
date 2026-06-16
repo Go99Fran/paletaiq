@@ -8,7 +8,13 @@ export async function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="glass mt-20 border-x-0 border-b-0 border-t border-glass-border">
+    <footer className="glass relative mt-20 border-x-0 border-b-0 border-t-0">
+      {/* Separador superior con gradiente: invisible en los bordes, visible al centro. */}
+      <div
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, var(--border), transparent)" }}
+        aria-hidden
+      />
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-xs">
           <span className="flex items-center gap-2 font-bold text-text">
@@ -22,13 +28,22 @@ export async function SiteFooter() {
 
         <nav className="flex flex-col gap-2 text-sm">
           <span className="font-semibold text-text">{t("explore")}</span>
-          <Link href="/paletas" className="text-muted transition-colors hover:text-primary">
+          <Link
+            href="/paletas"
+            className="inline-flex w-fit text-muted underline-offset-4 transition-colors hover:text-primary hover:underline"
+          >
             {t("paddles")}
           </Link>
-          <Link href="/buscador" className="text-muted transition-colors hover:text-primary">
+          <Link
+            href="/buscador"
+            className="inline-flex w-fit text-muted underline-offset-4 transition-colors hover:text-primary hover:underline"
+          >
             {t("finder")}
           </Link>
-          <Link href="/comparar" className="text-muted transition-colors hover:text-primary">
+          <Link
+            href="/comparar"
+            className="inline-flex w-fit text-muted underline-offset-4 transition-colors hover:text-primary hover:underline"
+          >
             {t("compare")}
           </Link>
         </nav>
