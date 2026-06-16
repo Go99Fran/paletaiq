@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
-import { ArrowLeft, ExternalLink, ImageOff } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ExternalLink, ImageOff } from "lucide-react";
 import { getPaddleDetail } from "@/application/factory";
 import { Link } from "@/i18n/navigation";
 import { Badge, Card, CardBody, CardHeader, Heading, Tag } from "@/presentation/components/ui";
 import { CompareToggle } from "@/presentation/components/compare/compare-toggle";
 import { CompareBar } from "@/presentation/components/compare/compare-bar";
-import { formatDate, formatPrice } from "@/presentation/lib/format";
+import { formatDate, formatPrice, isPriceStale } from "@/presentation/lib/format";
 
 // ISR: la ficha cambia con el scraping (precios). 1h equilibra frescura y carga;
 // el admin revalida on-demand al editar/scrapear.
@@ -150,7 +150,14 @@ export default async function PaddleDetailPage({
                         </Badge>
                       </td>
                       <td className="py-2 pr-4 text-muted">
-                        {formatDate(new Date(p.scrapedAt), currentLocale)}
+                        {isPriceStale(p.scrapedAt) ? (
+                          <span className="inline-flex items-center gap-1 text-danger" title={t("staleHint")}>
+                            <AlertTriangle size={13} aria-hidden />
+                            {formatDate(new Date(p.scrapedAt), currentLocale)}
+                          </span>
+                        ) : (
+                          formatDate(new Date(p.scrapedAt), currentLocale)
+                        )}
                       </td>
                       <td className="py-2 text-right">
                         {p.productUrl && (

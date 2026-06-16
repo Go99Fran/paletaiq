@@ -118,6 +118,7 @@
     "outOfStock": "Out of stock",
     "viewStore": "View in store",
     "updated": "Updated",
+    "staleHint": "This price may be outdated. Check the store before buying.",
     "history": "Price history",
     "noPrices": "We don't have store prices for this racket yet.",
     "description": "Description",

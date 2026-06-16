@@ -242,7 +242,7 @@ export function FinderChat() {
                   <button
                     key={opt.label}
                     type="button"
-                    className="glass animate-rise-slide inline-flex h-9 items-center justify-center rounded-xl px-4 text-sm font-medium text-text transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    className="glass animate-rise-slide inline-flex h-9 items-center justify-center rounded-xl px-4 text-sm font-medium text-text transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:scale-90 active:transition-none"
                     style={{ animationDelay: `${i * 60}ms` }}
                     onClick={() => answer(opt.label, opt.patch)}
                   >
@@ -389,7 +389,7 @@ export function FinderChat() {
                           className={[
                             "inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-xs font-bold",
                             rec.rank === 1
-                              ? "bg-gradient-to-br from-primary to-primary-hover text-primary-foreground shadow-sm shadow-primary/30"
+                              ? "glow-pulse bg-gradient-to-br from-primary to-primary-hover text-primary-foreground shadow-sm shadow-primary/30"
                               : rec.rank === 2
                                 ? "bg-secondary text-secondary-foreground"
                                 : "glass text-text",

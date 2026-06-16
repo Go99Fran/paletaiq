@@ -118,6 +118,7 @@
     "outOfStock": "Sin stock",
     "viewStore": "Ver en tienda",
     "updated": "Actualizado",
+    "staleHint": "Este precio puede estar desactualizado. Verificá en la tienda antes de comprar.",
     "history": "Historial de precios",
     "noPrices": "Todavía no tenemos precios de tiendas para esta paleta.",
     "description": "Descripción",

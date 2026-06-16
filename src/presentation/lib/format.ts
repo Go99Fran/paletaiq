@@ -12,3 +12,12 @@ export function formatDate(date: Date, locale: string): string {
     dateStyle: "medium",
   }).format(date);
 }
+
+/** Umbral (días) a partir del cual un precio scrapeado se considera desactualizado. */
+export const STALE_PRICE_DAYS = 14;
+
+/** True si la fecha de scrapeo supera el umbral de frescura (BR-07). */
+export function isPriceStale(scrapedAt: Date, thresholdDays = STALE_PRICE_DAYS): boolean {
+  const ageMs = Date.now() - new Date(scrapedAt).getTime();
+  return ageMs > thresholdDays * 24 * 60 * 60 * 1000;
+}
