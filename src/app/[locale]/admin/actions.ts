@@ -14,6 +14,12 @@ import {
 import type { PaddleUpdateInput } from "@/domain/paddle/paddle.repository";
 import { SOURCES } from "@/infrastructure/scraping/scrapers";
 import { runScrape } from "@/infrastructure/scraping/scrape-runner";
+import { hasActiveScrapeRun } from "@/infrastructure/db/scrape-run.mysql.repository";
+
+export interface TriggerScrapeResult {
+  ok: boolean;
+  reason?: "already_running" | "unknown_source";
+}
 
 async function requireAdmin(): Promise<string> {
   const session = await auth();
@@ -74,10 +80,16 @@ export async function updatePaddle(id: number, formData: FormData): Promise<void
   revalidatePath("/", "layout");
 }
 
-export async function triggerScrape(source: string): Promise<void> {
+export async function triggerScrape(source: string): Promise<TriggerScrapeResult> {
   const email = await requireAdmin();
   const spec = SOURCES[source];
-  if (!spec) throw new Error(`Fuente desconocida: ${source}`);
+  if (!spec) return { ok: false, reason: "unknown_source" };
+
+  // Lock por fuente: si ya hay una corrida activa, no disparamos otra. Evita
+  // doble click, fuentes saturadas y estados inconsistentes en scrape_runs.
+  if (await hasActiveScrapeRun(source)) {
+    return { ok: false, reason: "already_running" };
+  }
 
   // Fire-and-forget: la corrida sigue en background y su estado se ve en scrape_runs.
   // Para corridas largas/programadas usar el CLI (npm run scrape) desde un cron externo.
@@ -86,4 +98,5 @@ export async function triggerScrape(source: string): Promise<void> {
   );
 
   revalidatePath("/", "layout");
+  return { ok: true };
 }

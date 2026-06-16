@@ -16,6 +16,10 @@ import { CompareBar } from "@/presentation/components/compare/compare-bar";
 
 const PAGE_SIZE = 50;
 
+// ISR: el catálogo cambia poco (scraping ~2x/semana). Revalidamos cada hora para
+// bajar carga de DB y mejorar TTFB; el admin revalida on-demand tras editar/scrapear.
+export const revalidate = 3600;
+
 type SearchParams = { [key: string]: string | string[] | undefined };
 
 function asString(value: string | string[] | undefined): string | undefined {

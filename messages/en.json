@@ -4,7 +4,8 @@
     "loading": "Loading…",
     "noResults": "No rackets match those filters.",
     "clear": "Clear",
-    "back": "Back"
+    "back": "Back",
+    "skipToContent": "Skip to content"
   },
   "nav": {
     "paddles": "Rackets",
@@ -194,6 +195,8 @@
     "thinking3": "Matching specs, prices and your budget…",
     "thinking4": "Building your recommendations…",
     "bestMatch": "Best match",
+    "budgetExpanded": "There were few options in your budget, so we widened the range up to {max} to show you these alternatives.",
+    "budgetRemoved": "We found no options in your budget, so we're showing the best ones for your profile without filtering by price.",
     "resultsTitle": "Your recommended rackets",
     "heuristicNote": "Spec-based recommendation (AI was unavailable).",
     "viewDetail": "View details",

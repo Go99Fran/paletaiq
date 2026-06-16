@@ -11,6 +11,11 @@ const MIN_CANDIDATES_WITH_BUDGET = 5;
 export interface RecommendResult {
   profileId: number;
   recommendations: Recommendation[];
+  /**
+   * Si se amplió el presupuesto para encontrar opciones: el nuevo techo en ARS,
+   * o -1 si se quitó el tope por completo, o null si no se tocó.
+   */
+  budgetExpandedToMax: number | null;
 }
 
 /**
@@ -37,15 +42,36 @@ export class RecommendPaddlesUseCase {
       limit: CANDIDATE_LIMIT,
     });
 
-    // Si el presupuesto deja muy pocas opciones, relajamos el filtro de precio
-    // (las sin precio publicado también entran) antes que devolver vacío.
+    // Relajación GRADUAL del presupuesto: si quedan pocas candidatas, ampliamos el
+    // techo por tramos en vez de tirar el filtro de golpe (evita recomendar una de
+    // $600k cuando pidieron hasta $200k). Reportamos cuánto se amplió para avisar al usuario.
+    let budgetExpandedToMax: number | null = null;
+    if (profile.budgetMax !== null && candidates.length < MIN_CANDIDATES_WITH_BUDGET) {
+      for (const factor of [1.25, 1.6]) {
+        const expandedMax = Math.round(profile.budgetMax * factor);
+        candidates = await this.paddles.findCandidates({
+          levels,
+          budgetMin: profile.budgetMin ?? undefined,
+          budgetMax: expandedMax,
+          limit: CANDIDATE_LIMIT,
+        });
+        if (candidates.length >= MIN_CANDIDATES_WITH_BUDGET) {
+          budgetExpandedToMax = expandedMax;
+          break;
+        }
+      }
+    }
+
+    // Último recurso: sin filtro de precio (incluye las sin precio publicado) para
+    // no devolver vacío. Es un fallback explícito, no el comportamiento normal.
     if (candidates.length < MIN_CANDIDATES_WITH_BUDGET) {
       candidates = await this.paddles.findCandidates({ levels, limit: CANDIDATE_LIMIT });
+      budgetExpandedToMax = profile.budgetMax !== null ? -1 : null; // -1 = se quitó el tope
     }
 
     const saved = await this.recommendations.saveProfile(profile, userId);
     if (candidates.length === 0) {
-      return { profileId: saved.id, recommendations: [] };
+      return { profileId: saved.id, recommendations: [], budgetExpandedToMax: null };
     }
 
     let picks: RankedPick[] = [];
@@ -79,6 +105,7 @@ export class RecommendPaddlesUseCase {
         reason: p.reason,
         heuristic,
       })),
+      budgetExpandedToMax,
     };
   }
 }

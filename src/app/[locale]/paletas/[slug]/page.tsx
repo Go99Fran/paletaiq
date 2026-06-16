@@ -9,6 +9,10 @@ import { CompareToggle } from "@/presentation/components/compare/compare-toggle"
 import { CompareBar } from "@/presentation/components/compare/compare-bar";
 import { formatDate, formatPrice } from "@/presentation/lib/format";
 
+// ISR: la ficha cambia con el scraping (precios). 1h equilibra frescura y carga;
+// el admin revalida on-demand al editar/scrapear.
+export const revalidate = 3600;
+
 export default async function PaddleDetailPage({
   params,
 }: {

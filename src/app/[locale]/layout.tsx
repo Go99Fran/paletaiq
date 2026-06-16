@@ -48,6 +48,7 @@ export default async function LocaleLayout({
     notFound();
   }
   setRequestLocale(locale);
+  const t = await getTranslations("common");
 
   return (
     <html
@@ -56,9 +57,18 @@ export default async function LocaleLayout({
     >
       <body className="flex min-h-screen flex-col font-sans">
         <NextIntlClientProvider>
+          {/* Skip link: invisible hasta recibir foco con teclado (a11y). */}
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg"
+          >
+            {t("skipToContent")}
+          </a>
           <AuroraBackground />
           <SiteHeader />
-          <main className="flex-1">{children}</main>
+          <main id="main" className="flex-1">
+            {children}
+          </main>
           <SiteFooter />
         </NextIntlClientProvider>
       </body>

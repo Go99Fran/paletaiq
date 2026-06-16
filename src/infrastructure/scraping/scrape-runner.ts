@@ -223,6 +223,17 @@ async function upsertPaddle(
       in_stock: n.inStock,
       url: n.sourceUrl,
     };
+
+    // Leemos el precio/stock vigente ANTES de pisarlo, para deduplicar el historial:
+    // solo registramos en `prices` cuando hay un cambio real (evita inflar la tabla
+    // con una fila idéntica por cada corrida del cron).
+    const [prevRows] = await pool.execute<RowDataPacket[]>(
+      "SELECT price, in_stock FROM current_prices WHERE paddle_id = :paddle_id AND store_id = :store_id LIMIT 1",
+      { paddle_id: paddleId, store_id: storeId },
+    );
+    const prev = prevRows[0];
+    const priceChanged = !prev || Number(prev.price) !== n.priceArs || Boolean(prev.in_stock) !== n.inStock;
+
     await pool.execute(
       `INSERT INTO current_prices (paddle_id, store_id, price, currency, in_stock, product_url, scraped_at)
        VALUES (:paddle_id, :store_id, :price, 'ARS', :in_stock, :url, NOW()) AS new
@@ -231,11 +242,14 @@ async function upsertPaddle(
          product_url = new.product_url, scraped_at = new.scraped_at`,
       priceParams,
     );
-    await pool.execute(
-      `INSERT INTO prices (paddle_id, store_id, price, currency, in_stock, product_url, scraped_at)
-       VALUES (:paddle_id, :store_id, :price, 'ARS', :in_stock, :url, NOW())`,
-      priceParams,
-    );
+
+    if (priceChanged) {
+      await pool.execute(
+        `INSERT INTO prices (paddle_id, store_id, price, currency, in_stock, product_url, scraped_at)
+         VALUES (:paddle_id, :store_id, :price, 'ARS', :in_stock, :url, NOW())`,
+        priceParams,
+      );
+    }
   }
 
   return wasCreated;

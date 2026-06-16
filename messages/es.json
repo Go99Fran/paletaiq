@@ -4,7 +4,8 @@
     "loading": "Cargando…",
     "noResults": "No encontramos paletas con esos filtros.",
     "clear": "Limpiar",
-    "back": "Volver"
+    "back": "Volver",
+    "skipToContent": "Saltar al contenido"
   },
   "nav": {
     "paddles": "Paletas",
@@ -194,6 +195,8 @@
     "thinking3": "Cruzando specs, precios y tu presupuesto…",
     "thinking4": "Armando tus recomendaciones…",
     "bestMatch": "Mejor match",
+    "budgetExpanded": "Con tu presupuesto había pocas opciones, así que ampliamos el rango hasta {max} para mostrarte estas alternativas.",
+    "budgetRemoved": "Con tu presupuesto no encontramos opciones, así que te mostramos las mejores para tu perfil sin filtrar por precio.",
     "resultsTitle": "Tus paletas recomendadas",
     "heuristicNote": "Recomendación por specs (la IA no estaba disponible).",
     "viewDetail": "Ver ficha",

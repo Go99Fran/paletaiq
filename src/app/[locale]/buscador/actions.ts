@@ -51,6 +51,8 @@ export interface FinderRecommendation {
 export interface FinderResult {
   heuristic: boolean;
   recommendations: FinderRecommendation[];
+  /** Nuevo techo de presupuesto si se amplió; -1 si se quitó el tope; null si no se tocó. */
+  budgetExpandedToMax: number | null;
 }
 
 const STRENGTH_PREFS: StrengthPref[] = ["needs_power", "has_power"];
@@ -134,5 +136,6 @@ export async function getRecommendations(input: FinderInput): Promise<FinderResu
       level: r.paddle.level,
       playStyle: r.paddle.playStyle,
     })),
+    budgetExpandedToMax: result.budgetExpandedToMax,
   };
 }

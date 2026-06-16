@@ -195,7 +195,8 @@ export function FinderChat() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="space-y-4">
+      {/* aria-live: los lectores de pantalla anuncian preguntas y resultados nuevos. */}
+      <div className="space-y-4" aria-live="polite" aria-atomic="false">
         {result === null && (
           <div className="glass animate-rise-soft rounded-xl px-3 py-2">
             <div className="mb-2 flex items-center justify-between">
@@ -341,6 +342,17 @@ export function FinderChat() {
             <ChatBubble role="bot">
               {result.recommendations.length > 0 ? t("resultsTitle") : t("noResults")}
             </ChatBubble>
+            {result.recommendations.length > 0 && result.budgetExpandedToMax !== null && (
+              <div className="glass mx-0 rounded-xl border border-tertiary/40 px-3 py-2 text-xs text-text sm:mx-10">
+                <p>
+                  {result.budgetExpandedToMax === -1
+                    ? t("budgetRemoved")
+                    : t("budgetExpanded", {
+                        max: formatPrice(result.budgetExpandedToMax, "ARS", locale),
+                      })}
+                </p>
+              </div>
+            )}
             {result.heuristic && result.recommendations.length > 0 && (
               <div className="glass mx-0 rounded-xl border border-primary/30 px-3 py-2 text-xs text-text sm:mx-10">
                 <p>{t("heuristicNote")}</p>
