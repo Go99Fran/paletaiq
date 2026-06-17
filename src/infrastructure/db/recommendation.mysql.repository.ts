@@ -9,25 +9,47 @@ import { getPool } from "./mysql-client";
 
 export class RecommendationMysqlRepository implements RecommendationRepository {
   async saveProfile(profile: PlayerProfile, userId: number | null): Promise<SavedPlayerProfile> {
+    // injury_area/improve_goal (singular, legacy) se rellenan con el primer valor
+    // del array para no perder compatibilidad con datos/queries viejas.
     const [result] = await getPool().execute<ResultSetHeader>(
       `INSERT INTO player_profiles
-        (user_id, level, play_style, frequency, match_pace, has_injuries, injury_area, injury_notes,
-         strength_pref, improve_goal, sweet_spot_tolerance, previous_paddle, budget_min, budget_max, currency)
-       VALUES (:userId, :level, :playStyle, :frequency, :matchPace, :hasInjuries, :injuryArea, :injuryNotes,
-            :strengthPref, :improveGoal, :sweetSpotTolerance, :previousPaddle, :budgetMin, :budgetMax, :currency)`,
+        (user_id, level, play_style, body_profile, journey, frequency, match_pace,
+         has_injuries, injury_area, injury_areas, injury_notes, strength_pref,
+         improve_goal, improve_goals, sweet_spot_tolerance, durability,
+         balance_pref, hardness_pref, face_pref, spin_important,
+         previous_paddle, previous_pains, brand_slugs, free_text,
+         budget_min, budget_max, currency)
+       VALUES (:userId, :level, :playStyle, :bodyProfile, :journey, :frequency, :matchPace,
+         :hasInjuries, :injuryArea, :injuryAreas, :injuryNotes, :strengthPref,
+         :improveGoal, :improveGoals, :sweetSpotTolerance, :durability,
+         :balancePref, :hardnessPref, :facePref, :spinImportant,
+         :previousPaddle, :previousPains, :brandSlugs, :freeText,
+         :budgetMin, :budgetMax, :currency)`,
       {
         userId,
         level: profile.level,
         playStyle: profile.playStyle,
+        bodyProfile: profile.bodyProfile,
+        journey: profile.journey,
         frequency: profile.frequency,
         matchPace: profile.matchPace,
         hasInjuries: profile.hasInjuries,
-        injuryArea: profile.injuryArea,
+        injuryArea: profile.injuryAreas[0] === "elbow" || profile.injuryAreas[0] === "shoulder" || profile.injuryAreas[0] === "wrist" ? profile.injuryAreas[0] : null,
+        injuryAreas: JSON.stringify(profile.injuryAreas),
         injuryNotes: profile.injuryNotes,
         strengthPref: profile.strengthPref,
-        improveGoal: profile.improveGoal,
+        improveGoal: profile.improveGoals.find((g) => g !== "maneuver") ?? null,
+        improveGoals: JSON.stringify(profile.improveGoals),
         sweetSpotTolerance: profile.sweetSpotTolerance,
+        durability: profile.durability,
+        balancePref: profile.balancePref,
+        hardnessPref: profile.hardnessPref,
+        facePref: profile.facePref,
+        spinImportant: profile.spinImportant,
         previousPaddle: profile.previousPaddle,
+        previousPains: JSON.stringify(profile.previousPains),
+        brandSlugs: JSON.stringify(profile.brandSlugs),
+        freeText: profile.freeText,
         budgetMin: profile.budgetMin,
         budgetMax: profile.budgetMax,
         currency: profile.currency,

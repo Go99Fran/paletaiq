@@ -3,16 +3,23 @@
 import { auth } from "@/auth";
 import { recommendPaddles } from "@/application/factory";
 import {
+  PADDLE_BALANCES,
+  PADDLE_HARDNESSES,
   PADDLE_LEVELS,
   PLAY_STYLES,
   type PaddleLevel,
   type PlayStyle,
 } from "@/domain/paddle/paddle.entity";
 import type {
+  BodyProfile,
+  DurabilityPref,
+  FacePref,
   InjuryArea,
   MatchPace,
   ImproveGoal,
+  PaddleJourney,
   PlayerProfile,
+  PreviousPain,
   SweetSpotTolerance,
   StrengthPref,
 } from "@/domain/player-profile/player-profile.entity";
@@ -21,15 +28,25 @@ import { findUserIdByEmail } from "@/infrastructure/db/user.mysql.repository";
 export interface FinderInput {
   level: string;
   playStyle: string;
+  bodyProfile: string | null;
+  journey: string | null;
   frequency: number | null;
   matchPace: string | null;
   hasInjuries: boolean;
-  injuryArea: string | null;
+  injuryAreas: string[];
   injuryNotes: string | null;
   strengthPref: string | null;
-  improveGoal: string | null;
+  improveGoals: string[];
   sweetSpotTolerance: string | null;
+  durability: string | null;
+  balancePref: string | null;
+  hardnessPref: string | null;
+  facePref: string | null;
+  spinImportant: boolean;
   previousPaddle: string | null;
+  previousPains: string[];
+  brandSlugs: string[];
+  freeText: string | null;
   budgetMin: number | null;
   budgetMax: number | null;
 }
@@ -56,10 +73,28 @@ export interface FinderResult {
 }
 
 const STRENGTH_PREFS: StrengthPref[] = ["needs_power", "has_power"];
-const IMPROVE_GOALS: ImproveGoal[] = ["power", "control", "ball_exit", "comfort"];
+const IMPROVE_GOALS: ImproveGoal[] = ["power", "control", "ball_exit", "comfort", "maneuver"];
 const MATCH_PACES: MatchPace[] = ["calm", "medium", "fast"];
-const INJURY_AREAS: InjuryArea[] = ["elbow", "shoulder", "wrist"];
+const INJURY_AREAS: InjuryArea[] = ["elbow", "shoulder", "wrist", "back", "other"];
 const SWEET_SPOT_TOLERANCES: SweetSpotTolerance[] = ["wide", "balanced", "small"];
+const BODY_PROFILES: BodyProfile[] = ["light", "medium", "strong"];
+const JOURNEYS: PaddleJourney[] = ["first", "upgrade", "enthusiast"];
+const DURABILITIES: DurabilityPref[] = ["high", "medium"];
+const FACE_PREFS: FacePref[] = ["fiberglass", "carbon3k", "carbon12k", "carbon18k"];
+const PREVIOUS_PAINS: PreviousPain[] = [
+  "tiring",
+  "lacked_power",
+  "weak_smash",
+  "vibration",
+  "low_control",
+  "broke_fast",
+];
+
+/** Filtra un array de strings a los valores válidos de un set permitido. */
+function keepValid<T extends string>(values: string[], allowed: readonly T[]): T[] {
+  const set = new Set<string>(allowed);
+  return [...new Set(values)].filter((v): v is T => set.has(v));
+}
 
 function sanitize(input: FinderInput): PlayerProfile {
   if (!PADDLE_LEVELS.includes(input.level as PaddleLevel)) {
@@ -74,32 +109,42 @@ function sanitize(input: FinderInput): PlayerProfile {
   const matchPace = MATCH_PACES.includes(input.matchPace as MatchPace)
     ? (input.matchPace as MatchPace)
     : null;
-  const injuryArea = input.hasInjuries && INJURY_AREAS.includes(input.injuryArea as InjuryArea)
-    ? (input.injuryArea as InjuryArea)
-    : null;
-  const sweetSpotTolerance = SWEET_SPOT_TOLERANCES.includes(input.sweetSpotTolerance as SweetSpotTolerance)
+  const injuryAreas = input.hasInjuries ? keepValid(input.injuryAreas, INJURY_AREAS) : [];
+  const sweetSpotTolerance = SWEET_SPOT_TOLERANCES.includes(
+    input.sweetSpotTolerance as SweetSpotTolerance,
+  )
     ? (input.sweetSpotTolerance as SweetSpotTolerance)
     : null;
+  const valid = <T extends string>(v: string | null, allowed: readonly T[]): T | null =>
+    v !== null && (allowed as readonly string[]).includes(v) ? (v as T) : null;
 
   return {
     level: input.level as PaddleLevel,
     playStyle: input.playStyle as PlayStyle,
+    bodyProfile: valid(input.bodyProfile, BODY_PROFILES),
+    journey: valid(input.journey, JOURNEYS),
     frequency:
       input.frequency !== null && input.frequency > 0 && input.frequency <= 14
         ? Math.round(input.frequency)
         : null,
     matchPace,
     hasInjuries: input.hasInjuries,
-    injuryArea,
+    injuryAreas,
     injuryNotes: input.injuryNotes ? input.injuryNotes.slice(0, 500) : null,
-    strengthPref: STRENGTH_PREFS.includes(input.strengthPref as StrengthPref)
-      ? (input.strengthPref as StrengthPref)
-      : null,
-    improveGoal: IMPROVE_GOALS.includes(input.improveGoal as ImproveGoal)
-      ? (input.improveGoal as ImproveGoal)
-      : null,
+    strengthPref: valid(input.strengthPref, STRENGTH_PREFS),
+    improveGoals: keepValid(input.improveGoals, IMPROVE_GOALS).slice(0, 2),
     sweetSpotTolerance,
+    durability: valid(input.durability, DURABILITIES),
+    balancePref: valid(input.balancePref, PADDLE_BALANCES),
+    hardnessPref: valid(input.hardnessPref, PADDLE_HARDNESSES),
+    facePref: valid(input.facePref, FACE_PREFS),
+    spinImportant: input.spinImportant === true,
     previousPaddle: input.previousPaddle ? input.previousPaddle.slice(0, 300) : null,
+    previousPains: keepValid(input.previousPains, PREVIOUS_PAINS),
+    brandSlugs: [...new Set(input.brandSlugs ?? [])]
+      .filter((s) => /^[a-z0-9-]{1,40}$/.test(s))
+      .slice(0, 6),
+    freeText: input.freeText ? input.freeText.slice(0, 1000) : null,
     budgetMin,
     budgetMax: budgetMax !== null && budgetMin !== null && budgetMax < budgetMin ? null : budgetMax,
     currency: "ARS",

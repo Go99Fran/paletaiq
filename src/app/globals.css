@@ -346,3 +346,30 @@ body {
     display: none !important;
   }
 }
+
+/* Thumbs del slider doble de precio: el track no recibe eventos (pointer-events
+   none en el input) pero el thumb sí, para poder agarrar cualquiera de los dos. */
+.dual-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: auto;
+  height: 20px;
+  width: 20px;
+  border-radius: 9999px;
+  background: var(--primary);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.25);
+  cursor: pointer;
+}
+.dual-thumb::-moz-range-thumb {
+  pointer-events: auto;
+  height: 20px;
+  width: 20px;
+  border-radius: 9999px;
+  background: var(--primary);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.25);
+  cursor: pointer;
+}
+.dual-thumb::-moz-range-track {
+  background: transparent;
+}
