@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
-import { Zap } from "lucide-react";
 import { APP_NAME } from "@/config";
 import { Link } from "@/i18n/navigation";
+import { PaletaIcon } from "./logo";
 
 export async function SiteFooter() {
   const t = await getTranslations("footer");
@@ -18,9 +18,7 @@ export async function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-xs">
           <span className="flex items-center gap-2 font-bold text-text">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-tertiary text-primary-foreground">
-              <Zap size={15} aria-hidden />
-            </span>
+            <PaletaIcon size={28} gradientId="footer-grad" />
             Paleta<span className="text-gradient">IQ</span>
           </span>
           <p className="mt-3 text-sm text-muted">{t("tagline")}</p>
