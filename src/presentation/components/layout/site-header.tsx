@@ -10,24 +10,35 @@ export async function SiteHeader() {
 
   return (
     <HeaderShell>
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
         <Logo />
-        <nav className="flex items-center gap-3 text-sm text-muted sm:gap-5">
-          <Link href="/comparar" className="nav-underline transition-colors hover:text-text sm:hidden">
-            {t("compare")}
-          </Link>
-          <Link href="/paletas" className="nav-underline hidden transition-colors hover:text-text sm:inline">
+
+        {/* Navegación principal — pegada al logo, a la izquierda. */}
+        <nav className="hidden items-center gap-6 text-sm text-muted sm:flex">
+          <Link href="/paletas" className="nav-underline transition-colors hover:text-text">
             {t("paddles")}
           </Link>
-          <Link href="/buscador" className="nav-underline hidden transition-colors hover:text-text sm:inline">
+          <Link href="/buscador" className="nav-underline transition-colors hover:text-text">
             {t("finder")}
           </Link>
-          <Link href="/comparar" className="nav-underline hidden transition-colors hover:text-text sm:inline">
+          <Link href="/comparar" className="nav-underline transition-colors hover:text-text">
+            {t("compare")}
+          </Link>
+        </nav>
+
+        {/* Acciones de usuario — empujadas a la derecha, separadas de la nav. */}
+        <div className="ml-auto flex items-center gap-2 sm:gap-3">
+          {/* En mobile, único link visible (la nav completa se oculta). */}
+          <Link
+            href="/comparar"
+            className="nav-underline text-sm text-muted transition-colors hover:text-text sm:hidden"
+          >
             {t("compare")}
           </Link>
           <LocaleSwitcher />
+          <span className="hidden h-5 w-px bg-border sm:block" aria-hidden />
           <AuthButtons />
-        </nav>
+        </div>
       </div>
     </HeaderShell>
   );
