@@ -20,6 +20,32 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Scraping Automation
+
+Run scraping with ready-to-use profiles:
+
+```bash
+npm run scrape:quick
+npm run scrape:shopify
+npm run scrape:core
+npm run scrape:full
+```
+
+Advanced usage:
+
+```bash
+npm run scrape:batch -- --profile=quick --limit=5 --no-cache
+npm run scrape:batch -- --only=siux,starvie,nox --limit=10 --no-cache --continue-on-error
+npm run scrape:batch -- --profile=full --timeout-ms=900000 --continue-on-error
+```
+
+Available profiles:
+
+- `quick`: all sources with small limit for health-check runs
+- `shopify`: nox, siux, starvie, vairo, dropshot
+- `core`: key brands for frequent validation
+- `full`: all sources without limit
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
