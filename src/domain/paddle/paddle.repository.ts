@@ -35,6 +35,8 @@ export interface CandidateCriteria {
   playStyles?: PlayStyle[];
   budgetMin?: number;
   budgetMax?: number;
+  excludeIds?: number[];
+  excludeBrandSlugs?: string[];
   limit: number;
 }
 

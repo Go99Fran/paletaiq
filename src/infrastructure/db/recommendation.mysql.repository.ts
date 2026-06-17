@@ -4,6 +4,7 @@ import type {
   SavedPlayerProfile,
 } from "@/domain/player-profile/player-profile.entity";
 import type { RankedPick } from "@/domain/recommendation/recommendation.entity";
+import type { RefinementEventInput } from "@/domain/recommendation/refinement-event.entity";
 import type { RecommendationRepository } from "@/domain/recommendation/recommendation.repository";
 import { getPool } from "./mysql-client";
 
@@ -65,6 +66,34 @@ export class RecommendationMysqlRepository implements RecommendationRepository {
     await getPool().query(
       `INSERT INTO recommendations (player_profile_id, paddle_id, \`rank\`, reason) VALUES ${values}`,
       params,
+    );
+  }
+
+  async saveRefinementEvent(input: RefinementEventInput): Promise<void> {
+    await getPool().execute(
+      `INSERT INTO finder_refinement_events
+        (player_profile_id, iteration, shown_paddle_ids, exclude_brand_slugs,
+         want_more_power, want_more_control, want_cheaper, want_lighter,
+         new_budget_max, free_feedback, result_count, selected_paddle_id, locale)
+       VALUES
+        (:playerProfileId, :iteration, :shownPaddleIds, :excludeBrandSlugs,
+         :wantMorePower, :wantMoreControl, :wantCheaper, :wantLighter,
+         :newBudgetMax, :freeFeedback, :resultCount, :selectedPaddleId, :locale)`,
+      {
+        playerProfileId: input.playerProfileId,
+        iteration: input.iteration,
+        shownPaddleIds: JSON.stringify(input.feedback.shownPaddleIds ?? []),
+        excludeBrandSlugs: JSON.stringify(input.feedback.excludeBrandSlugs ?? []),
+        wantMorePower: input.feedback.wantMorePower === true,
+        wantMoreControl: input.feedback.wantMoreControl === true,
+        wantCheaper: input.feedback.wantCheaper === true,
+        wantLighter: input.feedback.wantLighter === true,
+        newBudgetMax: input.feedback.newBudgetMax ?? null,
+        freeFeedback: input.feedback.freeFeedback ?? null,
+        resultCount: input.resultCount,
+        selectedPaddleId: input.selectedPaddleId ?? null,
+        locale: input.locale ?? null,
+      },
     );
   }
 }

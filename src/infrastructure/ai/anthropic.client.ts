@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { PaddleListItem } from "@/domain/paddle/paddle.entity";
 import type { PlayerProfile } from "@/domain/player-profile/player-profile.entity";
 import type { AiRecommender } from "@/domain/recommendation/ai-recommender";
+import type { RefinementFeedback } from "@/domain/recommendation/refinement-feedback.entity";
 import type { RankedPick } from "@/domain/recommendation/recommendation.entity";
 
 const DEFAULT_MODEL = "claude-opus-4-8";
@@ -54,13 +55,28 @@ PREFERENCIAS BLANDAS (tenelas en cuenta pero NUNCA pisan las reglas duras):
 - comentario_libre: leelo y usalo para afinar (lateralidad, superficie, gustos, restricciones).
 
 EXPLICACIONES:
-- Para cada paleta, 2-3 oraciones en español rioplatense (voseo), cálido y claro.
+- Para cada paleta, 2-3 oraciones en español rioplatense (voseo), cálido y claro, con variación natural (evitá repetir siempre la misma estructura).
 - Conectá la recomendación con lo que la persona respondió ("como nos dijiste que te molesta el codo,
   priorizamos esta goma blanda...").
 - Si es principiante, sin jerga técnica. Si es avanzado, podés ser más técnico.
+- Modo panel experto: integrá internamente estas miradas y sintetizalas en una sola razón breve:
+  1) Coach de pádel (táctica/rendimiento)
+  2) Preparador físico (carga/peso/fatiga)
+  3) Psicología deportiva (confianza/consistencia)
+  4) Usuario práctico A (prioriza precio y comodidad)
+  5) Usuario práctico B (prioriza sensaciones y pegada)
+  No listes personajes ni etiquetas; devolvé una explicación única, humana y accionable.
 - Respondé únicamente con el JSON pedido.`;
 
-function buildUserMessage(profile: PlayerProfile, candidates: PaddleListItem[]): string {
+function buildUserMessage(
+  profile: PlayerProfile,
+  candidates: PaddleListItem[],
+  refinement?: {
+    feedback: RefinementFeedback;
+    shownCandidates: PaddleListItem[];
+    iteration: number;
+  },
+): string {
   const profilePayload = {
     nivel: profile.level,
     estilo: profile.playStyle,
@@ -100,7 +116,34 @@ function buildUserMessage(profile: PlayerProfile, candidates: PaddleListItem[]):
     popularidad: c.popularity,
     precio_ars: c.bestPrice,
   }));
-  return JSON.stringify({ perfil: profilePayload, candidatas: candidatesPayload });
+
+  const refinementPayload =
+    refinement === undefined
+      ? null
+      : {
+          iteracion: refinement.iteration,
+          feedback: {
+            ...refinement.feedback,
+            shownPaddleIds: [...new Set(refinement.feedback.shownPaddleIds)],
+          },
+          paletas_ya_mostradas: refinement.shownCandidates.map((c) => ({
+            id: c.id,
+            marca: c.brandName,
+            nombre: c.name,
+            precio_ars: c.bestPrice,
+            forma: c.shape,
+            balance: c.balance,
+            dureza: c.hardness,
+          })),
+          instruccion_refinamiento:
+            "Estas paletas ya se mostraron antes o no convencieron. Priorizá opciones distintas y conectadas al feedback acumulado.",
+        };
+
+  return JSON.stringify({
+    perfil: profilePayload,
+    candidatas: candidatesPayload,
+    refinamiento: refinementPayload,
+  });
 }
 
 export function createAnthropicRecommender(): AiRecommender | null {
@@ -115,7 +158,15 @@ export function createAnthropicRecommender(): AiRecommender | null {
   const model = process.env.ANTHROPIC_MODEL ?? DEFAULT_MODEL;
 
   return {
-    async rank(profile: PlayerProfile, candidates: PaddleListItem[]): Promise<RankedPick[]> {
+    async rank(
+      profile: PlayerProfile,
+      candidates: PaddleListItem[],
+      refinement?: {
+        feedback: RefinementFeedback;
+        shownCandidates: PaddleListItem[];
+        iteration: number;
+      },
+    ): Promise<RankedPick[]> {
       const response = await client.messages.create({
         model,
         max_tokens: 2000,
@@ -125,7 +176,7 @@ export function createAnthropicRecommender(): AiRecommender | null {
           format: { type: "json_schema", schema: PICKS_SCHEMA },
         },
         system: SYSTEM_PROMPT,
-        messages: [{ role: "user", content: buildUserMessage(profile, candidates) }],
+        messages: [{ role: "user", content: buildUserMessage(profile, candidates, refinement) }],
       });
 
       if (response.stop_reason === "refusal") {

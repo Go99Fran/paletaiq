@@ -3,15 +3,18 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { Bot, Check, ImageOff, RotateCcw, Send, Sparkles } from "lucide-react";
+import { Bot, Check, Dumbbell, HeartPulse, ImageOff, RotateCcw, Send, Sparkles, UserRound } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import {
   getRecommendations,
+  refineRecommendations,
   type FinderInput,
   type FinderResult,
+  type RefinementFeedbackInput,
 } from "@/app/[locale]/buscador/actions";
 import { Button, Card, CardBody, Input, Tag } from "@/presentation/components/ui";
 import { formatPrice } from "@/presentation/lib/format";
+import { useCompare } from "@/presentation/components/compare/use-compare";
 import { useTypewriter } from "./use-typewriter";
 import { visibleQuestions, type Question } from "./question-tree";
 import { DualRangeSlider } from "./dual-range-slider";
@@ -51,6 +54,13 @@ interface ChatEntry {
   answer: string;
 }
 
+const MAX_REFINEMENTS = 4;
+const RESULT_INTRO_VARIANTS = [
+  "resultsIntro1",
+  "resultsIntro2",
+  "resultsIntro3",
+] as const;
+
 export function FinderChat({ brands }: { brands: Array<{ slug: string; name: string }> }) {
   const t = useTranslations("finder");
   const tEnums = useTranslations("enums");
@@ -60,6 +70,11 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
   const [history, setHistory] = useState<ChatEntry[]>([]);
   const [input, setInput] = useState<FinderInput>(emptyInput);
   const [result, setResult] = useState<FinderResult | null>(null);
+  const [refinementCount, setRefinementCount] = useState(0);
+  const [feedback, setFeedback] = useState<RefinementFeedbackInput>({ shownPaddleIds: [] });
+  const [resultIntroVariant, setResultIntroVariant] = useState<(typeof RESULT_INTRO_VARIANTS)[number]>(
+    RESULT_INTRO_VARIANTS[0],
+  );
   const [error, setError] = useState(false);
   const [pending, startTransition] = useTransition();
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -98,7 +113,27 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
     setError(false);
     startTransition(async () => {
       try {
-        setResult(await getRecommendations(finalInput));
+        const next = await getRecommendations(finalInput);
+        setResult(next);
+        setRefinementCount(0);
+        setFeedback({ shownPaddleIds: next.recommendations.map((r) => r.paddleId) });
+        setResultIntroVariant(RESULT_INTRO_VARIANTS[Math.floor(Math.random() * RESULT_INTRO_VARIANTS.length)]);
+      } catch {
+        setError(true);
+      }
+    });
+  }
+
+  function runRefinement(nextFeedback: RefinementFeedbackInput) {
+    if (result === null) return;
+    setError(false);
+    startTransition(async () => {
+      try {
+        const refined = await refineRecommendations(input, nextFeedback);
+        setResult(refined);
+        setRefinementCount((c) => c + 1);
+        setFeedback(nextFeedback);
+        setResultIntroVariant(RESULT_INTRO_VARIANTS[Math.floor(Math.random() * RESULT_INTRO_VARIANTS.length)]);
       } catch {
         setError(true);
       }
@@ -110,6 +145,8 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
     setHistory([]);
     setInput(emptyInput);
     setResult(null);
+    setRefinementCount(0);
+    setFeedback({ shownPaddleIds: [] });
     setError(false);
   }
 
@@ -149,7 +186,19 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
         )}
 
         {result !== null && (
-          <Results result={result} t={t} tEnums={tEnums} locale={locale} onRestart={restart} />
+          <Results
+            result={result}
+            t={t}
+            tEnums={tEnums}
+            locale={locale}
+            onRestart={restart}
+            onRefine={runRefinement}
+            refinementCount={refinementCount}
+            resultIntroVariant={resultIntroVariant}
+            feedback={feedback}
+            brands={brands}
+            onOpenAdjustments={() => setStepIndex(Math.max(0, steps.findIndex((s) => s.id === "improveGoals")))}
+          />
         )}
 
         <div ref={bottomRef} />
@@ -506,17 +555,72 @@ function Results({
   tEnums,
   locale,
   onRestart,
+  onRefine,
+  refinementCount,
+  resultIntroVariant,
+  feedback,
+  brands,
+  onOpenAdjustments,
 }: {
   result: FinderResult;
   t: TFn;
   tEnums: TFn;
   locale: string;
   onRestart: () => void;
+  onRefine: (feedback: RefinementFeedbackInput) => void;
+  refinementCount: number;
+  resultIntroVariant: "resultsIntro1" | "resultsIntro2" | "resultsIntro3";
+  feedback: RefinementFeedbackInput;
+  brands: Array<{ slug: string; name: string }>;
+  onOpenAdjustments: () => void;
 }) {
+  const [freeFeedback, setFreeFeedback] = useState("");
+  const [wantCheaper, setWantCheaper] = useState(false);
+  const [wantMorePower, setWantMorePower] = useState(false);
+  const [wantMoreControl, setWantMoreControl] = useState(false);
+  const [wantLighter, setWantLighter] = useState(false);
+  const [excludeBrandSlugs, setExcludeBrandSlugs] = useState<string[]>([]);
+
+  const seenBrandSlugs = [...new Set(result.recommendations.map((r) => {
+    const b = brands.find((x) => x.name === r.brandName);
+    return b?.slug ?? null;
+  }).filter((x): x is string => x !== null))];
+
+  const feedbackHint = buildRefinementIntro(
+    t,
+    { wantCheaper, wantMorePower, wantMoreControl, wantLighter, excludeBrandSlugs, freeFeedback },
+    brands,
+  );
+
+  const canRefine = refinementCount < MAX_REFINEMENTS;
+  const { clear, toggle } = useCompare();
+
+  const runRefine = () => {
+    const shownPaddleIds = [
+      ...(feedback.shownPaddleIds ?? []),
+      ...result.recommendations.map((r) => r.paddleId),
+    ];
+
+    onRefine({
+      shownPaddleIds,
+      wantCheaper,
+      wantMorePower,
+      wantMoreControl,
+      wantLighter,
+      excludeBrandSlugs,
+      freeFeedback: freeFeedback.trim() || null,
+    });
+  };
+
+  const compareLink =
+    result.recommendations.length > 0
+      ? `/comparar?p=${result.recommendations.map((r) => encodeURIComponent(r.slug)).join(",")}`
+      : "/comparar";
+
   return (
     <div className="space-y-4">
       <ChatBubble role="bot">
-        {result.recommendations.length > 0 ? t("resultsTitle") : t("noResults")}
+        {result.recommendations.length > 0 ? t(resultIntroVariant) : t("noResults")}
       </ChatBubble>
 
       {result.recommendations.length > 0 && result.budgetExpandedToMax !== null && (
@@ -580,6 +684,9 @@ function Results({
                   {rec.playStyle && <Tag>{tEnums(`playStyle.${rec.playStyle}`)}</Tag>}
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-text">{rec.reason}</p>
+
+                <ExpertPanelInsights rec={rec} t={t} />
+
                 <div className="mt-3 flex items-center justify-between gap-2">
                   {rec.bestPrice !== null ? (
                     <span className="font-bold text-text">
@@ -601,12 +708,156 @@ function Results({
       </div>
 
       <div className="sm:pl-10">
-        <Button variant="ghost" size="sm" onClick={onRestart}>
-          <RotateCcw size={14} aria-hidden />
-          {t("restart")}
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Link href={compareLink}>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                clear();
+                for (const r of result.recommendations.slice(0, 4)) {
+                  toggle(r.slug);
+                }
+              }}
+            >
+              {t("compareThese")}
+            </Button>
+          </Link>
+          <Button variant="ghost" size="sm" onClick={onRestart}>
+            <RotateCcw size={14} aria-hidden />
+            {t("restart")}
+          </Button>
+        </div>
+      </div>
+
+      <div className="space-y-3 sm:pl-10">
+        <ChatBubble role="bot">{feedbackHint}</ChatBubble>
+
+        <div className="flex flex-wrap gap-2">
+          <QuickChip active={wantCheaper} onClick={() => setWantCheaper((v) => !v)} label={t("refineChipCheaper")} />
+          <QuickChip active={wantMorePower} onClick={() => setWantMorePower((v) => !v)} label={t("refineChipMorePower")} />
+          <QuickChip active={wantMoreControl} onClick={() => setWantMoreControl((v) => !v)} label={t("refineChipMoreControl")} />
+          <QuickChip active={wantLighter} onClick={() => setWantLighter((v) => !v)} label={t("refineChipLighter")} />
+          <QuickChip active={wantCheaper && wantMoreControl} onClick={() => { setWantCheaper(true); setWantMoreControl(true); }} label={t("refineChipNoneConvinces")} />
+          {seenBrandSlugs.map((slug) => (
+            <QuickChip
+              key={slug}
+              active={excludeBrandSlugs.includes(slug)}
+              onClick={() =>
+                setExcludeBrandSlugs((s) =>
+                  s.includes(slug) ? s.filter((x) => x !== slug) : [...s, slug],
+                )
+              }
+              label={t("refineChipExcludeBrand", { brand: brands.find((b) => b.slug === slug)?.name ?? slug })}
+            />
+          ))}
+        </div>
+
+        <textarea
+          value={freeFeedback}
+          onChange={(e) => setFreeFeedback(e.target.value)}
+          rows={3}
+          maxLength={900}
+          placeholder={t("refineFreePlaceholder")}
+          className="w-full resize-none rounded-xl border border-border bg-surface/70 px-3 py-2 text-sm text-text backdrop-blur-sm transition-colors focus:border-primary focus:bg-surface focus:outline-2 focus:outline-primary/25"
+        />
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Button onClick={runRefine} disabled={!canRefine}>
+            <Sparkles size={15} aria-hidden />
+            {t("refineSearchAgain")}
+          </Button>
+          <Button variant="glass" size="sm" onClick={onOpenAdjustments}>
+            {t("refineChangeAnswers")}
+          </Button>
+          {!canRefine && <p className="text-xs text-muted">{t("refineLoopLimit")}</p>}
+        </div>
       </div>
     </div>
+  );
+}
+
+function QuickChip({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={[
+        "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-sm font-medium transition-all duration-200 active:scale-95",
+        active
+          ? "bg-gradient-to-br from-primary to-primary-hover text-primary-foreground shadow-sm"
+          : "glass text-text hover:border-primary/50 hover:text-primary",
+      ].join(" ")}
+    >
+      {label}
+    </button>
+  );
+}
+
+function buildRefinementIntro(
+  t: TFn,
+  state: {
+    wantCheaper: boolean;
+    wantMorePower: boolean;
+    wantMoreControl: boolean;
+    wantLighter: boolean;
+    excludeBrandSlugs: string[];
+    freeFeedback: string;
+  },
+  brands: Array<{ slug: string; name: string }>,
+): string {
+  const tags: string[] = [];
+  if (state.wantCheaper) tags.push(t("refineTagCheaper"));
+  if (state.wantMorePower) tags.push(t("refineTagPower"));
+  if (state.wantMoreControl) tags.push(t("refineTagControl"));
+  if (state.wantLighter) tags.push(t("refineTagLighter"));
+  if (state.excludeBrandSlugs.length > 0) {
+    const names = state.excludeBrandSlugs.map((s) => brands.find((b) => b.slug === s)?.name ?? s).join(", ");
+    tags.push(t("refineTagWithoutBrands", { brands: names }));
+  }
+  if (state.freeFeedback.trim().length > 0) tags.push(t("refineTagWithComment"));
+  if (tags.length === 0) return t("refineIntroBase");
+  return t("refineIntroWithContext", { context: tags.join(" · ") });
+}
+
+function ExpertPanelInsights({
+  rec,
+  t,
+}: {
+  rec: FinderResult["recommendations"][number];
+  t: TFn;
+}) {
+  const coach = rec.playStyle === "power" ? t("expertCoachPower") : t("expertCoachControl");
+  const physio =
+    rec.hardness === "hard" ? t("expertPhysioDemanding") : t("expertPhysioComfort");
+  const mind = rec.rank === 1 ? t("expertMindConfidence") : t("expertMindConsistency");
+  const userA = rec.bestPrice !== null ? t("expertUserAPrice") : t("expertUserAPriceUnknown");
+  const userB = rec.balance === "high" ? t("expertUserBPunch") : t("expertUserBManageable");
+
+  return (
+    <div className="mt-2 grid gap-1.5 sm:grid-cols-2">
+      <InsightBadge icon={<Sparkles size={12} aria-hidden />} text={coach} />
+      <InsightBadge icon={<Dumbbell size={12} aria-hidden />} text={physio} />
+      <InsightBadge icon={<HeartPulse size={12} aria-hidden />} text={mind} />
+      <InsightBadge icon={<UserRound size={12} aria-hidden />} text={`${userA} · ${userB}`} />
+    </div>
+  );
+}
+
+function InsightBadge({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary/20 bg-primary/5 px-2 py-1 text-[11px] text-text">
+      <span className="text-primary">{icon}</span>
+      <span>{text}</span>
+    </span>
   );
 }
 

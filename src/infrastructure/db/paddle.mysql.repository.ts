@@ -216,6 +216,14 @@ export class PaddleMysqlRepository implements PaddleRepository {
       where.push("bp.best_price <= ?");
       params.push(criteria.budgetMax);
     }
+    if (criteria.excludeIds && criteria.excludeIds.length > 0) {
+      where.push(`p.id NOT IN (${criteria.excludeIds.map(() => "?").join(",")})`);
+      params.push(...criteria.excludeIds);
+    }
+    if (criteria.excludeBrandSlugs && criteria.excludeBrandSlugs.length > 0) {
+      where.push(`b.slug NOT IN (${criteria.excludeBrandSlugs.map(() => "?").join(",")})`);
+      params.push(...criteria.excludeBrandSlugs);
+    }
 
     // Diversificación por marca: traemos como mucho `perBrand` candidatas de cada
     // marca antes de cortar, para que la IA reciba un abanico de marcas y no 30

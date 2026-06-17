@@ -1,5 +1,6 @@
 import type { PaddleLevel, PaddleListItem } from "@/domain/paddle/paddle.entity";
 import type { PlayerProfile } from "@/domain/player-profile/player-profile.entity";
+import type { RefinementFeedback } from "@/domain/recommendation/refinement-feedback.entity";
 import type { RankedPick } from "@/domain/recommendation/recommendation.entity";
 
 /** Niveles compatibles con el del jugador (el filtro duro no es exacto a propósito). */
@@ -74,11 +75,15 @@ export function heuristicRank(
   profile: PlayerProfile,
   candidates: PaddleListItem[],
   count = 4,
+  refinement?: RefinementFeedback,
 ): RankedPick[] {
+  const excludeBrands = new Set(refinement?.excludeBrandSlugs ?? []);
+  const base = candidates.filter((c) => !excludeBrands.has(c.brandSlug));
+  const pool = base.length >= count ? base : candidates;
   const primaryGoal = profile.improveGoals[0] ?? null;
   const brandSet = new Set(profile.brandSlugs);
 
-  const scored = candidates.map((paddle) => {
+  const scored = pool.map((paddle) => {
     let score = 0;
     const reasons: string[] = [];
 
@@ -197,6 +202,32 @@ export function heuristicRank(
     // --- Durabilidad ---
     if (profile.durability === "high" && paddle.faceMaterial?.toLowerCase().includes("carbono")) {
       score += 1;
+    }
+
+    // --- Ajustes del loop de refinamiento ---
+    if (refinement?.wantCheaper && paddle.bestPrice !== null) {
+      // Penaliza de forma suave a medida que sube el precio.
+      score -= paddle.bestPrice / 300_000;
+      reasons.push("priorizamos opciones más cuidadas en precio");
+    }
+    if (refinement?.wantLighter) {
+      if (paddle.weightMax !== null && paddle.weightMax <= 365) {
+        score += 2;
+        reasons.push("es más liviana y rápida de mover");
+      }
+      if (paddle.weightMin !== null && paddle.weightMin > 372) score -= 2;
+    }
+    if (refinement?.wantMorePower) {
+      // Señal de potencia, siempre sujeta a safetyPenalty.
+      if (paddle.playStyle === "power") score += 1.5;
+      if (paddle.shape === "diamond" || paddle.shape === "hybrid") score += 1;
+      if (paddle.balance === "high") score += 0.5;
+    }
+    if (refinement?.wantMoreControl) {
+      if (paddle.playStyle === "control") score += 1.5;
+      if (paddle.shape === "round") score += 1;
+      if (paddle.balance === "low" || paddle.balance === "medium") score += 0.5;
+      reasons.push("reforzamos control y consistencia");
     }
 
     // --- Preferencias blandas: marca preferida ---

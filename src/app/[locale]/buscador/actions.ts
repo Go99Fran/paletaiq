@@ -23,6 +23,7 @@ import type {
   SweetSpotTolerance,
   StrengthPref,
 } from "@/domain/player-profile/player-profile.entity";
+import type { RefinementFeedback } from "@/domain/recommendation/refinement-feedback.entity";
 import { findUserIdByEmail } from "@/infrastructure/db/user.mysql.repository";
 
 export interface FinderInput {
@@ -52,6 +53,7 @@ export interface FinderInput {
 }
 
 export interface FinderRecommendation {
+  paddleId: number;
   rank: number;
   reason: string;
   slug: string;
@@ -61,6 +63,8 @@ export interface FinderRecommendation {
   bestPrice: number | null;
   bestPriceCurrency: string | null;
   shape: string | null;
+  balance: string | null;
+  hardness: string | null;
   level: string | null;
   playStyle: string | null;
 }
@@ -70,6 +74,17 @@ export interface FinderResult {
   recommendations: FinderRecommendation[];
   /** Nuevo techo de presupuesto si se amplió; -1 si se quitó el tope; null si no se tocó. */
   budgetExpandedToMax: number | null;
+}
+
+export interface RefinementFeedbackInput {
+  shownPaddleIds: number[];
+  wantMorePower?: boolean;
+  wantMoreControl?: boolean;
+  wantCheaper?: boolean;
+  wantLighter?: boolean;
+  excludeBrandSlugs?: string[];
+  newBudgetMax?: number | null;
+  freeFeedback?: string | null;
 }
 
 const STRENGTH_PREFS: StrengthPref[] = ["needs_power", "has_power"];
@@ -151,6 +166,34 @@ function sanitize(input: FinderInput): PlayerProfile {
   };
 }
 
+function sanitizeFeedback(input: RefinementFeedbackInput): RefinementFeedback {
+  const shownPaddleIds = [...new Set(input.shownPaddleIds ?? [])]
+    .filter((n) => Number.isInteger(n) && n > 0)
+    .slice(0, 200);
+
+  const excludeBrandSlugs = [...new Set(input.excludeBrandSlugs ?? [])]
+    .filter((s) => /^[a-z0-9-]{1,40}$/.test(s))
+    .slice(0, 8);
+
+  const newBudgetMax =
+    input.newBudgetMax === null
+      ? null
+      : typeof input.newBudgetMax === "number" && input.newBudgetMax > 0
+        ? Math.round(input.newBudgetMax)
+        : undefined;
+
+  return {
+    shownPaddleIds,
+    wantMorePower: input.wantMorePower === true,
+    wantMoreControl: input.wantMoreControl === true,
+    wantCheaper: input.wantCheaper === true,
+    wantLighter: input.wantLighter === true,
+    excludeBrandSlugs,
+    newBudgetMax,
+    freeFeedback: input.freeFeedback ? input.freeFeedback.slice(0, 900) : null,
+  };
+}
+
 export async function getRecommendations(input: FinderInput): Promise<FinderResult> {
   const profile = sanitize(input);
 
@@ -169,6 +212,7 @@ export async function getRecommendations(input: FinderInput): Promise<FinderResu
   return {
     heuristic: result.recommendations.some((r) => r.heuristic),
     recommendations: result.recommendations.map((r) => ({
+      paddleId: r.paddle.id,
       rank: r.rank,
       reason: r.reason,
       slug: r.paddle.slug,
@@ -178,6 +222,49 @@ export async function getRecommendations(input: FinderInput): Promise<FinderResu
       bestPrice: r.paddle.bestPrice,
       bestPriceCurrency: r.paddle.bestPriceCurrency,
       shape: r.paddle.shape,
+      balance: r.paddle.balance,
+      hardness: r.paddle.hardness,
+      level: r.paddle.level,
+      playStyle: r.paddle.playStyle,
+    })),
+    budgetExpandedToMax: result.budgetExpandedToMax,
+  };
+}
+
+export async function refineRecommendations(
+  input: FinderInput,
+  feedbackInput: RefinementFeedbackInput,
+): Promise<FinderResult> {
+  const profile = sanitize(input);
+  const feedback = sanitizeFeedback(feedbackInput);
+
+  const session = await auth();
+  let userId: number | null = null;
+  if (session?.user?.email) {
+    try {
+      userId = await findUserIdByEmail(session.user.email);
+    } catch {
+      // si falla el lookup, la recomendación sigue como anónima
+    }
+  }
+
+  const result = await recommendPaddles.refine(profile, feedback, userId);
+
+  return {
+    heuristic: result.recommendations.some((r) => r.heuristic),
+    recommendations: result.recommendations.map((r) => ({
+      paddleId: r.paddle.id,
+      rank: r.rank,
+      reason: r.reason,
+      slug: r.paddle.slug,
+      name: r.paddle.name,
+      brandName: r.paddle.brandName,
+      imageUrl: r.paddle.imageUrl,
+      bestPrice: r.paddle.bestPrice,
+      bestPriceCurrency: r.paddle.bestPriceCurrency,
+      shape: r.paddle.shape,
+      balance: r.paddle.balance,
+      hardness: r.paddle.hardness,
       level: r.paddle.level,
       playStyle: r.paddle.playStyle,
     })),
