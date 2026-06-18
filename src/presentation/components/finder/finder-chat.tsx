@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { Bot, Check, Dumbbell, HeartPulse, ImageOff, RotateCcw, Send, Sparkles, UserRound } from "lucide-react";
+import { Bot, Check, ImageOff, RotateCcw, Send, Sparkles } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import {
   getRecommendations,
@@ -75,8 +75,11 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
   const [resultIntroVariant, setResultIntroVariant] = useState<(typeof RESULT_INTRO_VARIANTS)[number]>(
     RESULT_INTRO_VARIANTS[0],
   );
+  const [isRefining, setIsRefining] = useState(false);
+  const [showResultsWhileRefining, setShowResultsWhileRefining] = useState(true);
   const [error, setError] = useState(false);
   const [pending, startTransition] = useTransition();
+  const viewportRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // Pasos visibles según las respuestas actuales (ramas del árbol).
@@ -84,8 +87,16 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
   const step: Question | undefined = steps[stepIndex];
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [history, result, pending]);
+    const el = viewportRef.current;
+    if (!el) return;
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    el.scrollTo({
+      top: el.scrollHeight,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [history, result, pending, isRefining, stepIndex]);
 
   /** Registra la respuesta en el historial y avanza al siguiente paso visible. */
   function commit(answerLabel: string, patch: Partial<FinderInput>) {
@@ -111,6 +122,8 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
 
   function runRecommendation(finalInput: FinderInput) {
     setError(false);
+    setIsRefining(false);
+    setShowResultsWhileRefining(true);
     startTransition(async () => {
       try {
         const next = await getRecommendations(finalInput);
@@ -127,6 +140,8 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
   function runRefinement(nextFeedback: RefinementFeedbackInput) {
     if (result === null) return;
     setError(false);
+    setIsRefining(true);
+    setShowResultsWhileRefining(false);
     startTransition(async () => {
       try {
         const refined = await refineRecommendations(input, nextFeedback);
@@ -134,8 +149,11 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
         setRefinementCount((c) => c + 1);
         setFeedback(nextFeedback);
         setResultIntroVariant(RESULT_INTRO_VARIANTS[Math.floor(Math.random() * RESULT_INTRO_VARIANTS.length)]);
+        setShowResultsWhileRefining(true);
       } catch {
         setError(true);
+      } finally {
+        setIsRefining(false);
       }
     });
   }
@@ -147,6 +165,8 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
     setResult(null);
     setRefinementCount(0);
     setFeedback({ shownPaddleIds: [] });
+    setIsRefining(false);
+    setShowResultsWhileRefining(true);
     setError(false);
   }
 
@@ -159,7 +179,13 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
         <ProgressBar current={progress} total={totalSteps} label={t("progressLabel")} />
       )}
 
-      <div className="space-y-4" aria-live="polite" aria-atomic="false">
+      <div
+        ref={viewportRef}
+        className="h-[75vh] min-h-[560px] overflow-y-auto rounded-2xl border border-border/70 bg-surface/45 px-2 py-3 sm:px-4"
+        aria-live="polite"
+        aria-atomic="false"
+      >
+        <div className="space-y-4">
         {history.map((entry, i) => (
           <div key={i} className="space-y-2">
             <ChatBubble role="bot">{entry.question}</ChatBubble>
@@ -173,7 +199,7 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
           </ActiveQuestion>
         )}
 
-        {pending && <ThinkingBubble />}
+        {pending && <ThinkingBubble message={isRefining ? t("refineThinking") : undefined} />}
 
         {error && (
           <div className="space-y-3 pl-10">
@@ -185,7 +211,7 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
           </div>
         )}
 
-        {result !== null && (
+        {result !== null && showResultsWhileRefining && (
           <Results
             result={result}
             t={t}
@@ -202,6 +228,7 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
         )}
 
         <div ref={bottomRef} />
+        </div>
       </div>
     </div>
   );
@@ -685,8 +712,6 @@ function Results({
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-text">{rec.reason}</p>
 
-                <ExpertPanelInsights rec={rec} t={t} />
-
                 <div className="mt-3 flex items-center justify-between gap-2">
                   {rec.bestPrice !== null ? (
                     <span className="font-bold text-text">
@@ -828,39 +853,6 @@ function buildRefinementIntro(
   return t("refineIntroWithContext", { context: tags.join(" · ") });
 }
 
-function ExpertPanelInsights({
-  rec,
-  t,
-}: {
-  rec: FinderResult["recommendations"][number];
-  t: TFn;
-}) {
-  const coach = rec.playStyle === "power" ? t("expertCoachPower") : t("expertCoachControl");
-  const physio =
-    rec.hardness === "hard" ? t("expertPhysioDemanding") : t("expertPhysioComfort");
-  const mind = rec.rank === 1 ? t("expertMindConfidence") : t("expertMindConsistency");
-  const userA = rec.bestPrice !== null ? t("expertUserAPrice") : t("expertUserAPriceUnknown");
-  const userB = rec.balance === "high" ? t("expertUserBPunch") : t("expertUserBManageable");
-
-  return (
-    <div className="mt-2 grid gap-1.5 sm:grid-cols-2">
-      <InsightBadge icon={<Sparkles size={12} aria-hidden />} text={coach} />
-      <InsightBadge icon={<Dumbbell size={12} aria-hidden />} text={physio} />
-      <InsightBadge icon={<HeartPulse size={12} aria-hidden />} text={mind} />
-      <InsightBadge icon={<UserRound size={12} aria-hidden />} text={`${userA} · ${userB}`} />
-    </div>
-  );
-}
-
-function InsightBadge({ icon, text }: { icon: React.ReactNode; text: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary/20 bg-primary/5 px-2 py-1 text-[11px] text-text">
-      <span className="text-primary">{icon}</span>
-      <span>{text}</span>
-    </span>
-  );
-}
-
 /* ----------------------------- Piezas de chat ----------------------------- */
 
 function ProgressBar({ current, total, label }: { current: number; total: number; label: string }) {
@@ -921,7 +913,7 @@ function ActiveQuestion({
   );
 }
 
-function ThinkingBubble() {
+function ThinkingBubble({ message }: { message?: string }) {
   const t = useTranslations("finder");
   const messages = [t("thinking1"), t("thinking2"), t("thinking3"), t("thinking4")];
   const [idx, setIdx] = useState(0);
@@ -942,7 +934,7 @@ function ThinkingBubble() {
       <div className="glass flex items-center gap-2.5 rounded-2xl rounded-tl-sm px-4 py-3">
         <TypingDots />
         <span key={idx} className="animate-rise-soft text-sm text-muted">
-          {messages[idx]}
+          {message ?? messages[idx]}
         </span>
       </div>
     </div>
