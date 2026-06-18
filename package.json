@@ -17,7 +17,8 @@
     "scrape:full": "tsx --env-file=.env scripts/scrape-batch.ts --profile=full --no-cache --continue-on-error --timeout-ms=900000",
     "catalog:curate": "node --env-file=.env scripts/curate-catalog-from-targets.mjs",
     "catalog:curate:apply": "node --env-file=.env scripts/curate-catalog-from-targets.mjs --apply --include-emerging",
-    "catalog:discover": "node --env-file=.env scripts/discover-review-candidates.mjs"
+    "catalog:discover": "node --env-file=.env scripts/discover-review-candidates.mjs",
+    "images:fix:adidas": "node --env-file=.env scripts/fix-adidas-images.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",
