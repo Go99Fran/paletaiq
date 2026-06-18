@@ -98,8 +98,10 @@ export default async function ComparePage({
     },
     { label: tDetail("core"), render: (p) => p.coreMaterial },
     { label: tDetail("face"), render: (p) => p.faceMaterial },
+    { label: tDetail("frame"), render: (p) => p.frameMaterial },
     { label: tDetail("surface"), render: (p) => (p.surface ? tEnums(`surface.${p.surface}`) : null) },
     { label: tDetail("hardness"), render: (p) => (p.hardness ? tEnums(`hardness.${p.hardness}`) : null) },
+    { label: tDetail("thickness"), render: (p) => (p.thickness ? `${p.thickness} mm` : null) },
     { label: tDetail("level"), render: (p) => (p.level ? tEnums(`level.${p.level}`) : null) },
     { label: tDetail("playStyle"), render: (p) => (p.playStyle ? tEnums(`playStyle.${p.playStyle}`) : null) },
     {

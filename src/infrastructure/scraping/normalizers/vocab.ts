@@ -15,12 +15,14 @@ const BALANCE_MAP = { bajo: "low", medio: "medium", alto: "high" } as const;
 const HARDNESS_MAP = { blanda: "soft", media: "medium", dura: "hard" } as const;
 const SURFACE_MAP = { rugosa: "rough", lisa: "smooth" } as const;
 
+// Nota: "junior" (palas de chicos) NO se mapea a beginner: lo hacía y metía palas
+// infantiles en las candidatas de adultos principiantes. Sin un nivel `junior` en el
+// enum del esquema, lo dejamos sin nivel (null) para que no entre al filtro de candidatas.
 const LEVEL_MAP = {
   pro: "pro",
   avanzado: "advanced",
   intermedio: "intermediate",
   iniciacion: "beginner",
-  junior: "beginner",
 } as const;
 
 const STYLE_MAP = {

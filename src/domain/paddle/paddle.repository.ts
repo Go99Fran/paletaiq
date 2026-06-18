@@ -49,6 +49,7 @@ export interface PaddleUpdateInput {
   weightMax?: number | null;
   coreMaterial?: string | null;
   faceMaterial?: string | null;
+  frameMaterial?: string | null;
   surface?: PaddleSurface | null;
   hardness?: PaddleHardness | null;
   level?: PaddleLevel | null;

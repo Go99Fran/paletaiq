@@ -47,9 +47,13 @@ export default async function PaddleDetailPage({
     { label: t("frame"), value: paddle.frameMaterial },
     { label: t("surface"), value: paddle.surface ? tEnums(`surface.${paddle.surface}`) : null },
     { label: t("hardness"), value: paddle.hardness ? tEnums(`hardness.${paddle.hardness}`) : null },
+    { label: t("thickness"), value: paddle.thickness ? `${paddle.thickness} mm` : null },
     { label: t("level"), value: paddle.level ? tEnums(`level.${paddle.level}`) : null },
     { label: t("playStyle"), value: paddle.playStyle ? tEnums(`playStyle.${paddle.playStyle}`) : null },
   ];
+
+  // Cuántas specs clave tenemos cargadas (indicador de completitud de la ficha).
+  const specsFilled = specs.filter((s) => s.value !== null).length;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -96,19 +100,24 @@ export default async function PaddleDetailPage({
           </div>
 
           <Card className="mt-6">
-            <CardHeader>
+            <CardHeader className="flex items-center justify-between gap-2">
               <Heading level={3}>{t("specs")}</Heading>
+              <span className="text-xs text-muted">
+                {t("specsCompleteness", { filled: specsFilled, total: specs.length })}
+              </span>
             </CardHeader>
             <CardBody>
+              {/* Mostramos todas las specs; las que no tenemos cargadas van como "—"
+                  (antes se ocultaban en silencio y el comprador no sabía qué faltaba). */}
               <dl className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
-                {specs
-                  .filter((s) => s.value !== null)
-                  .map((s) => (
-                    <div key={s.label} className="flex justify-between gap-4 border-b border-border py-1.5 text-sm last:border-0 sm:[&:nth-last-child(2)]:border-0">
-                      <dt className="text-muted">{s.label}</dt>
-                      <dd className="text-right font-medium text-text">{s.value}</dd>
-                    </div>
-                  ))}
+                {specs.map((s) => (
+                  <div key={s.label} className="flex justify-between gap-4 border-b border-border py-1.5 text-sm last:border-0 sm:[&:nth-last-child(2)]:border-0">
+                    <dt className="text-muted">{s.label}</dt>
+                    <dd className={s.value !== null ? "text-right font-medium text-text" : "text-right text-muted"}>
+                      {s.value ?? "—"}
+                    </dd>
+                  </div>
+                ))}
               </dl>
             </CardBody>
           </Card>

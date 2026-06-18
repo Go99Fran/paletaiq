@@ -65,6 +65,7 @@ export async function updatePaddle(id: number, formData: FormData): Promise<void
     weightMax: numberOrNull(formData.get("weightMax")),
     coreMaterial: textOrNull(formData.get("coreMaterial"), 120),
     faceMaterial: textOrNull(formData.get("faceMaterial"), 120),
+    frameMaterial: textOrNull(formData.get("frameMaterial"), 120),
     surface: enumOrNull<PaddleSurface>(formData.get("surface"), ["rough", "smooth"]),
     hardness: enumOrNull(formData.get("hardness"), PADDLE_HARDNESSES),
     level: enumOrNull(formData.get("level"), PADDLE_LEVELS),

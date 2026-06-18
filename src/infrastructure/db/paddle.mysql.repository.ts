@@ -50,7 +50,13 @@ interface PaddleRow extends RowDataPacket {
 /**
  * SELECT base: paleta + marca + mejor precio vigente (mínimo entre tiendas con stock).
  * current_prices está desnormalizada justamente para que esto sea un join directo.
+ *
+ * PaletaIQ es Argentina-first: el "mejor precio" se calcula SOLO sobre precios en ARS.
+ * Antes se hacía MIN(price) sin filtrar moneda + MIN(currency) por separado, así que un
+ * precio en EUR podía ganar el mínimo y renderizarse con "$" como si fueran pesos. Al
+ * filtrar currency='ARS', best_price siempre está en ARS y best_price_currency es coherente.
  */
+const PRICE_CURRENCY = "ARS";
 const BASE_SELECT = `
   SELECT
     p.id, p.brand_id, b.name AS brand_name, b.slug AS brand_slug,
@@ -58,16 +64,15 @@ const BASE_SELECT = `
     p.core_material, p.face_material, p.frame_material, p.surface, p.hardness,
     p.level, p.play_style, p.popularity, p.thickness, p.image_url, p.description,
     p.is_active, p.validated,
-    bp.best_price, bp.best_price_currency, COALESCE(bp.store_count, 0) AS store_count
+    bp.best_price, '${PRICE_CURRENCY}' AS best_price_currency, COALESCE(bp.store_count, 0) AS store_count
   FROM paddles p
   JOIN brands b ON b.id = p.brand_id
   LEFT JOIN (
     SELECT paddle_id,
            MIN(price) AS best_price,
-           MIN(currency) AS best_price_currency,
            COUNT(*) AS store_count
     FROM current_prices
-    WHERE in_stock = TRUE
+    WHERE in_stock = TRUE AND currency = '${PRICE_CURRENCY}'
     GROUP BY paddle_id
   ) bp ON bp.paddle_id = p.id
 `;
@@ -157,7 +162,7 @@ export class PaddleMysqlRepository implements PaddleRepository {
        JOIN brands b ON b.id = p.brand_id
        LEFT JOIN (
          SELECT paddle_id, MIN(price) AS best_price FROM current_prices
-         WHERE in_stock = TRUE GROUP BY paddle_id
+         WHERE in_stock = TRUE AND currency = '${PRICE_CURRENCY}' GROUP BY paddle_id
        ) bp ON bp.paddle_id = p.id
        ${whereSql}`,
       params,
@@ -208,12 +213,15 @@ export class PaddleMysqlRepository implements PaddleRepository {
       );
       params.push(...criteria.playStyles);
     }
+    // El filtro de presupuesto NO descarta paletas sin precio publicado (best_price NULL):
+    // "precio desconocido" no es "fuera de presupuesto". Igual van al final por el ORDER BY
+    // (best_price IS NULL), así que no desplazan a las que sí tienen precio en rango.
     if (criteria.budgetMin !== undefined) {
-      where.push("bp.best_price >= ?");
+      where.push("(bp.best_price >= ? OR bp.best_price IS NULL)");
       params.push(criteria.budgetMin);
     }
     if (criteria.budgetMax !== undefined) {
-      where.push("bp.best_price <= ?");
+      where.push("(bp.best_price <= ? OR bp.best_price IS NULL)");
       params.push(criteria.budgetMax);
     }
     if (criteria.excludeIds && criteria.excludeIds.length > 0) {
@@ -256,6 +264,7 @@ export class PaddleMysqlRepository implements PaddleRepository {
       weightMax: "weight_max",
       coreMaterial: "core_material",
       faceMaterial: "face_material",
+      frameMaterial: "frame_material",
       surface: "surface",
       hardness: "hardness",
       level: "level",

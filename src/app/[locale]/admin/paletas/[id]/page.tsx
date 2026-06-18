@@ -84,6 +84,7 @@ export default async function AdminPaddleEditPage({
             {field(t("fieldWeightMax"), <Input name="weightMax" type="number" defaultValue={paddle.weightMax ?? ""} />)}
             {field(t("fieldCore"), <Input name="coreMaterial" defaultValue={paddle.coreMaterial ?? ""} />)}
             {field(t("fieldFace"), <Input name="faceMaterial" defaultValue={paddle.faceMaterial ?? ""} />)}
+            {field(t("fieldFrame"), <Input name="frameMaterial" defaultValue={paddle.frameMaterial ?? ""} />)}
             {field(
               t("fieldSurface"),
               <Select
