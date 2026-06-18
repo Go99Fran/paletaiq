@@ -4,7 +4,7 @@ import type { AiRecommender } from "@/domain/recommendation/ai-recommender";
 import type { RefinementFeedback } from "@/domain/recommendation/refinement-feedback.entity";
 import type { RankedPick, Recommendation } from "@/domain/recommendation/recommendation.entity";
 import type { RecommendationRepository } from "@/domain/recommendation/recommendation.repository";
-import { compatibleLevels, heuristicRank } from "./heuristic-ranker";
+import { compatibleLevels, contraindicationReason, heuristicRank } from "./heuristic-ranker";
 
 const CANDIDATE_LIMIT = 30;
 const MIN_CANDIDATES_WITH_BUDGET = 5;
@@ -80,9 +80,19 @@ export class RecommendPaddlesUseCase {
 
     if (this.ai) {
       try {
-        const validIds = new Set(candidates.map((c) => c.id));
+        const byId = new Map(candidates.map((c) => [c.id, c]));
         picks = (await this.ai.rank(profile, candidates))
-          .filter((p) => validIds.has(p.paddleId)) // descartar ids inventados
+          .filter((p) => {
+            const paddle = byId.get(p.paddleId);
+            if (!paddle) return false; // descartar ids inventados
+            // Red de seguridad: descartar picks contraindicadas aunque la IA las elija.
+            const reason = contraindicationReason(profile, paddle);
+            if (reason) {
+              console.warn(`Pick de IA descartada (${paddle.name}): ${reason}`);
+              return false;
+            }
+            return true;
+          })
           .slice(0, 5)
           .map((p, i) => ({ ...p, rank: i + 1 }));
       } catch (err) {
@@ -197,7 +207,7 @@ export class RecommendPaddlesUseCase {
 
     if (this.ai) {
       try {
-        const validIds = new Set(candidates.map((c) => c.id));
+        const byId = new Map(candidates.map((c) => [c.id, c]));
         picks = (
           await this.ai.rank(profile, candidates, {
             feedback,
@@ -205,7 +215,16 @@ export class RecommendPaddlesUseCase {
             iteration: Math.max(1, Math.floor(shownIds.length / 4) + 1),
           })
         )
-          .filter((p) => validIds.has(p.paddleId))
+          .filter((p) => {
+            const paddle = byId.get(p.paddleId);
+            if (!paddle) return false;
+            const reason = contraindicationReason(profile, paddle);
+            if (reason) {
+              console.warn(`Pick de IA (refine) descartada (${paddle.name}): ${reason}`);
+              return false;
+            }
+            return true;
+          })
           .slice(0, 5)
           .map((p, i) => ({ ...p, rank: i + 1 }));
       } catch (err) {

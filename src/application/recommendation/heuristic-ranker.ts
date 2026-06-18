@@ -18,36 +18,64 @@ export function compatibleLevels(level: PaddleLevel): PaddleLevel[] {
 }
 
 /**
- * Reglas DURAS de seguridad/fit (diseño del fitter). Devuelven una penalización
- * fuerte (negativa grande) para candidatas que no deberían recomendarse a ese
- * perfil. No descartan del todo (para no quedarse sin opciones) pero las hunden
- * al fondo del ranking. La IA recibe estas mismas reglas como prohibiciones.
+ * Reglas DURAS de seguridad: una candidata está CONTRAINDICADA para este perfil
+ * (lesión/principiante) y NUNCA debe recomendarse, ni por la IA ni por el heurístico.
+ * Si devuelve un motivo, la paleta se excluye del resultado (no solo se penaliza).
+ * Devuelve el motivo (string) o null si es segura. La IA recibe estas mismas reglas
+ * como prohibiciones en el system prompt; acá actúan como red de seguridad final.
+ */
+export function contraindicationReason(profile: PlayerProfile, p: PaddleListItem): string | null {
+  const hasInjury = profile.hasInjuries && profile.injuryAreas.length > 0;
+
+  // Codo (epicondilitis): nada de goma dura ni balance alto.
+  if (hasInjury && profile.injuryAreas.includes("elbow")) {
+    if (p.hardness === "hard") return "goma dura contraindicada para tu molestia de codo";
+    if (p.balance === "high") return "balance alto contraindicado para tu molestia de codo";
+  }
+  // Hombro: nada de balance alto ni peso pesado.
+  if (hasInjury && profile.injuryAreas.includes("shoulder")) {
+    if (p.balance === "high") return "balance alto contraindicado para tu molestia de hombro";
+    if (p.weightMin !== null && p.weightMin > 375) return "peso elevado contraindicado para tu molestia de hombro";
+  }
+  // Muñeca: techo de peso y nada de balance alto.
+  if (hasInjury && profile.injuryAreas.includes("wrist")) {
+    if (p.weightMin !== null && p.weightMin > 370) return "peso elevado contraindicado para tu molestia de muñeca";
+    if (p.balance === "high") return "balance alto contraindicado para tu molestia de muñeca";
+  }
+  // Principiante: nada de diamante ni balance alto.
+  if (profile.level === "beginner") {
+    if (p.shape === "diamond") return "forma diamante no apta para iniciarte";
+    if (p.balance === "high") return "balance alto no apto para iniciarte";
+  }
+  return null;
+}
+
+/** Filtra candidatas contraindicadas; si todas lo fueran, devuelve las originales para no vaciar. */
+export function filterSafe(profile: PlayerProfile, candidates: PaddleListItem[]): PaddleListItem[] {
+  const safe = candidates.filter((c) => contraindicationReason(profile, c) === null);
+  return safe.length > 0 ? safe : candidates;
+}
+
+/**
+ * Penalización blanda de fit (no contraindicación dura): hunde en el ranking del
+ * heurístico las paletas menos ideales sin excluirlas. Las contraindicaciones duras
+ * se manejan aparte con contraindicationReason/filterSafe.
  */
 function safetyPenalty(profile: PlayerProfile, p: PaddleListItem): number {
   let penalty = 0;
   const hasInjury = profile.hasInjuries && profile.injuryAreas.length > 0;
 
-  // Codo (epicondilitis): nada de dura, balance alto ni carbono 18K.
-  if (hasInjury && profile.injuryAreas.includes("elbow")) {
-    if (p.hardness === "hard") penalty -= 8;
-    if (p.balance === "high") penalty -= 6;
-    if (p.faceMaterial?.includes("18")) penalty -= 4;
+  // Codo: el carbono 18K transmite más vibración aunque no esté prohibido.
+  if (hasInjury && profile.injuryAreas.includes("elbow") && p.faceMaterial?.includes("18")) {
+    penalty -= 4;
   }
-  // Hombro: nada de balance alto ni peso pesado.
-  if (hasInjury && profile.injuryAreas.includes("shoulder")) {
-    if (p.balance === "high") penalty -= 6;
-    if (p.weightMin !== null && p.weightMin > 370) penalty -= 4;
+  // Muñeca: peso medio-alto incómodo aunque no llegue al techo duro.
+  if (hasInjury && profile.injuryAreas.includes("wrist") && p.weightMax !== null && p.weightMax > 365) {
+    penalty -= 3;
   }
-  // Muñeca: techo de peso y preferir balance bajo.
-  if (hasInjury && profile.injuryAreas.includes("wrist")) {
-    if (p.weightMax !== null && p.weightMax > 365) penalty -= 5;
-    if (p.balance === "high") penalty -= 3;
-  }
-  // Principiante: nada de diamante, balance alto, ni combo dura+18K.
-  if (profile.level === "beginner") {
-    if (p.shape === "diamond") penalty -= 7;
-    if (p.balance === "high") penalty -= 5;
-    if (p.hardness === "hard" && p.faceMaterial?.includes("18")) penalty -= 4;
+  // Principiante: combo goma dura + 18K es exigente aunque no esté prohibido.
+  if (profile.level === "beginner" && p.hardness === "hard" && p.faceMaterial?.includes("18")) {
+    penalty -= 4;
   }
   return penalty;
 }
@@ -77,9 +105,11 @@ export function heuristicRank(
   count = 4,
   refinement?: RefinementFeedback,
 ): RankedPick[] {
+  // Red de seguridad dura: nunca rankear paletas contraindicadas para el perfil.
+  const safe = filterSafe(profile, candidates);
   const excludeBrands = new Set(refinement?.excludeBrandSlugs ?? []);
-  const base = candidates.filter((c) => !excludeBrands.has(c.brandSlug));
-  const pool = base.length >= count ? base : candidates;
+  const base = safe.filter((c) => !excludeBrands.has(c.brandSlug));
+  const pool = base.length >= count ? base : safe;
   const primaryGoal = profile.improveGoals[0] ?? null;
   const brandSet = new Set(profile.brandSlugs);
 
@@ -132,9 +162,19 @@ export function heuristicRank(
       score += 2;
       reasons.push("la forma redonda maximiza el control");
     }
-    if (primaryGoal === "power" && (paddle.shape === "diamond" || paddle.shape === "hybrid")) {
-      score += 2;
-      reasons.push("su forma favorece el remate");
+    if (primaryGoal === "power") {
+      // La potencia "ideal" depende de la pegada: quien NO pega fuerte saca potencia
+      // de goma blanda + salida de bola (lágrima), no de un diamante de balance alto
+      // que solo cansa el brazo (misma regla que el system prompt de la IA).
+      if (profile.strengthPref === "needs_power") {
+        if (paddle.shape === "teardrop" && paddle.hardness !== "hard") {
+          score += 2;
+          reasons.push("te da potencia con buena salida de bola, sin exigirte pegada");
+        }
+      } else if (paddle.shape === "diamond" || paddle.shape === "hybrid") {
+        score += 2;
+        reasons.push("su forma favorece el remate");
+      }
     }
     if (
       (profile.improveGoals.includes("comfort") || profile.improveGoals.includes("ball_exit")) &&
@@ -218,10 +258,16 @@ export function heuristicRank(
       if (paddle.weightMin !== null && paddle.weightMin > 372) score -= 2;
     }
     if (refinement?.wantMorePower) {
-      // Señal de potencia, siempre sujeta a safetyPenalty.
-      if (paddle.playStyle === "power") score += 1.5;
-      if (paddle.shape === "diamond" || paddle.shape === "hybrid") score += 1;
-      if (paddle.balance === "high") score += 0.5;
+      // Señal de potencia, siempre sujeta a safetyPenalty. Sin pegada, la potencia
+      // viene de salida de bola (blanda/lágrima), no de balance alto.
+      if (profile.strengthPref === "needs_power") {
+        if (paddle.shape === "teardrop") score += 1.5;
+        if (paddle.hardness !== "hard") score += 1;
+      } else {
+        if (paddle.playStyle === "power") score += 1.5;
+        if (paddle.shape === "diamond" || paddle.shape === "hybrid") score += 1;
+        if (paddle.balance === "high") score += 0.5;
+      }
     }
     if (refinement?.wantMoreControl) {
       if (paddle.playStyle === "control") score += 1.5;

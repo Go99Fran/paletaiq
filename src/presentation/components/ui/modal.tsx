@@ -10,9 +10,11 @@ export interface ModalProps {
   title?: string;
   children: ReactNode;
   className?: string;
+  /** Etiqueta accesible del botón cerrar (pasala traducida desde i18n). */
+  closeLabel?: string;
 }
 
-export function Modal({ open, onClose, title, children, className }: ModalProps) {
+export function Modal({ open, onClose, title, children, className, closeLabel = "Cerrar" }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close"
+          aria-label={closeLabel}
           className="rounded-md p-1 text-muted transition-colors hover:bg-border/50 hover:text-text"
         >
           <X size={18} aria-hidden />

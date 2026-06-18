@@ -12,6 +12,8 @@ export function DualRangeSlider({
   valueMin,
   valueMax,
   onChange,
+  labelMin = "Precio mínimo",
+  labelMax = "Precio máximo",
 }: {
   min: number;
   max: number;
@@ -19,6 +21,8 @@ export function DualRangeSlider({
   valueMin: number;
   valueMax: number;
   onChange: (next: { min: number; max: number }) => void;
+  labelMin?: string;
+  labelMax?: string;
 }) {
   const pct = (v: number) => ((v - min) / (max - min)) * 100;
 
@@ -48,7 +52,7 @@ export function DualRangeSlider({
         step={step}
         value={valueMin}
         onChange={(e) => handleMin(Number(e.target.value))}
-        aria-label="Precio mínimo"
+        aria-label={labelMin}
         className="dual-thumb pointer-events-none absolute top-1/2 h-6 w-full -translate-y-1/2 appearance-none bg-transparent"
         style={{ zIndex: valueMin > max - max * 0.1 ? 5 : 3 }}
       />
@@ -60,7 +64,7 @@ export function DualRangeSlider({
         step={step}
         value={valueMax}
         onChange={(e) => handleMax(Number(e.target.value))}
-        aria-label="Precio máximo"
+        aria-label={labelMax}
         className="dual-thumb pointer-events-none absolute top-1/2 h-6 w-full -translate-y-1/2 appearance-none bg-transparent"
         style={{ zIndex: 4 }}
       />

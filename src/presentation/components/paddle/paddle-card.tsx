@@ -20,8 +20,10 @@ export async function PaddleCard({ paddle }: { paddle: PaddleListItem }) {
         href={`/paletas/${paddle.slug}`}
         className="relative flex h-44 items-center justify-center bg-gradient-to-br from-white/40 to-transparent"
       >
+        {/* storeCount viene del repo contando solo tiendas con in_stock=TRUE,
+            así que > 0 = hay stock real en al menos una tienda. */}
         {paddle.storeCount > 0 && (
-          <span className="absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-success/12 px-2 py-0.5 text-[11px] font-semibold text-success">
+          <span className="absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-success/12 px-2 py-0.5 text-xs font-semibold text-success">
             <Check size={11} aria-hidden strokeWidth={3} />
             {t("inStock")}
           </span>

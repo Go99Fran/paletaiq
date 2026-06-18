@@ -13,7 +13,8 @@
     "finder": "Find my racket",
     "signIn": "Sign in",
     "signOut": "Sign out",
-    "admin": "Admin"
+    "admin": "Admin",
+    "menu": "Menu"
   },
   "home": {
     "heroTitle": "Find your perfect padel racket",
@@ -93,6 +94,7 @@
     "page": "Page {page} of {total}",
     "prev": "Previous",
     "next": "Next",
+    "paginationNav": "Pagination",
     "addCompare": "Compare",
     "removeCompare": "Remove"
   },

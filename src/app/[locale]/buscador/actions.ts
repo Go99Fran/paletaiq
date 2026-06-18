@@ -24,6 +24,7 @@ import type {
   StrengthPref,
 } from "@/domain/player-profile/player-profile.entity";
 import type { RefinementFeedback } from "@/domain/recommendation/refinement-feedback.entity";
+import type { RecommendResult } from "@/application/recommendation/recommend-paddles.usecase";
 import { findUserIdByEmail } from "@/infrastructure/db/user.mysql.repository";
 
 export interface FinderInput {
@@ -59,6 +60,7 @@ export interface FinderRecommendation {
   slug: string;
   name: string;
   brandName: string;
+  brandSlug: string;
   imageUrl: string | null;
   bestPrice: number | null;
   bestPriceCurrency: string | null;
@@ -74,6 +76,31 @@ export interface FinderResult {
   recommendations: FinderRecommendation[];
   /** Nuevo techo de presupuesto si se amplió; -1 si se quitó el tope; null si no se tocó. */
   budgetExpandedToMax: number | null;
+}
+
+/** Mapea el resultado del caso de uso al DTO del finder (compartido por execute y refine). */
+function toFinderResult(result: RecommendResult): FinderResult {
+  return {
+    heuristic: result.recommendations.some((r) => r.heuristic),
+    recommendations: result.recommendations.map((r) => ({
+      paddleId: r.paddle.id,
+      rank: r.rank,
+      reason: r.reason,
+      slug: r.paddle.slug,
+      name: r.paddle.name,
+      brandName: r.paddle.brandName,
+      brandSlug: r.paddle.brandSlug,
+      imageUrl: r.paddle.imageUrl,
+      bestPrice: r.paddle.bestPrice,
+      bestPriceCurrency: r.paddle.bestPriceCurrency,
+      shape: r.paddle.shape,
+      balance: r.paddle.balance,
+      hardness: r.paddle.hardness,
+      level: r.paddle.level,
+      playStyle: r.paddle.playStyle,
+    })),
+    budgetExpandedToMax: result.budgetExpandedToMax,
+  };
 }
 
 export interface RefinementFeedbackInput {
@@ -208,27 +235,7 @@ export async function getRecommendations(input: FinderInput): Promise<FinderResu
   }
 
   const result = await recommendPaddles.execute(profile, userId);
-
-  return {
-    heuristic: result.recommendations.some((r) => r.heuristic),
-    recommendations: result.recommendations.map((r) => ({
-      paddleId: r.paddle.id,
-      rank: r.rank,
-      reason: r.reason,
-      slug: r.paddle.slug,
-      name: r.paddle.name,
-      brandName: r.paddle.brandName,
-      imageUrl: r.paddle.imageUrl,
-      bestPrice: r.paddle.bestPrice,
-      bestPriceCurrency: r.paddle.bestPriceCurrency,
-      shape: r.paddle.shape,
-      balance: r.paddle.balance,
-      hardness: r.paddle.hardness,
-      level: r.paddle.level,
-      playStyle: r.paddle.playStyle,
-    })),
-    budgetExpandedToMax: result.budgetExpandedToMax,
-  };
+  return toFinderResult(result);
 }
 
 export async function refineRecommendations(
@@ -249,25 +256,5 @@ export async function refineRecommendations(
   }
 
   const result = await recommendPaddles.refine(profile, feedback, userId);
-
-  return {
-    heuristic: result.recommendations.some((r) => r.heuristic),
-    recommendations: result.recommendations.map((r) => ({
-      paddleId: r.paddle.id,
-      rank: r.rank,
-      reason: r.reason,
-      slug: r.paddle.slug,
-      name: r.paddle.name,
-      brandName: r.paddle.brandName,
-      imageUrl: r.paddle.imageUrl,
-      bestPrice: r.paddle.bestPrice,
-      bestPriceCurrency: r.paddle.bestPriceCurrency,
-      shape: r.paddle.shape,
-      balance: r.paddle.balance,
-      hardness: r.paddle.hardness,
-      level: r.paddle.level,
-      playStyle: r.paddle.playStyle,
-    })),
-    budgetExpandedToMax: result.budgetExpandedToMax,
-  };
+  return toFinderResult(result);
 }

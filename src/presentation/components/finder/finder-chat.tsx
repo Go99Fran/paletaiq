@@ -575,6 +575,8 @@ function BudgetInput({
         valueMin={range.min}
         valueMax={range.max}
         onChange={setRange}
+        labelMin={t("budgetMin")}
+        labelMax={t("budgetMax")}
       />
       <label className="flex cursor-pointer items-center gap-2 text-xs text-muted">
         <input
@@ -623,12 +625,13 @@ function Results({
   const [wantMorePower, setWantMorePower] = useState(false);
   const [wantMoreControl, setWantMoreControl] = useState(false);
   const [wantLighter, setWantLighter] = useState(false);
+  // "Ninguna me convence": pide otra tanda distinta a las ya mostradas, sin forzar
+  // dirección (las shownPaddleIds ya se excluyen en runRefine). Toggle independiente.
+  const [wantDifferent, setWantDifferent] = useState(false);
   const [excludeBrandSlugs, setExcludeBrandSlugs] = useState<string[]>([]);
 
-  const seenBrandSlugs = [...new Set(result.recommendations.map((r) => {
-    const b = brands.find((x) => x.name === r.brandName);
-    return b?.slug ?? null;
-  }).filter((x): x is string => x !== null))];
+  // brandSlug viene directo del backend (antes se matcheaba por nombre exacto y podía fallar).
+  const seenBrandSlugs = [...new Set(result.recommendations.map((r) => r.brandSlug))];
 
   const feedbackHint = buildRefinementIntro(
     t,
@@ -715,7 +718,7 @@ function Results({
                     #{rec.rank}
                   </span>
                   {rec.rank === 1 && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-tertiary/20 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-tertiary/20 px-2 py-0.5 text-xs font-semibold text-primary">
                       <Sparkles size={11} aria-hidden />
                       {t("bestMatch")}
                     </span>
@@ -780,7 +783,7 @@ function Results({
           <QuickChip active={wantMorePower} onClick={() => setWantMorePower((v) => !v)} label={t("refineChipMorePower")} />
           <QuickChip active={wantMoreControl} onClick={() => setWantMoreControl((v) => !v)} label={t("refineChipMoreControl")} />
           <QuickChip active={wantLighter} onClick={() => setWantLighter((v) => !v)} label={t("refineChipLighter")} />
-          <QuickChip active={wantCheaper && wantMoreControl} onClick={() => { setWantCheaper(true); setWantMoreControl(true); }} label={t("refineChipNoneConvinces")} />
+          <QuickChip active={wantDifferent} onClick={() => setWantDifferent((v) => !v)} label={t("refineChipNoneConvinces")} />
           {seenBrandSlugs.map((slug) => (
             <QuickChip
               key={slug}

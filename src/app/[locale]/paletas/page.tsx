@@ -175,7 +175,7 @@ export default async function PaddlesPage({
             page={page}
             totalPages={totalPages}
             hrefFor={pageHref}
-            labels={{ prev: t("prev"), next: t("next") }}
+            labels={{ prev: t("prev"), next: t("next"), nav: t("paginationNav") }}
           />
         </>
       )}

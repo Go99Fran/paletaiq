@@ -7,7 +7,7 @@ export interface PaginationProps {
   totalPages: number;
   /** Construye el href para una página dada. */
   hrefFor: (page: number) => string;
-  labels: { prev: string; next: string };
+  labels: { prev: string; next: string; nav?: string };
 }
 
 /** Genera la secuencia de páginas con elipsis: 1 … 4 5 [6] 7 8 … 20 */
@@ -33,7 +33,7 @@ export function Pagination({ page, totalPages, hrefFor, labels }: PaginationProp
     "inline-flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm transition-colors";
 
   return (
-    <nav className="mt-8 flex flex-wrap items-center justify-center gap-1.5" aria-label="Paginación">
+    <nav className="mt-8 flex flex-wrap items-center justify-center gap-1.5" aria-label={labels.nav ?? "Paginación"}>
       {page > 1 ? (
         <Link href={hrefFor(page - 1)} className={cn(arrow, "glass hover:text-primary")}>
           <ChevronLeft size={16} aria-hidden />

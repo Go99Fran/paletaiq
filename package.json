@@ -18,7 +18,9 @@
     "catalog:curate": "node --env-file=.env scripts/curate-catalog-from-targets.mjs",
     "catalog:curate:apply": "node --env-file=.env scripts/curate-catalog-from-targets.mjs --apply --include-emerging",
     "catalog:discover": "node --env-file=.env scripts/discover-review-candidates.mjs",
-    "images:fix:adidas": "node --env-file=.env scripts/fix-adidas-images.mjs"
+    "images:fix": "node --env-file=.env scripts/fix-images-zonadepadel.mjs",
+    "images:fix:akkeron": "node --env-file=.env scripts/fix-akkeron-images.mjs",
+    "images:fix:bullpadel": "node --env-file=.env scripts/fix-bullpadel-images.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",

@@ -13,7 +13,8 @@
     "finder": "Elegir mi paleta",
     "signIn": "Login",
     "signOut": "Salir",
-    "admin": "Admin"
+    "admin": "Admin",
+    "menu": "Menú"
   },
   "home": {
     "heroTitle": "Encontrá tu paleta ideal",
@@ -93,6 +94,7 @@
     "page": "Página {page} de {total}",
     "prev": "Anterior",
     "next": "Siguiente",
+    "paginationNav": "Paginación",
     "addCompare": "Comparar",
     "removeCompare": "Quitar"
   },
