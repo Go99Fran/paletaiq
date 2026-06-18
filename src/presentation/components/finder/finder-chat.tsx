@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Bot, Check, ImageOff, RotateCcw, Send, Sparkles } from "lucide-react";
@@ -80,23 +80,43 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
   const [error, setError] = useState(false);
   const [pending, startTransition] = useTransition();
   const viewportRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // Pasos visibles según las respuestas actuales (ramas del árbol).
   const steps = visibleQuestions(input);
   const step: Question | undefined = steps[stepIndex];
 
-  useEffect(() => {
-    const el = viewportRef.current;
-    if (!el) return;
+  function scrollToBottom(behavior: ScrollBehavior = "auto") {
+    bottomRef.current?.scrollIntoView({ behavior, block: "end" });
+  }
+
+  useLayoutEffect(() => {
     const reduceMotion =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    el.scrollTo({
-      top: el.scrollHeight,
-      behavior: reduceMotion ? "auto" : "smooth",
+    const behavior: ScrollBehavior = reduceMotion ? "auto" : "smooth";
+
+    const raf1 = requestAnimationFrame(() => scrollToBottom(behavior));
+    // Segundo frame para casos donde el layout termina de crecer por animación/typing.
+    const raf2 = requestAnimationFrame(() => scrollToBottom("auto"));
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [history, result, pending, isRefining, stepIndex, showResultsWhileRefining]);
+
+  useEffect(() => {
+    const contentEl = contentRef.current;
+    if (!contentEl || typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => {
+      scrollToBottom("auto");
     });
-  }, [history, result, pending, isRefining, stepIndex]);
+    observer.observe(contentEl);
+
+    return () => observer.disconnect();
+  }, []);
 
   /** Registra la respuesta en el historial y avanza al siguiente paso visible. */
   function commit(answerLabel: string, patch: Partial<FinderInput>) {
@@ -181,11 +201,11 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
 
       <div
         ref={viewportRef}
-        className="h-[75vh] min-h-[560px] overflow-y-auto rounded-2xl border border-border/70 bg-surface/45 px-2 py-3 sm:px-4"
+        className="h-[68vh] min-h-[420px] max-h-[760px] overflow-y-auto rounded-2xl border border-border/70 bg-surface/45 px-2 py-3 sm:h-[70vh] sm:px-4"
         aria-live="polite"
         aria-atomic="false"
       >
-        <div className="space-y-4">
+        <div ref={contentRef} className="space-y-4">
         {history.map((entry, i) => (
           <div key={i} className="space-y-2">
             <ChatBubble role="bot">{entry.question}</ChatBubble>
@@ -223,7 +243,6 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
             resultIntroVariant={resultIntroVariant}
             feedback={feedback}
             brands={brands}
-            onOpenAdjustments={() => setStepIndex(Math.max(0, steps.findIndex((s) => s.id === "improveGoals")))}
           />
         )}
 
@@ -587,7 +606,6 @@ function Results({
   resultIntroVariant,
   feedback,
   brands,
-  onOpenAdjustments,
 }: {
   result: FinderResult;
   t: TFn;
@@ -599,7 +617,6 @@ function Results({
   resultIntroVariant: "resultsIntro1" | "resultsIntro2" | "resultsIntro3";
   feedback: RefinementFeedbackInput;
   brands: Array<{ slug: string; name: string }>;
-  onOpenAdjustments: () => void;
 }) {
   const [freeFeedback, setFreeFeedback] = useState("");
   const [wantCheaper, setWantCheaper] = useState(false);
@@ -791,9 +808,6 @@ function Results({
           <Button onClick={runRefine} disabled={!canRefine}>
             <Sparkles size={15} aria-hidden />
             {t("refineSearchAgain")}
-          </Button>
-          <Button variant="glass" size="sm" onClick={onOpenAdjustments}>
-            {t("refineChangeAnswers")}
           </Button>
           {!canRefine && <p className="text-xs text-muted">{t("refineLoopLimit")}</p>}
         </div>

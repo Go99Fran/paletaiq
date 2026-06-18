@@ -275,7 +275,6 @@
     "refineChipExcludeBrand": "I don't like {brand}",
     "refineFreePlaceholder": "Tell me what you want or what felt off. E.g. 'similar feel, but cheaper and easier to handle'",
     "refineSearchAgain": "Search again",
-    "refineChangeAnswers": "Change my answers",
     "refineLoopLimit": "We've done a few refinement rounds. It's better to adjust key answers and run again.",
     "refineTagCheaper": "more affordable",
     "refineTagPower": "more punch",
