@@ -1,0 +1,226 @@
+{
+  "Bullpadel": {
+    "Pro_Line": [
+      "Vertex 04 2025",
+      "Vertex 04 Hybrid 2025",
+      "Vertex 04 Comfort 2025",
+      "Hack 04 2025",
+      "Hack 04 Hybrid 2025",
+      "XPLO 2025",
+      "Neuron 2025"
+    ],
+    "Advanced": [
+      "Elite 2025",
+      "Flow 2025",
+      "Pearl 2025",
+      "Icon 2025"
+    ],
+    "Mid_Beginner": [
+      "BP10 Evo 2025",
+      "K2 Power 2025",
+      "Indiga Power 2025",
+      "Indiga Control 2025"
+    ]
+  },
+
+  "Nox": {
+    "AT10": [
+      "AT10 Genius 18K 2025",
+      "AT10 Genius 12K 2025",
+      "AT10 Genius Attack 2025"
+    ],
+    "ML10": [
+      "ML10 Pro Cup 2025",
+      "ML10 Pro Cup Silver 2025",
+      "ML10 Quantum 3K 2025"
+    ],
+    "Quantum_Series": [
+      "TL10 Quantum 12K 2025",
+      "LA10 Quantum 12K 2025",
+      "VK10 Quantum 3K 2025"
+    ],
+    "Future": [
+      "Future Attack 12K 2025",
+      "Future Hybrid 12K 2025",
+      "Future Control 12K 2025"
+    ],
+    "Other": [
+      "Equation Advanced 2025",
+      "X-One Evo 2025"
+    ]
+  },
+
+  "Adidas": {
+    "Metalbone": [
+      "Metalbone HRD+ 3.4 2025",
+      "Metalbone CTRL 3.4 2025",
+      "Metalbone Carbon 3.4 2025"
+    ],
+    "Adipower": [
+      "Adipower Multiweight 3.4 2025",
+      "Adipower CTRL 3.4 2025"
+    ],
+    "Cross_IT": [
+      "Cross IT 2026",
+      "Cross IT Light 2025"
+    ],
+    "Entry": [
+      "Drive 3.3 2024",
+      "Match 3.3 2024"
+    ]
+  },
+
+  "Head": {
+    "Extreme": [
+      "Extreme Pro 2026",
+      "Extreme Motion 2025",
+      "Extreme One 2025"
+    ],
+    "Gravity": [
+      "Gravity Pro 2026"
+    ],
+    "Coello": [
+      "Coello Pro 2026",
+      "Coello Team 2026",
+      "Coello Motion 2026"
+    ],
+    "Speed": [
+      "Speed Pro 2026",
+      "Speed Motion 2026"
+    ],
+    "Radical": [
+      "Radical Motion 2026"
+    ]
+  },
+
+  "Babolat": {
+    "Viper": [
+      "Technical Viper 2025",
+      "Air Viper 2025",
+      "Counter Viper 2025"
+    ],
+    "Veron": [
+      "Technical Veron 2025",
+      "Air Veron 2025",
+      "Counter Veron 2025"
+    ],
+    "Vertuo": [
+      "Technical Vertuo 2025",
+      "Air Vertuo 2025",
+      "Counter Vertuo 2025"
+    ]
+  },
+
+  "Siux": {
+    "Pro": [
+      "Fenix Pro 5 2025",
+      "Electra ST4 Pro 2025",
+      "Diablo Pro 4 2025"
+    ],
+    "Advanced": [
+      "Electra ST3 2024",
+      "Spartan Revolution 2025",
+      "Genesis Power 2025"
+    ],
+    "Other": [
+      "Trilogy Elite 5 2025",
+      "Valkiria GO 2025"
+    ]
+  },
+
+  "StarVie": {
+    "Pro": [
+      "Kenta Pro 2025",
+      "Astrum Pro 2025",
+      "Raptor Evolution 2025",
+      "Titania Pro 2025"
+    ]
+  },
+
+  "DropShot": {
+    "Pro": [
+      "Canyon Pro Attack 1.5 2025",
+      "Explorer Pro 5.0 2025",
+      "Conqueror Control 2025",
+      "Axion Attack 2025"
+    ]
+  },
+
+  "Wilson": {
+    "Bela": [
+      "Bela Pro V3 2025",
+      "Bela V3 2025",
+      "Bela LT V3 2025"
+    ],
+    "Blade": [
+      "Blade Pro 2025"
+    ]
+  },
+
+  "Kombat": {
+    "Volcanic_2_5": [
+      "Etna 2.5",
+      "Teide 2.5",
+      "Vesubio 2.5",
+      "Galeras 2.5",
+      "Osorno 2.5",
+      "Arenal 2.5",
+      "Fuji 2.5",
+      "Krakatoa 2.5"
+    ]
+  },
+
+  "Vairo": {
+    "Main": [
+      "Across Yellow 2025",
+      "Across Orange 2025",
+      "Columns Carbon 2025"
+    ]
+  },
+
+  "Royal_Padel": {
+    "M27": [
+      "M27 R-Control 2025",
+      "M27 Light 2025"
+    ],
+    "Other": [
+      "Whip Extreme 2025"
+    ]
+  },
+
+  "Black_Crown": {
+    "Main": [
+      "Piton 12 2025",
+      "Piton Attack 2025",
+      "Special Pro 2025",
+      "Hurricane Pro 2025"
+    ]
+  },
+
+  "Akkeron": {
+    "Main": [
+      "Cobra Diablo 2025",
+      "Atlas Carbon 2025",
+      "Furia Hybrid 2025"
+    ]
+  },
+
+  "Felina": {
+    "Main": [
+      "Black Edition 2026",
+      "Black Panther 2025",
+      "Claw 2025",
+      "Dark Gaze 2025",
+      "Fang 2025",
+      "Green Tiger 2025",
+      "Red Lion 2025",
+      "Shadow Hunt 2025",
+      "White Bengal 2025",
+      "B-Cat 18K 2024",
+      "F1 Max 2024",
+      "F2 Line Blue 2025",
+      "F2 Line Orange",
+      "Night Shade"
+    ]
+  }
+}

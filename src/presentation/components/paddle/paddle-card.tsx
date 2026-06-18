@@ -21,7 +21,7 @@ export async function PaddleCard({ paddle }: { paddle: PaddleListItem }) {
         className="relative flex h-44 items-center justify-center bg-gradient-to-br from-white/40 to-transparent"
       >
         {paddle.storeCount > 0 && (
-          <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-success/12 px-2 py-0.5 text-[11px] font-semibold text-success">
+          <span className="absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-success/12 px-2 py-0.5 text-[11px] font-semibold text-success">
             <Check size={11} aria-hidden strokeWidth={3} />
             {t("inStock")}
           </span>
