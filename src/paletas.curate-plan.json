@@ -1,0 +1,275 @@
+{
+  "generatedAt": "2026-06-18T02:11:21.308Z",
+  "apply": true,
+  "minPerBrand": 6,
+  "maxPerBrand": 10,
+  "includeEmerging": true,
+  "actions": [
+    {
+      "brand": "Bullpadel",
+      "brandSlug": "bullpadel",
+      "brandId": 1,
+      "totalInDb": 79,
+      "modelsInJson": 15,
+      "matchedFromJson": 6,
+      "keep": 10,
+      "deactivate": 69,
+      "keepIds": [
+        189,
+        249,
+        38,
+        291,
+        53,
+        43,
+        353,
+        281,
+        276,
+        272
+      ]
+    },
+    {
+      "brand": "Nox",
+      "brandSlug": "nox",
+      "brandId": 4,
+      "totalInDb": 41,
+      "modelsInJson": 14,
+      "matchedFromJson": 5,
+      "keep": 10,
+      "deactivate": 31,
+      "keepIds": [
+        479,
+        171,
+        178,
+        360,
+        456,
+        364,
+        363,
+        358,
+        357,
+        356
+      ]
+    },
+    {
+      "brand": "Adidas",
+      "brandSlug": "adidas",
+      "brandId": 9,
+      "totalInDb": 94,
+      "modelsInJson": 9,
+      "matchedFromJson": 5,
+      "keep": 10,
+      "deactivate": 84,
+      "keepIds": [
+        319,
+        200,
+        317,
+        206,
+        295,
+        506,
+        325,
+        322,
+        321,
+        316
+      ]
+    },
+    {
+      "brand": "Head",
+      "brandSlug": "head",
+      "skipped": true,
+      "reason": "brand_missing_in_db"
+    },
+    {
+      "brand": "Babolat",
+      "brandSlug": "babolat",
+      "brandId": 8,
+      "totalInDb": 19,
+      "modelsInJson": 9,
+      "matchedFromJson": 7,
+      "keep": 10,
+      "deactivate": 9,
+      "keepIds": [
+        130,
+        138,
+        132,
+        131,
+        123,
+        124,
+        135,
+        141,
+        140,
+        128
+      ]
+    },
+    {
+      "brand": "Siux",
+      "brandSlug": "siux",
+      "brandId": 2,
+      "totalInDb": 31,
+      "modelsInJson": 8,
+      "matchedFromJson": 2,
+      "keep": 10,
+      "deactivate": 21,
+      "keepIds": [
+        37,
+        436,
+        434,
+        432,
+        431,
+        428,
+        426,
+        425,
+        424,
+        78
+      ]
+    },
+    {
+      "brand": "StarVie",
+      "brandSlug": "starvie",
+      "brandId": 10,
+      "totalInDb": 11,
+      "modelsInJson": 4,
+      "matchedFromJson": 2,
+      "keep": 10,
+      "deactivate": 1,
+      "keepIds": [
+        59,
+        57,
+        252,
+        49,
+        256,
+        255,
+        254,
+        253,
+        62,
+        58
+      ]
+    },
+    {
+      "brand": "DropShot",
+      "brandSlug": "dropshot",
+      "brandId": 13,
+      "totalInDb": 16,
+      "modelsInJson": 4,
+      "matchedFromJson": 2,
+      "keep": 10,
+      "deactivate": 6,
+      "keepIds": [
+        170,
+        262,
+        258,
+        257,
+        160,
+        157,
+        261,
+        260,
+        259,
+        167
+      ]
+    },
+    {
+      "brand": "Wilson",
+      "brandSlug": "wilson",
+      "skipped": true,
+      "reason": "brand_missing_in_db"
+    },
+    {
+      "brand": "Kombat",
+      "brandSlug": "kombat",
+      "brandId": 5,
+      "totalInDb": 24,
+      "modelsInJson": 8,
+      "matchedFromJson": 8,
+      "keep": 10,
+      "deactivate": 14,
+      "keepIds": [
+        98,
+        97,
+        96,
+        19,
+        15,
+        101,
+        99,
+        100,
+        95,
+        94
+      ]
+    },
+    {
+      "brand": "Vairo",
+      "brandSlug": "vairo",
+      "brandId": 3,
+      "totalInDb": 40,
+      "modelsInJson": 3,
+      "matchedFromJson": 2,
+      "keep": 10,
+      "deactivate": 30,
+      "keepIds": [
+        202,
+        198,
+        93,
+        87,
+        46,
+        29,
+        45,
+        88,
+        406,
+        405
+      ]
+    },
+    {
+      "brand": "Royal_Padel",
+      "brandSlug": "royal",
+      "brandId": 6,
+      "totalInDb": 14,
+      "modelsInJson": 3,
+      "matchedFromJson": 0,
+      "keep": 8,
+      "deactivate": 6,
+      "keepIds": [
+        79,
+        108,
+        152,
+        110,
+        109,
+        107,
+        82,
+        80
+      ]
+    },
+    {
+      "brand": "Black_Crown",
+      "brandSlug": "blackcrown",
+      "brandId": 12,
+      "totalInDb": 25,
+      "modelsInJson": 4,
+      "matchedFromJson": 1,
+      "keep": 6,
+      "deactivate": 19,
+      "keepIds": [
+        347,
+        63,
+        352,
+        351,
+        350,
+        349
+      ]
+    },
+    {
+      "brand": "Akkeron",
+      "brandSlug": "akkeron",
+      "brandId": 11,
+      "totalInDb": 17,
+      "modelsInJson": 3,
+      "matchedFromJson": 0,
+      "keep": 6,
+      "deactivate": 11,
+      "keepIds": [
+        339,
+        338,
+        337,
+        336,
+        335,
+        334
+      ]
+    }
+  ]
+}

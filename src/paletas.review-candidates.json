@@ -1,0 +1,1132 @@
+{
+  "generatedAt": "2026-06-18T01:57:19.589Z",
+  "sources": [
+    {
+      "brandSlug": "bullpadel",
+      "url": "https://www.bullpadel.com/es/28-palas",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 19,
+      "newSignals": 9
+    },
+    {
+      "brandSlug": "nox",
+      "url": "https://www.noxsport.com/collections/palas-de-padel-nox",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 50,
+      "newSignals": 3
+    },
+    {
+      "brandSlug": "adidas",
+      "url": "https://allforpadel.com/es/54-palas-padel",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 50,
+      "newSignals": 31
+    },
+    {
+      "brandSlug": "babolat",
+      "url": "https://babolat.com.ar/",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 2,
+      "newSignals": 0
+    },
+    {
+      "brandSlug": "siux",
+      "url": "https://www.siuxpadel.com/collections/palas",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 50,
+      "newSignals": 28
+    },
+    {
+      "brandSlug": "starvie",
+      "url": "https://starvie.com/collections/palas",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 0,
+      "newSignals": 0
+    },
+    {
+      "brandSlug": "dropshot",
+      "url": "https://ar.dropshotstore.com/collections/all-levels",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 0,
+      "newSignals": 0
+    },
+    {
+      "brandSlug": "vairo",
+      "url": "https://padel.vairo.com/collections/all",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 0,
+      "newSignals": 0
+    },
+    {
+      "brandSlug": "royal",
+      "url": "https://www.royalpadel.com.ar/productos/",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 0,
+      "newSignals": 0
+    },
+    {
+      "brandSlug": "blackcrown",
+      "url": "https://blackcrown.es/categoria-producto/palas-de-padel/",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 1,
+      "newSignals": 1
+    },
+    {
+      "brandSlug": "akkeron",
+      "url": "https://akkeron.com/",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 0,
+      "newSignals": 0
+    },
+    {
+      "brandSlug": "wilson",
+      "url": "https://www.wilson.com/es-es/padel",
+      "type": "catalog",
+      "ok": false,
+      "error": "HTTP 403",
+      "extractedPhrases": 0,
+      "newSignals": 0
+    },
+    {
+      "brandSlug": "head",
+      "url": "https://www.head.com/en_US/padel",
+      "type": "catalog",
+      "ok": true,
+      "error": null,
+      "extractedPhrases": 0,
+      "newSignals": 0
+    }
+  ],
+  "candidates": [
+    {
+      "brand_slug": "bullpadel",
+      "source_url": "https://www.bullpadel.com/es/28-palas",
+      "source_type": "catalog",
+      "phrase": "bullpadel",
+      "mention_count": 104,
+      "best_db_match": {
+        "id": 30,
+        "name": "PALA BULLPADEL VERTEX ADVANCE",
+        "slug": "bullpadel-vertex-advance",
+        "year": null,
+        "score": 0.3333333333333333
+      }
+    },
+    {
+      "brand_slug": "bullpadel",
+      "source_url": "https://www.bullpadel.com/es/28-palas",
+      "source_type": "catalog",
+      "phrase": "hack vertex vibradrive carbontube calzado bp fluid thermo sea",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 3,
+        "name": "PALA BULLPADEL VERTEX 05 ARGENTINA 26",
+        "slug": "bullpadel-vertex-05-argentina-26",
+        "year": 2026,
+        "score": 0.1111111111111111
+      }
+    },
+    {
+      "brand_slug": "bullpadel",
+      "source_url": "https://www.bullpadel.com/es/28-palas",
+      "source_type": "catalog",
+      "phrase": "neuron 02 edge rome ltd la pala exclusiva del torneo major de roma esta disenada en",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 517,
+        "name": "PALA BULLPADEL NEURON 02 EDGE ROMA",
+        "slug": "bullpadel-neuron-02-edge-roma",
+        "year": null,
+        "score": 0.26666666666666666
+      }
+    },
+    {
+      "brand_slug": "bullpadel",
+      "source_url": "https://www.bullpadel.com/es/28-palas",
+      "source_type": "catalog",
+      "phrase": "vertex 05 woman ltd argentina es pala oficial del torneo premier padel buenos aires",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 3,
+        "name": "PALA BULLPADEL VERTEX 05 ARGENTINA 26",
+        "slug": "bullpadel-vertex-05-argentina-26",
+        "year": 2026,
+        "score": 0.2727272727272727
+      }
+    },
+    {
+      "brand_slug": "bullpadel",
+      "source_url": "https://www.bullpadel.com/es/28-palas",
+      "source_type": "catalog",
+      "phrase": "vertex 02 atletico de madrid esta pensada para jugadores que compiten cada punto con i",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 47,
+        "name": "PALA BULLPADEL VERTEX 02 ATLETICO DE MADRID",
+        "slug": "bullpadel-vertex-02-atletico-de-madrid",
+        "year": null,
+        "score": 0.3333333333333333
+      }
+    },
+    {
+      "brand_slug": "bullpadel",
+      "source_url": "https://www.bullpadel.com/es/28-palas",
+      "source_type": "catalog",
+      "phrase": "vertex 05 light bruselas 26 ltd es una de las palas oficiales del torneo premier pade",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 48,
+        "name": "PALA BULLPADEL VERTEX 05 LIGHT BRUSELAS 26",
+        "slug": "bullpadel-vertex-05-light-bruselas-26",
+        "year": 2026,
+        "score": 0.2857142857142857
+      }
+    },
+    {
+      "brand_slug": "bullpadel",
+      "source_url": "https://www.bullpadel.com/es/28-palas",
+      "source_type": "catalog",
+      "phrase": "neuron 02 edge es pala oficial del torneo premier padel newguiza",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 8,
+        "name": "PALA BULLPADEL NEURON 02 EDGE TF 25",
+        "slug": "bullpadel-neuron-02-edge-tf-25",
+        "year": 2025,
+        "score": 0.375
+      }
+    },
+    {
+      "brand_slug": "bullpadel",
+      "source_url": "https://www.bullpadel.com/es/28-palas",
+      "source_type": "catalog",
+      "phrase": "vertex 05 geo egipto 26 ltd es pala oficial del torneo premier padel newguiza y te l",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 3,
+        "name": "PALA BULLPADEL VERTEX 05 ARGENTINA 26",
+        "slug": "bullpadel-vertex-05-argentina-26",
+        "year": 2026,
+        "score": 0.21428571428571427
+      }
+    },
+    {
+      "brand_slug": "bullpadel",
+      "source_url": "https://www.bullpadel.com/es/28-palas",
+      "source_type": "catalog",
+      "phrase": "hack o4 egipto 26 ltd forma parte de nuestra edicion limitada creada para el torneo",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 3,
+        "name": "PALA BULLPADEL VERTEX 05 ARGENTINA 26",
+        "slug": "bullpadel-vertex-05-argentina-26",
+        "year": 2026,
+        "score": 0.07142857142857142
+      }
+    },
+    {
+      "brand_slug": "nox",
+      "source_url": "https://www.noxsport.com/collections/palas-de-padel-nox",
+      "source_type": "catalog",
+      "phrase": "at10 genius 18k 2024 en ex at10 genius 18k 2024 fr ex at10 genius 18k 2024",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 480,
+        "name": "AT10 Genius 18K Alum Riyadh Exclusive Edition",
+        "slug": "nox-at10-genius-18k-alum-riyadh-p1-edicion-limitada",
+        "year": null,
+        "score": 0.42857142857142855
+      }
+    },
+    {
+      "brand_slug": "nox",
+      "source_url": "https://www.noxsport.com/collections/palas-de-padel-nox",
+      "source_type": "catalog",
+      "phrase": "at10 genius 18k 2024 sv order description limitcharacters false char",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 154,
+        "name": "AT10 Luxury Genius ATTACK 18K Alum 2026 by Agustín Tapia",
+        "slug": "nox-at10-genius-attack-18k-alum-2026-by-agustin-tapia",
+        "year": 2026,
+        "score": 0.3
+      }
+    },
+    {
+      "brand_slug": "nox",
+      "source_url": "https://www.noxsport.com/collections/palas-de-padel-nox",
+      "source_type": "catalog",
+      "phrase": "at10 genius 18k 2024 presence u003e n u003c div u003e n n u003csmall class",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 154,
+        "name": "AT10 Luxury Genius ATTACK 18K Alum 2026 by Agustín Tapia",
+        "slug": "nox-at10-genius-attack-18k-alum-2026-by-agustin-tapia",
+        "year": 2026,
+        "score": 0.2727272727272727
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone cross it adipower discovery rx series paleteros y bolseria paleteros mochilas b",
+      "mention_count": 2,
+      "best_db_match": {
+        "id": 70,
+        "name": "CROSS IT TEAM 2026",
+        "slug": "adidas-cross-it-team-2026",
+        "year": 2026,
+        "score": 0.16666666666666666
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone adidas courts afp courts pro edt 2026 nuestros jugadores jugadores adidas pad",
+      "mention_count": 2,
+      "best_db_match": {
+        "id": 205,
+        "name": "Paleta Adidas Metalbone Pro Edt 2025",
+        "slug": "adidas-paleta-adidas-metalbone-pro-edt-2025",
+        "year": 2025,
+        "score": 0.3333333333333333
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "cross it team 2026 esta construida con superficie de fibra de vidrio y goma soft perform",
+      "mention_count": 2,
+      "best_db_match": {
+        "id": 70,
+        "name": "CROSS IT TEAM 2026",
+        "slug": "adidas-cross-it-team-2026",
+        "year": 2026,
+        "score": 0.26666666666666666
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone pro edt 2026 ale galan item reference ar1ab6u23 index 2 item category",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 297,
+        "name": "Adidas Metalbone 2026 – Ale Galán",
+        "slug": "adidas-metalbone-2026-ale-galan",
+        "year": 2026,
+        "score": 0.36363636363636365
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "cross it pro edt 2026 marta ortega item reference ar1cb4u02 index 3 item categor",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 214,
+        "name": "Cross IT Light 3.4 – Marta Ortega",
+        "slug": "adidas-cross-it-light-3-4-marta-ortega",
+        "year": null,
+        "score": 0.4166666666666667
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone reserve 2026 item reference ar1ab5u69 index 4 item category padel i",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 149,
+        "name": "METALBONE CARBON CTRL 2026",
+        "slug": "adidas-metalbone-carbon-ctrl-2026",
+        "year": 2026,
+        "score": 0.2
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone reserve 2025 item reference ar1aa7u15 index 5 item category padel i",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 205,
+        "name": "Paleta Adidas Metalbone Pro Edt 2025",
+        "slug": "adidas-paleta-adidas-metalbone-pro-edt-2025",
+        "year": 2025,
+        "score": 0.2
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "cross it pro edt 2026 marta ortega url https allforpadel",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 214,
+        "name": "Cross IT Light 3.4 – Marta Ortega",
+        "slug": "adidas-cross-it-light-3-4-marta-ortega",
+        "year": null,
+        "score": 0.4444444444444444
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone reserve 2026 url https allforpadel",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 149,
+        "name": "METALBONE CARBON CTRL 2026",
+        "slug": "adidas-metalbone-carbon-ctrl-2026",
+        "year": 2026,
+        "score": 0.3333333333333333
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone reserve 2025 url https allforpadel",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 205,
+        "name": "Paleta Adidas Metalbone Pro Edt 2025",
+        "slug": "adidas-paleta-adidas-metalbone-pro-edt-2025",
+        "year": 2025,
+        "score": 0.3333333333333333
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone reserve 2025 8435739405796",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 205,
+        "name": "Paleta Adidas Metalbone Pro Edt 2025",
+        "slug": "adidas-paleta-adidas-metalbone-pro-edt-2025",
+        "year": 2025,
+        "score": 0.4
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone pro edt 2026 ale galan ar1ab6u23 425 00 tu destino es la potencia",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 297,
+        "name": "Adidas Metalbone 2026 – Ale Galán",
+        "slug": "adidas-metalbone-2026-ale-galan",
+        "year": 2026,
+        "score": 0.3076923076923077
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone pro edt 2026 de ale galan es una pala limitada pensada para jugadores que busc",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 297,
+        "name": "Adidas Metalbone 2026 – Ale Galán",
+        "slug": "adidas-metalbone-2026-ale-galan",
+        "year": 2026,
+        "score": 0.2857142857142857
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "cross it pro edt 2026 marta ortega ar1cb4u02 360 00 si buscas un juego ligero y fluido",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 214,
+        "name": "Cross IT Light 3.4 – Marta Ortega",
+        "slug": "adidas-cross-it-light-3-4-marta-ortega",
+        "year": null,
+        "score": 0.25
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "cross it pro edt 2026 de martita ortega es una edicion limitada pensada para quienes pr",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 295,
+        "name": "Adidas Cross IT Light 2026 – Martita Ortega",
+        "slug": "adidas-cross-it-light-2026-martita-ortega",
+        "year": 2026,
+        "score": 0.35714285714285715
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone reserve 2026 ar1ab5u69 325 00 rendimiento equilibrado con versatilidad adapta",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 149,
+        "name": "METALBONE CARBON CTRL 2026",
+        "slug": "adidas-metalbone-carbon-ctrl-2026",
+        "year": 2026,
+        "score": 0.18181818181818182
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone reserve 2026 presenta una superficie de carbono 16k para ofrecer potencia contr",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 146,
+        "name": "Paleta de pádel adidas Copa del Mundo 2026 Argentina",
+        "slug": "adidas-paleta-de-padel-adidas-copa-del-mundo-2026-argentina",
+        "year": 2026,
+        "score": 0.15384615384615385
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone reserve 2025 ar1aa7u15 260 00 325 00 disenada para ofrecer la mejor potenci",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 205,
+        "name": "Paleta Adidas Metalbone Pro Edt 2025",
+        "slug": "adidas-paleta-adidas-metalbone-pro-edt-2025",
+        "year": 2025,
+        "score": 0.15384615384615385
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone 2026 ale galan adidas ar1aa8u22 390 00 la evolucion de la potencia",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 297,
+        "name": "Adidas Metalbone 2026 – Ale Galán",
+        "slug": "adidas-metalbone-2026-ale-galan",
+        "year": 2026,
+        "score": 0.4166666666666667
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone 2026 de ale galan redefine la personalizacion con el weight amp balance syste",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 297,
+        "name": "Adidas Metalbone 2026 – Ale Galán",
+        "slug": "adidas-metalbone-2026-ale-galan",
+        "year": 2026,
+        "score": 0.2857142857142857
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone hrd 2026 ale galan adidas ar1aa9u37 390 00 potencia maxima con personaliza",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 297,
+        "name": "Adidas Metalbone 2026 – Ale Galán",
+        "slug": "adidas-metalbone-2026-ale-galan",
+        "year": 2026,
+        "score": 0.38461538461538464
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone hrd 2026 de ale galan ofrece un rendimiento explosivo con un balance totalment",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 297,
+        "name": "Adidas Metalbone 2026 – Ale Galán",
+        "slug": "adidas-metalbone-2026-ale-galan",
+        "year": 2026,
+        "score": 0.3076923076923077
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone ctrl 2026 adidas ar1cb0u22 390 00 disenada para un control total",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 297,
+        "name": "Adidas Metalbone 2026 – Ale Galán",
+        "slug": "adidas-metalbone-2026-ale-galan",
+        "year": 2026,
+        "score": 0.3
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone ctrl 2026 ofrece un balance personalizable y una estabilidad excepcional gracia",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 149,
+        "name": "METALBONE CARBON CTRL 2026",
+        "slug": "adidas-metalbone-carbon-ctrl-2026",
+        "year": 2026,
+        "score": 0.18181818181818182
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone carbon ctrl 2026 adidas ar2ca2u23 260 00 control equilibrado con rendimiento",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 149,
+        "name": "METALBONE CARBON CTRL 2026",
+        "slug": "adidas-metalbone-carbon-ctrl-2026",
+        "year": 2026,
+        "score": 0.3
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone carbon ctrl 2026 ofrece una sensacion solida y reactiva con mayor estabilidad p",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 149,
+        "name": "METALBONE CARBON CTRL 2026",
+        "slug": "adidas-metalbone-carbon-ctrl-2026",
+        "year": 2026,
+        "score": 0.23076923076923078
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "cross it carbon 2026 maxi arce adidas ar2aa5u30 280 00 potencia control y precision e",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 312,
+        "name": "Cross It Carbon-Maxi Arce",
+        "slug": "adidas-paleta-adidas-cross-it-carbon-maxi-arce",
+        "year": null,
+        "score": 0.35714285714285715
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "cross it carbon 2026 maximiza la rigidez y el rendimiento gracias a su carbono 6k tecno",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 116,
+        "name": "CROSS IT CARBON CTRL 2026",
+        "slug": "adidas-cross-it-carbon-ctrl-2026",
+        "year": 2026,
+        "score": 0.25
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "cross it team light 2026 adidas ar2ca6u26 180 00 potencia ofensiva accesible y manejo",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 70,
+        "name": "CROSS IT TEAM 2026",
+        "slug": "adidas-cross-it-team-2026",
+        "year": 2026,
+        "score": 0.3076923076923077
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone team 2026 adidas ar2aa3u22 200 00 rendimiento metalbone accesible para progre",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 151,
+        "name": "METALBONE TEAM LIGHT 2026",
+        "slug": "adidas-metalbone-team-light-2026",
+        "year": 2026,
+        "score": 0.2727272727272727
+      }
+    },
+    {
+      "brand_slug": "adidas",
+      "source_url": "https://allforpadel.com/es/54-palas-padel",
+      "source_type": "catalog",
+      "phrase": "metalbone team 2026 ofrece manejo estable durabilidad reforzada y comodidad soft perform",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 151,
+        "name": "METALBONE TEAM LIGHT 2026",
+        "slug": "adidas-metalbone-team-light-2026",
+        "year": 2026,
+        "score": 0.25
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "hack continue save html tag html matches key",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 33,
+        "name": "SIUX ELECTRA PRO 2026 FIRE RED",
+        "slug": "siux-electra-pro-2026-fire-red",
+        "year": 2026,
+        "score": 0
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra stupa 2026 variants id gid shopify productvariant 559260058",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 33,
+        "name": "SIUX ELECTRA PRO 2026 FIRE RED",
+        "slug": "siux-electra-pro-2026-fire-red",
+        "year": 2026,
+        "score": 0.2222222222222222
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra stupa 2026 variants id gid shopify productvariant 562454593",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 33,
+        "name": "SIUX ELECTRA PRO 2026 FIRE RED",
+        "slug": "siux-electra-pro-2026-fire-red",
+        "year": 2026,
+        "score": 0.2222222222222222
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra stupa 2026 variants id gid shopify productvariant 559260061",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 33,
+        "name": "SIUX ELECTRA PRO 2026 FIRE RED",
+        "slug": "siux-electra-pro-2026-fire-red",
+        "year": 2026,
+        "score": 0.2222222222222222
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra stupa pro st3 title vendor type null untranslatedtitle null url",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 1117,
+        "name": "SIUX ELECTRA STUPA PRO ST3",
+        "slug": "siux-electra-stupa-pro-st3",
+        "year": null,
+        "score": 0.3333333333333333
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra st2 junior title vendor type null untranslatedtitle null url n",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 1115,
+        "name": "SIUX ELECTRA ST2 JUNIOR",
+        "slug": "siux-electra-st2-junior",
+        "year": null,
+        "score": 0.3
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "fenix elite 2026 title vendor type null untranslatedtitle null url n",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 535,
+        "name": "SIUX FENIX ELITE 2026",
+        "slug": "siux-fenix-elite-2026",
+        "year": 2026,
+        "score": 0.3
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra elite 2026 title vendor type null untranslatedtitle null url n",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 1114,
+        "name": "SIUX ELECTRA ELITE 2026",
+        "slug": "siux-electra-elite-2026",
+        "year": 2026,
+        "score": 0.3
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "fenix pro 5 black title vendor type null untranslatedtitle null url",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 37,
+        "name": "SIUX FENIX PRO 5 BLACK",
+        "slug": "siux-fenix-pro-5-black",
+        "year": 2025,
+        "score": 0.3333333333333333
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra pro 2026 fire red title vendor type null untranslatedtitle null",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 33,
+        "name": "SIUX ELECTRA PRO 2026 FIRE RED",
+        "slug": "siux-electra-pro-2026-fire-red",
+        "year": 2026,
+        "score": 0.4444444444444444
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra pro 2026 shadow red title vendor type null untranslatedtitle nul",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 76,
+        "name": "SIUX ELECTRA PRO 2026 SHADOW RED",
+        "slug": "siux-electra-pro-2026-shadow-red",
+        "year": 2026,
+        "score": 0.4
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra stupa pro st3 variants id 57188578853239 price 15995 name siux elec",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 1117,
+        "name": "SIUX ELECTRA STUPA PRO ST3",
+        "slug": "siux-electra-stupa-pro-st3",
+        "year": null,
+        "score": 0.36363636363636365
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra st2 junior variants id 57188216144247 price 4895 name siux electra",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 1115,
+        "name": "SIUX ELECTRA ST2 JUNIOR",
+        "slug": "siux-electra-st2-junior",
+        "year": null,
+        "score": 0.4
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "fenix elite 2026 variants id 55926008906103 price 26995 name siux fenix e",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 535,
+        "name": "SIUX FENIX ELITE 2026",
+        "slug": "siux-fenix-elite-2026",
+        "year": 2026,
+        "score": 0.36363636363636365
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra elite 2026 variants id 55926008152439 price 26995 name siux electra",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 1114,
+        "name": "SIUX ELECTRA ELITE 2026",
+        "slug": "siux-electra-elite-2026",
+        "year": 2026,
+        "score": 0.4
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "fenix pro 5 black variants id 55052529893751 price 18900 name siux fenix",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 37,
+        "name": "SIUX FENIX PRO 5 BLACK",
+        "slug": "siux-fenix-pro-5-black",
+        "year": 2025,
+        "score": 0.4
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra pro 2026 fire red red public title red sku 200043 remote false",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 33,
+        "name": "SIUX ELECTRA PRO 2026 FIRE RED",
+        "slug": "siux-electra-pro-2026-fire-red",
+        "year": 2026,
+        "score": 0.4
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra pro 2026 shadow red variants id 55926008447351 price 35000 name siu",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 76,
+        "name": "SIUX ELECTRA PRO 2026 SHADOW RED",
+        "slug": "siux-electra-pro-2026-shadow-red",
+        "year": 2026,
+        "score": 0.36363636363636365
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra pro 2026 shadow red red public title red sku 200044 remote false",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 76,
+        "name": "SIUX ELECTRA PRO 2026 SHADOW RED",
+        "slug": "siux-electra-pro-2026-shadow-red",
+        "year": 2026,
+        "score": 0.4
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra stupa pro st3 precio de oferta 159 95 precio normal 350 ahorra 161 00 anadir",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 1117,
+        "name": "SIUX ELECTRA STUPA PRO ST3",
+        "slug": "siux-electra-stupa-pro-st3",
+        "year": null,
+        "score": 0.21428571428571427
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra st2 junior precio de oferta 48 95 precio normal 129 anadir a la cesta siux tr",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 1115,
+        "name": "SIUX ELECTRA ST2 JUNIOR",
+        "slug": "siux-electra-st2-junior",
+        "year": null,
+        "score": 0.25
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "fenix elite 2026 precio de oferta 269 95 color purple anadir a la cesta siux trilogy",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 77,
+        "name": "SIUX FENIX PRO 2026 GLOW PURPLE",
+        "slug": "siux-fenix-pro-2026-glow-purple",
+        "year": 2026,
+        "score": 0.25
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra elite 2026 precio de oferta 269 95 color red ahorra 135 00 anadir a la cesta",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 33,
+        "name": "SIUX ELECTRA PRO 2026 FIRE RED",
+        "slug": "siux-electra-pro-2026-fire-red",
+        "year": 2026,
+        "score": 0.17647058823529413
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "fenix pro 5 black precio de oferta 189 precio normal 350 anadir a la cesta siux ele",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 37,
+        "name": "SIUX FENIX PRO 5 BLACK",
+        "slug": "siux-fenix-pro-5-black",
+        "year": 2025,
+        "score": 0.26666666666666666
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra pro 2026 shadow red precio de oferta 350 color red ahorra 64 00 anadir a la c",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 76,
+        "name": "SIUX ELECTRA PRO 2026 SHADOW RED",
+        "slug": "siux-electra-pro-2026-shadow-red",
+        "year": 2026,
+        "score": 0.25
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "fenix elite 4 precio de oferta 75 precio normal 139 anadir a la cesta siux gea 2026",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 535,
+        "name": "SIUX FENIX ELITE 2026",
+        "slug": "siux-fenix-elite-2026",
+        "year": 2026,
+        "score": 0.25
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "fenix pro 5 precio de oferta 179 95 precio normal 325 anadir a la cesta siux astra",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 37,
+        "name": "SIUX FENIX PRO 5 BLACK",
+        "slug": "siux-fenix-pro-5-black",
+        "year": 2025,
+        "score": 0.2
+      }
+    },
+    {
+      "brand_slug": "siux",
+      "source_url": "https://www.siuxpadel.com/collections/palas",
+      "source_type": "catalog",
+      "phrase": "electra go 3 precio de oferta 64 95 precio normal 139 anadir a la cesta siux diablo p",
+      "mention_count": 1,
+      "best_db_match": {
+        "id": 68,
+        "name": "SIUX DIABLO GO 3",
+        "slug": "siux-diablo-go-3",
+        "year": 2024,
+        "score": 0.23529411764705882
+      }
+    },
+    {
+      "brand_slug": "blackcrown",
+      "source_url": "https://blackcrown.es/categoria-producto/palas-de-padel/",
+      "source_type": "catalog",
+      "phrase": "blackcrown",
+      "mention_count": 45,
+      "best_db_match": {
+        "id": 63,
+        "name": "Pack Black Crown Win Ultralight",
+        "slug": "blackcrown-pack-black-crown-win-ultralight",
+        "year": 2025,
+        "score": 0
+      }
+    }
+  ]
+}

@@ -14,7 +14,10 @@
     "scrape:quick": "tsx --env-file=.env scripts/scrape-batch.ts --profile=quick --limit=5 --no-cache --continue-on-error",
     "scrape:shopify": "tsx --env-file=.env scripts/scrape-batch.ts --profile=shopify --limit=10 --no-cache --continue-on-error",
     "scrape:core": "tsx --env-file=.env scripts/scrape-batch.ts --profile=core --limit=10 --no-cache --continue-on-error",
-    "scrape:full": "tsx --env-file=.env scripts/scrape-batch.ts --profile=full --no-cache --continue-on-error --timeout-ms=900000"
+    "scrape:full": "tsx --env-file=.env scripts/scrape-batch.ts --profile=full --no-cache --continue-on-error --timeout-ms=900000",
+    "catalog:curate": "node --env-file=.env scripts/curate-catalog-from-targets.mjs",
+    "catalog:curate:apply": "node --env-file=.env scripts/curate-catalog-from-targets.mjs --apply --include-emerging",
+    "catalog:discover": "node --env-file=.env scripts/discover-review-candidates.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",
