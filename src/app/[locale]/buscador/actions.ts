@@ -26,6 +26,17 @@ import type {
 import type { RefinementFeedback } from "@/domain/recommendation/refinement-feedback.entity";
 import type { RecommendResult } from "@/application/recommendation/recommend-paddles.usecase";
 import { findUserIdByEmail } from "@/infrastructure/db/user.mysql.repository";
+import { rateLimit, clientIp } from "@/infrastructure/rate-limit";
+
+// Límite por IP para los endpoints que disparan llamadas pagas a la IA.
+const AI_RATE_LIMIT = 20; // peticiones
+const AI_RATE_WINDOW_MS = 60_000; // por minuto
+
+async function enforceAiRateLimit(scope: string): Promise<void> {
+  const ip = await clientIp();
+  const { ok } = rateLimit(`finder:${scope}:${ip}`, AI_RATE_LIMIT, AI_RATE_WINDOW_MS);
+  if (!ok) throw new Error("RATE_LIMITED");
+}
 
 export interface FinderInput {
   level: string;
@@ -222,6 +233,7 @@ function sanitizeFeedback(input: RefinementFeedbackInput): RefinementFeedback {
 }
 
 export async function getRecommendations(input: FinderInput): Promise<FinderResult> {
+  await enforceAiRateLimit("get");
   const profile = sanitize(input);
 
   const session = await auth();
@@ -242,6 +254,7 @@ export async function refineRecommendations(
   input: FinderInput,
   feedbackInput: RefinementFeedbackInput,
 ): Promise<FinderResult> {
+  await enforceAiRateLimit("refine");
   const profile = sanitize(input);
   const feedback = sanitizeFeedback(feedbackInput);
 

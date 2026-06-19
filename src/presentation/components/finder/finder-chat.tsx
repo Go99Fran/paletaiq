@@ -12,7 +12,7 @@ import {
   type FinderResult,
   type RefinementFeedbackInput,
 } from "@/app/[locale]/buscador/actions";
-import { Button, Card, CardBody, Input, Tag } from "@/presentation/components/ui";
+import { Button, Card, CardBody, Input, Tag, ToggleChip } from "@/presentation/components/ui";
 import { formatPrice } from "@/presentation/lib/format";
 import { useCompare } from "@/presentation/components/compare/use-compare";
 import { useTypewriter } from "./use-typewriter";
@@ -424,20 +424,10 @@ function MultiSelect({
         {step.options?.map((opt) => {
           const on = selected.includes(opt.value);
           return (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => toggle(opt.value)}
-              className={[
-                "inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 active:scale-95",
-                on
-                  ? "bg-gradient-to-br from-primary to-primary-hover text-primary-foreground shadow-sm"
-                  : "glass text-text hover:border-primary/50 hover:text-primary",
-              ].join(" ")}
-            >
+            <ToggleChip key={opt.value} active={on} onClick={() => toggle(opt.value)} className="px-4 py-2">
               {on && <Check size={14} aria-hidden />}
               {t(opt.labelKey)}
-            </button>
+            </ToggleChip>
           );
         })}
       </div>
@@ -469,20 +459,10 @@ function BrandSelect({
         {brands.map((b) => {
           const on = selected.includes(b.slug);
           return (
-            <button
-              key={b.slug}
-              type="button"
-              onClick={() => toggle(b.slug)}
-              className={[
-                "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-sm font-medium transition-all duration-200 active:scale-95",
-                on
-                  ? "bg-gradient-to-br from-primary to-primary-hover text-primary-foreground shadow-sm"
-                  : "glass text-text hover:border-primary/50 hover:text-primary",
-              ].join(" ")}
-            >
+            <ToggleChip key={b.slug} active={on} onClick={() => toggle(b.slug)}>
               {on && <Check size={13} aria-hidden />}
               {b.name}
-            </button>
+            </ToggleChip>
           );
         })}
       </div>
@@ -829,18 +809,9 @@ function QuickChip({
   onClick: () => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={[
-        "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-sm font-medium transition-all duration-200 active:scale-95",
-        active
-          ? "bg-gradient-to-br from-primary to-primary-hover text-primary-foreground shadow-sm"
-          : "glass text-text hover:border-primary/50 hover:text-primary",
-      ].join(" ")}
-    >
+    <ToggleChip active={active} onClick={onClick}>
       {label}
-    </button>
+    </ToggleChip>
   );
 }
 

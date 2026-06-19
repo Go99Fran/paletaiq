@@ -7,6 +7,14 @@
     "back": "Back",
     "skipToContent": "Skip to content"
   },
+  "errors": {
+    "notFoundTitle": "Page not found",
+    "notFoundText": "The racket or page you're looking for doesn't exist or is no longer published.",
+    "notFoundCta": "See all rackets",
+    "errorTitle": "Something went wrong",
+    "errorText": "We had a problem loading this page. Please try again in a moment.",
+    "errorCta": "Retry"
+  },
   "nav": {
     "paddles": "Rackets",
     "compare": "Compare",
@@ -91,6 +99,7 @@
     "inStock": "In stock",
     "fromPrice": "From",
     "storeCount": "{count, plural, one {# store} other {# stores}}",
+    "bestPriceAt": "Best price at {store}",
     "page": "Page {page} of {total}",
     "prev": "Previous",
     "next": "Next",

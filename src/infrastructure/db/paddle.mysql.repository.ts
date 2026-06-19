@@ -45,6 +45,8 @@ interface PaddleRow extends RowDataPacket {
   best_price: string | null;
   best_price_currency: string | null;
   store_count: number;
+  best_store_name: string | null;
+  best_store_url: string | null;
 }
 
 /**
@@ -64,17 +66,21 @@ const BASE_SELECT = `
     p.core_material, p.face_material, p.frame_material, p.surface, p.hardness,
     p.level, p.play_style, p.popularity, p.thickness, p.image_url, p.description,
     p.is_active, p.validated,
-    bp.best_price, '${PRICE_CURRENCY}' AS best_price_currency, COALESCE(bp.store_count, 0) AS store_count
+    bp.best_price, '${PRICE_CURRENCY}' AS best_price_currency, COALESCE(bp.store_count, 0) AS store_count,
+    bp.best_store_name, bp.best_store_url
   FROM paddles p
   JOIN brands b ON b.id = p.brand_id
   LEFT JOIN (
-    SELECT paddle_id,
-           MIN(price) AS best_price,
-           COUNT(*) AS store_count
-    FROM current_prices
-    WHERE in_stock = TRUE AND currency = '${PRICE_CURRENCY}'
-    GROUP BY paddle_id
-  ) bp ON bp.paddle_id = p.id
+    SELECT cp.paddle_id,
+           MIN(cp.price) OVER (PARTITION BY cp.paddle_id) AS best_price,
+           COUNT(*) OVER (PARTITION BY cp.paddle_id) AS store_count,
+           s.name AS best_store_name,
+           cp.product_url AS best_store_url,
+           ROW_NUMBER() OVER (PARTITION BY cp.paddle_id ORDER BY cp.price ASC, cp.store_id ASC) AS rn
+    FROM current_prices cp
+    JOIN stores s ON s.id = cp.store_id
+    WHERE cp.in_stock = TRUE AND cp.currency = '${PRICE_CURRENCY}'
+  ) bp ON bp.paddle_id = p.id AND bp.rn = 1
 `;
 
 function mapRow(row: PaddleRow): PaddleListItem {
@@ -106,6 +112,8 @@ function mapRow(row: PaddleRow): PaddleListItem {
     bestPrice: row.best_price !== null ? Number(row.best_price) : null,
     bestPriceCurrency: row.best_price_currency,
     storeCount: row.store_count,
+    bestStoreName: row.best_store_name,
+    bestStoreUrl: row.best_store_url,
   };
 }
 

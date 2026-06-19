@@ -43,4 +43,7 @@ export interface PaddleListItem extends Paddle {
   bestPrice: number | null;
   bestPriceCurrency: string | null;
   storeCount: number;
+  /** Tienda con el mejor precio (la más barata con stock en ARS) y su link directo. */
+  bestStoreName: string | null;
+  bestStoreUrl: string | null;
 }

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
-import { Check, ImageOff } from "lucide-react";
+import { Check, ExternalLink, ImageOff } from "lucide-react";
 import type { PaddleListItem } from "@/domain/paddle/paddle.entity";
 import { Link } from "@/i18n/navigation";
 import { Card, CardBody, Tag } from "@/presentation/components/ui";
@@ -58,13 +58,25 @@ export async function PaddleCard({ paddle }: { paddle: PaddleListItem }) {
           {paddle.playStyle && <Tag>{tEnums(`playStyle.${paddle.playStyle}`)}</Tag>}
         </div>
         <div className="mt-auto flex items-end justify-between gap-2 pt-2">
-          <div>
+          <div className="min-w-0">
             {paddle.bestPrice !== null ? (
               <>
                 <p className="text-xl font-extrabold tracking-tight text-primary">
                   {formatPrice(paddle.bestPrice, paddle.bestPriceCurrency ?? "ARS", locale)}
                 </p>
-                <p className="text-xs text-muted">{t("storeCount", { count: paddle.storeCount })}</p>
+                {paddle.bestStoreUrl && paddle.bestStoreName ? (
+                  <a
+                    href={paddle.bestStoreUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="inline-flex max-w-full items-center gap-1 text-xs text-muted transition-colors hover:text-primary"
+                  >
+                    <span className="truncate">{t("bestPriceAt", { store: paddle.bestStoreName })}</span>
+                    <ExternalLink size={11} aria-hidden className="shrink-0" />
+                  </a>
+                ) : (
+                  <p className="text-xs text-muted">{t("storeCount", { count: paddle.storeCount })}</p>
+                )}
               </>
             ) : (
               <p className="text-sm text-muted">{t("noPrice")}</p>

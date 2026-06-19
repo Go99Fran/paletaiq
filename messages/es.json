@@ -7,6 +7,14 @@
     "back": "Volver",
     "skipToContent": "Saltar al contenido"
   },
+  "errors": {
+    "notFoundTitle": "No encontramos esta página",
+    "notFoundText": "La paleta o página que buscás no existe o se dejó de publicar.",
+    "notFoundCta": "Ver todas las paletas",
+    "errorTitle": "Algo salió mal",
+    "errorText": "Tuvimos un problema al cargar esta página. Probá de nuevo en un momento.",
+    "errorCta": "Reintentar"
+  },
   "nav": {
     "paddles": "Paletas",
     "compare": "Comparador",
@@ -91,6 +99,7 @@
     "inStock": "En stock",
     "fromPrice": "Desde",
     "storeCount": "{count, plural, one {# tienda} other {# tiendas}}",
+    "bestPriceAt": "Mejor precio en {store}",
     "page": "Página {page} de {total}",
     "prev": "Anterior",
     "next": "Siguiente",
