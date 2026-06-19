@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { Bot, Check, ImageOff, RotateCcw, Send, Sparkles } from "lucide-react";
+import { ArrowLeft, Bot, Check, ImageOff, RotateCcw, Send, Sparkles } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import {
   getRecommendations,
@@ -69,6 +69,8 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
   const [stepIndex, setStepIndex] = useState(0);
   const [history, setHistory] = useState<ChatEntry[]>([]);
   const [input, setInput] = useState<FinderInput>(emptyInput);
+  // Pila de snapshots (input + stepIndex) previos a cada respuesta, para "volver".
+  const [snapshots, setSnapshots] = useState<Array<{ input: FinderInput; stepIndex: number }>>([]);
   const [result, setResult] = useState<FinderResult | null>(null);
   const [refinementCount, setRefinementCount] = useState(0);
   const [feedback, setFeedback] = useState<RefinementFeedbackInput>({ shownPaddleIds: [] });
@@ -125,6 +127,7 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
     const nextSteps = visibleQuestions(nextInput);
     const wasLast = stepIndex >= steps.length - 1;
 
+    setSnapshots((s) => [...s, { input, stepIndex }]);
     setHistory((h) => [...h, { question: t(step.questionKey), answer: answerLabel }]);
     setInput(nextInput);
 
@@ -182,12 +185,25 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
     setStepIndex(0);
     setHistory([]);
     setInput(emptyInput);
+    setSnapshots([]);
     setResult(null);
     setRefinementCount(0);
     setFeedback({ shownPaddleIds: [] });
     setIsRefining(false);
     setShowResultsWhileRefining(true);
     setError(false);
+  }
+
+  /** Vuelve a la pregunta anterior restaurando el snapshot previo. */
+  function goBack() {
+    setSnapshots((s) => {
+      if (s.length === 0) return s;
+      const prev = s[s.length - 1];
+      setInput(prev.input);
+      setStepIndex(prev.stepIndex);
+      setHistory((h) => h.slice(0, -1));
+      return s.slice(0, -1);
+    });
   }
 
   const totalSteps = steps.length;
@@ -199,11 +215,11 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
         <ProgressBar current={progress} total={totalSteps} label={t("progressLabel")} />
       )}
 
+      {/* El viewport NO lleva aria-live: anunciaba todo (historial + typewriter).
+          El anuncio se acota a la pregunta activa más abajo (role=status). */}
       <div
         ref={viewportRef}
         className="h-[68vh] min-h-[420px] max-h-[760px] overflow-y-auto rounded-2xl border border-border/70 bg-surface/45 px-2 py-3 sm:h-[70vh] sm:px-4"
-        aria-live="polite"
-        aria-atomic="false"
       >
         <div ref={contentRef} className="space-y-4">
         {history.map((entry, i) => (
@@ -214,9 +230,21 @@ export function FinderChat({ brands }: { brands: Array<{ slug: string; name: str
         ))}
 
         {result === null && !pending && !error && step && (
+          <div role="status" aria-live="polite">
           <ActiveQuestion key={step.id} question={t(step.questionKey)} hint={step.hintKey ? t(step.hintKey) : null}>
             <StepControls step={step} brands={brands} onAnswer={commit} t={t} locale={locale} />
+            {snapshots.length > 0 && (
+              <button
+                type="button"
+                onClick={goBack}
+                className="mt-3 inline-flex items-center gap-1 text-xs text-muted transition-colors hover:text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                <ArrowLeft size={13} aria-hidden />
+                {t("goBack")}
+              </button>
+            )}
           </ActiveQuestion>
+          </div>
         )}
 
         {pending && <ThinkingBubble message={isRefining ? t("refineThinking") : undefined} />}
@@ -724,11 +752,18 @@ function Results({
                   ) : (
                     <span />
                   )}
-                  <Link href={`/paletas/${rec.slug}`}>
-                    <Button variant="secondary" size="sm">
-                      {t("viewDetail")}
-                    </Button>
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    {rec.bestStoreUrl && (
+                      <a href={rec.bestStoreUrl} target="_blank" rel="noopener noreferrer nofollow">
+                        <Button size="sm">{t("buyWhere")}</Button>
+                      </a>
+                    )}
+                    <Link href={`/paletas/${rec.slug}`}>
+                      <Button variant="secondary" size="sm">
+                        {t("viewDetail")}
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </CardBody>

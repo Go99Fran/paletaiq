@@ -75,6 +75,8 @@ export interface FinderRecommendation {
   imageUrl: string | null;
   bestPrice: number | null;
   bestPriceCurrency: string | null;
+  bestStoreName: string | null;
+  bestStoreUrl: string | null;
   shape: string | null;
   balance: string | null;
   hardness: string | null;
@@ -104,6 +106,8 @@ function toFinderResult(result: RecommendResult): FinderResult {
       imageUrl: r.paddle.imageUrl,
       bestPrice: r.paddle.bestPrice,
       bestPriceCurrency: r.paddle.bestPriceCurrency,
+      bestStoreName: r.paddle.bestStoreName,
+      bestStoreUrl: r.paddle.bestStoreUrl,
       shape: r.paddle.shape,
       balance: r.paddle.balance,
       hardness: r.paddle.hardness,
