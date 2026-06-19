@@ -108,6 +108,7 @@ export const QUESTIONS: Question[] = [
     id: "matchPace",
     kind: "scale",
     questionKey: "qMatchPace",
+    hintKey: "qMatchPaceHint",
     options: [
       { value: "calm", labelKey: "paceCalm" },
       { value: "medium", labelKey: "paceMedium" },
@@ -144,6 +145,7 @@ export const QUESTIONS: Question[] = [
     id: "strength",
     kind: "scale",
     questionKey: "qStrength",
+    hintKey: "qStrengthHint",
     options: [
       { value: "needs_power", labelKey: "strengthNeeds" },
       { value: "has_power", labelKey: "strengthHas" },
@@ -218,6 +220,7 @@ export const QUESTIONS: Question[] = [
     id: "sweetSpot",
     kind: "single",
     questionKey: "qSweetSpot",
+    hintKey: "qSweetSpotHint",
     options: [
       { value: "wide", labelKey: "sweetSpotWide" },
       { value: "balanced", labelKey: "sweetSpotBalanced" },

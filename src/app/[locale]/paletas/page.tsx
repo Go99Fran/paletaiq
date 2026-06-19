@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { SlidersHorizontal } from "lucide-react";
+import { Sparkles, SlidersHorizontal } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import {
   PADDLE_BALANCES,
   PADDLE_HARDNESSES,
@@ -120,7 +121,19 @@ export default async function PaddlesPage({
       </Heading>
       <p className="mt-1 text-muted">{t("subtitle", { count: total })}</p>
 
-      <form method="get" className="glass mt-6 grid grid-cols-2 gap-3 rounded-2xl p-4 sm:grid-cols-3 lg:grid-cols-9">
+      {/* Atajo al buscador para quien no sabe qué filtros tocar (B19). */}
+      <Link
+        href="/buscador"
+        className="glass mt-6 flex items-center gap-3 rounded-2xl border border-primary/30 px-4 py-3 transition-colors hover:border-primary/60"
+      >
+        <Sparkles size={18} aria-hidden className="shrink-0 text-primary" />
+        <span className="text-sm text-text">
+          <span className="font-semibold">{t("helpBannerTitle")}</span>{" "}
+          <span className="text-muted">{t("helpBannerText")}</span>
+        </span>
+      </Link>
+
+      <form method="get" className="glass mt-4 grid grid-cols-2 gap-3 rounded-2xl p-4 sm:grid-cols-3 lg:grid-cols-9">
         <Input name="q" defaultValue={filters.search ?? ""} placeholder={t("searchPlaceholder")} className="col-span-2 sm:col-span-3 lg:col-span-2" />
         <Select
           name="marca"
