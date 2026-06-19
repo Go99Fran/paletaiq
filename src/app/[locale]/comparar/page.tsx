@@ -130,24 +130,26 @@ export default async function ComparePage({
       </Heading>
       <p className="mt-1 text-muted">{t("subtitle")}</p>
 
-      {/* Sombras laterales que insinúan el scroll horizontal en mobile. */}
-      <div className="relative -mx-4">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-6 bg-gradient-to-r from-background to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-6 bg-gradient-to-l from-background to-transparent" />
-        <div className="overflow-x-auto px-4">
+      {/* Scroll propio del comparador (vertical + horizontal). El thead queda sticky
+          relativo a ESTE contenedor (top-0), no a la página: así la cabecera de paletas
+          nunca tapa la primera fila del cuerpo (antes el doble-sticky cortaba "Año"). */}
+      <div className="relative mt-4 -mx-4 sm:mx-0">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-40 w-6 bg-gradient-to-r from-background to-transparent sm:hidden" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-40 w-6 bg-gradient-to-l from-background to-transparent sm:hidden" />
+        <div className="max-h-[75vh] overflow-auto px-4 sm:rounded-2xl sm:border sm:border-border sm:px-0">
           <table className="w-full border-collapse text-sm">
             <caption className="sr-only">{t("tableCaption")}</caption>
             <thead>
               <tr>
                 <th
                   scope="col"
-                  className="sticky left-0 top-16 z-30 w-20 min-w-[5.25rem] bg-background sm:w-28"
+                  className="sticky left-0 top-0 z-30 w-20 min-w-[5.25rem] bg-background sm:w-28"
                 />
                 {paddles.map((paddle) => (
                   <th
                     key={paddle.id}
                     scope="col"
-                    className="sticky top-16 z-20 min-w-[8.5rem] border-b border-border bg-background/85 px-2 pb-4 pt-3 text-center align-bottom backdrop-blur sm:px-3"
+                    className="sticky top-0 z-20 min-w-[8.5rem] border-b border-border bg-background/95 px-2 pb-4 pt-3 text-center align-bottom backdrop-blur sm:px-3"
                   >
                   <Link href={`/paletas/${paddle.slug}`} className="group inline-block">
                     <div className="relative mx-auto h-24 w-24 sm:h-32 sm:w-32">

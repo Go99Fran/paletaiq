@@ -183,7 +183,9 @@ function sanitize(input: FinderInput): PlayerProfile {
     matchPace,
     hasInjuries: input.hasInjuries,
     injuryAreas,
-    injuryNotes: input.injuryNotes ? input.injuryNotes.slice(0, 500) : null,
+    // Si hay lesión, el comentario libre sirve de detalle de la molestia para la IA
+    // (antes injuryNotes nunca se completaba y la IA solo recibía "sí").
+    injuryNotes: input.hasInjuries && input.freeText ? input.freeText.slice(0, 500) : null,
     strengthPref: valid(input.strengthPref, STRENGTH_PREFS),
     improveGoals: keepValid(input.improveGoals, IMPROVE_GOALS).slice(0, 2),
     sweetSpotTolerance,

@@ -9,10 +9,11 @@ import { MobileMenu } from "./mobile-menu";
 export async function SiteHeader() {
   const t = await getTranslations("nav");
 
+  // Comparador no va en el menú: es una pantalla a la que se llega comparando paletas,
+  // no un destino de navegación por sí mismo.
   const navItems = [
     { href: "/paletas", label: t("paddles") },
     { href: "/buscador", label: t("finder") },
-    { href: "/comparar", label: t("compare") },
   ] as const;
 
   return (

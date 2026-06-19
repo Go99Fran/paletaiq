@@ -346,6 +346,10 @@ function patchForSingle(step: Question, value: string): Partial<FinderInput> {
       return { balancePref: value || null };
     case "hardnessPref":
       return { hardnessPref: value || null };
+    case "spinPref":
+      return { spinImportant: value === "yes" };
+    case "facePref":
+      return { facePref: value || null };
     case "sweetSpot":
       return { sweetSpotTolerance: value || null };
     case "comfortVsPunch":

@@ -38,12 +38,6 @@ export async function SiteFooter() {
           >
             {t("finder")}
           </Link>
-          <Link
-            href="/comparar"
-            className="inline-flex w-fit text-muted underline-offset-4 transition-colors hover:text-primary hover:underline"
-          >
-            {t("compare")}
-          </Link>
         </nav>
 
         <div className="max-w-xs text-sm">

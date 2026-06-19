@@ -190,6 +190,31 @@ export const QUESTIONS: Question[] = [
     showIf: isAdvanced,
   },
   {
+    id: "spinPref",
+    kind: "single",
+    questionKey: "qSpinPref",
+    hintKey: "qSpinPrefHint",
+    options: [
+      { value: "yes", labelKey: "spinYes" },
+      { value: "no", labelKey: "spinNo" },
+    ],
+    showIf: isAdvanced,
+  },
+  {
+    id: "facePref",
+    kind: "single",
+    questionKey: "qFacePref",
+    hintKey: "qFacePrefHint",
+    options: [
+      { value: "fiberglass", labelKey: "faceFiberglass" },
+      { value: "carbon3k", labelKey: "faceCarbon3k" },
+      { value: "carbon12k", labelKey: "faceCarbon12k" },
+      { value: "carbon18k", labelKey: "faceCarbon18k" },
+      { value: "", labelKey: "noPref" },
+    ],
+    showIf: isAdvanced,
+  },
+  {
     id: "sweetSpot",
     kind: "single",
     questionKey: "qSweetSpot",
