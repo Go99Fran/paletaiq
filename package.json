@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "db:migrate": "node --env-file=.env scripts/migrate.mjs",
     "db:import-supabase": "node --env-file=.env scripts/import-supabase.mjs",
     "scrape": "tsx --env-file=.env scripts/scrape.ts",
@@ -42,6 +45,7 @@
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "tsx": "^4.22.4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.9"
   }
 }
