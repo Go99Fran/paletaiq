@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { AlertTriangle, ArrowLeft, ExternalLink, ImageOff } from "lucide-react";
 import { getPaddleDetail } from "@/application/factory";
+import { computePaddleFeel, hasFeelData } from "@/domain/paddle/paddle-feel";
 import { Link } from "@/i18n/navigation";
 import { Badge, Card, CardBody, CardHeader, Heading, Tag } from "@/presentation/components/ui";
+import { PaddleFeelBars } from "@/presentation/components/paddle/paddle-feel-bars";
 import { CompareToggle } from "@/presentation/components/compare/compare-toggle";
 import { CompareBar } from "@/presentation/components/compare/compare-bar";
 import { formatDate, formatPrice, isPriceStale } from "@/presentation/lib/format";
@@ -54,6 +56,9 @@ export default async function PaddleDetailPage({
 
   // Cuántas specs clave tenemos cargadas (indicador de completitud de la ficha).
   const specsFilled = specs.filter((s) => s.value !== null).length;
+
+  // Sensaciones de juego derivadas de las specs (lenguaje de comprador, sin jerga).
+  const feel = hasFeelData(paddle) ? computePaddleFeel(paddle) : null;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -121,6 +126,26 @@ export default async function PaddleDetailPage({
               </dl>
             </CardBody>
           </Card>
+
+          {feel && (
+            <Card className="mt-6">
+              <CardHeader>
+                <Heading level={3}>{t("feelTitle")}</Heading>
+                <p className="mt-1 text-xs text-muted">{t("feelHint")}</p>
+              </CardHeader>
+              <CardBody>
+                <PaddleFeelBars
+                  feel={feel}
+                  labels={{
+                    power: t("feelPower"),
+                    control: t("feelControl"),
+                    maneuver: t("feelManeuver"),
+                    tolerance: t("feelTolerance"),
+                  }}
+                />
+              </CardBody>
+            </Card>
+          )}
         </div>
       </div>
 

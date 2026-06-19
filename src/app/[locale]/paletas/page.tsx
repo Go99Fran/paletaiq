@@ -1,9 +1,13 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SlidersHorizontal } from "lucide-react";
 import {
+  PADDLE_BALANCES,
+  PADDLE_HARDNESSES,
   PADDLE_LEVELS,
   PADDLE_SHAPES,
   PLAY_STYLES,
+  type PaddleBalance,
+  type PaddleHardness,
   type PaddleLevel,
   type PaddleShape,
   type PlayStyle,
@@ -61,6 +65,8 @@ export default async function PaddlesPage({
     shape: asEnum<PaddleShape>(sp.forma, PADDLE_SHAPES),
     level: asEnum<PaddleLevel>(sp.nivel, PADDLE_LEVELS),
     playStyle: asEnum<PlayStyle>(sp.estilo, PLAY_STYLES),
+    balance: asEnum<PaddleBalance>(sp.balance, PADDLE_BALANCES),
+    hardness: asEnum<PaddleHardness>(sp.dureza, PADDLE_HARDNESSES),
     priceMin: asNumber(sp.precio_min),
     priceMax: asNumber(sp.precio_max),
     search: asString(sp.q),
@@ -102,6 +108,8 @@ export default async function PaddlesPage({
   if (filters.shape) chips.push({ key: "forma", label: tEnums(`shape.${filters.shape}`) });
   if (filters.level) chips.push({ key: "nivel", label: tEnums(`level.${filters.level}`) });
   if (filters.playStyle) chips.push({ key: "estilo", label: tEnums(`playStyle.${filters.playStyle}`) });
+  if (filters.balance) chips.push({ key: "balance", label: tEnums(`balance.${filters.balance}`) });
+  if (filters.hardness) chips.push({ key: "dureza", label: tEnums(`hardness.${filters.hardness}`) });
   if (filters.priceMin !== undefined) chips.push({ key: "precio_min", label: `≥ ${filters.priceMin}` });
   if (filters.priceMax !== undefined) chips.push({ key: "precio_max", label: `≤ ${filters.priceMax}` });
 
@@ -112,7 +120,7 @@ export default async function PaddlesPage({
       </Heading>
       <p className="mt-1 text-muted">{t("subtitle", { count: total })}</p>
 
-      <form method="get" className="glass mt-6 grid grid-cols-2 gap-3 rounded-2xl p-4 sm:grid-cols-3 lg:grid-cols-7">
+      <form method="get" className="glass mt-6 grid grid-cols-2 gap-3 rounded-2xl p-4 sm:grid-cols-3 lg:grid-cols-9">
         <Input name="q" defaultValue={filters.search ?? ""} placeholder={t("searchPlaceholder")} className="col-span-2 sm:col-span-3 lg:col-span-2" />
         <Select
           name="marca"
@@ -138,6 +146,18 @@ export default async function PaddlesPage({
           placeholder={t("filterStyle")}
           options={PLAY_STYLES.map((s) => ({ value: s, label: tEnums(`playStyle.${s}`) }))}
         />
+        <Select
+          name="balance"
+          defaultValue={filters.balance ?? ""}
+          placeholder={t("filterBalance")}
+          options={PADDLE_BALANCES.map((b) => ({ value: b, label: tEnums(`balance.${b}`) }))}
+        />
+        <Select
+          name="dureza"
+          defaultValue={filters.hardness ?? ""}
+          placeholder={t("filterHardness")}
+          options={PADDLE_HARDNESSES.map((h) => ({ value: h, label: tEnums(`hardness.${h}`) }))}
+        />
         <div className="col-span-2 flex gap-2 sm:col-span-3 lg:col-span-1">
           <Input
             name="precio_min"
@@ -154,7 +174,7 @@ export default async function PaddlesPage({
             placeholder={t("filterPriceMax")}
           />
         </div>
-        <Button type="submit" className="col-span-2 sm:col-span-3 lg:col-span-7 lg:w-fit lg:justify-self-end">
+        <Button type="submit" className="col-span-2 sm:col-span-3 lg:col-span-9 lg:w-fit lg:justify-self-end">
           <SlidersHorizontal size={16} aria-hidden />
           {t("applyFilters")}
         </Button>

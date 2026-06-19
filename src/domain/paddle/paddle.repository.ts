@@ -13,6 +13,8 @@ export interface PaddleFilters {
   shape?: PaddleShape;
   level?: PaddleLevel;
   playStyle?: PlayStyle;
+  balance?: PaddleBalance;
+  hardness?: PaddleHardness;
   priceMin?: number;
   priceMax?: number;
   search?: string;

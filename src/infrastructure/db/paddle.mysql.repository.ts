@@ -141,6 +141,14 @@ export class PaddleMysqlRepository implements PaddleRepository {
       where.push("p.play_style = :playStyle");
       params.playStyle = filters.playStyle;
     }
+    if (filters.balance) {
+      where.push("p.balance = :balance");
+      params.balance = filters.balance;
+    }
+    if (filters.hardness) {
+      where.push("p.hardness = :hardness");
+      params.hardness = filters.hardness;
+    }
     if (filters.priceMin !== undefined) {
       where.push("bp.best_price >= :priceMin");
       params.priceMin = filters.priceMin;
